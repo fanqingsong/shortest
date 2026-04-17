@@ -70,20 +70,19 @@ const glmAiSchema = z
       .default(
         () =>
           process.env.ZHIPU_API_KEY ||
-          process.env[getShortestEnvName("GLM_API_KEY")] ||
-          "",
+          process.env[getShortestEnvName("GLM_API_KEY")]!,
       ),
     model: glmModelSchema.default("glm-4"),
     baseURL: z.string().default("https://open.bigmodel.cn/api/paas/v4/"),
   })
   .strict();
 
-const aiSchema = z.union([anthropicAiSchema, glmAiSchema]);
+const aiSchema = z.discriminatedUnion("provider", [anthropicAiSchema, glmAiSchema]);
 
 // Partial versions for user config (allows optional fields)
 const anthropicAiPartialSchema = anthropicAiSchema.partial();
 const glmAiPartialSchema = glmAiSchema.partial();
-const aiPartialSchema = z.union([anthropicAiPartialSchema, glmAiPartialSchema]);
+const aiPartialSchema = z.discriminatedUnion("provider", [anthropicAiPartialSchema, glmAiPartialSchema]);
 
 export type AIConfig = z.infer<typeof aiSchema>;
 
