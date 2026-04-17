@@ -26,6 +26,9 @@ dist/
 *.pem
 *.tool-versions
 
+# git worktrees
+.worktrees/
+
 # debug
 npm-debug.log*
 yarn-debug.log*
