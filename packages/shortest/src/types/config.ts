@@ -28,6 +28,22 @@ export const ANTHROPIC_MODELS = [
 export const anthropicModelSchema = z.enum(ANTHROPIC_MODELS);
 export type AnthropicModel = z.infer<typeof anthropicModelSchema>;
 
+/**
+ * List of Zhipu GLM models that are supported by the AI client.
+ *
+ * @see https://open.bigmodel.cn/dev/api
+ */
+export const GLM_MODELS = [
+  "glm-4-plus",
+  "glm-4-0520",
+  "glm-4",
+  "glm-4-air",
+  "glm-4-flash",
+  "glm-3-turbo",
+] as const;
+export const glmModelSchema = z.enum(GLM_MODELS);
+export type GLMModel = z.infer<typeof glmModelSchema>;
+
 const aiSchema = z
   .object({
     provider: z.literal("anthropic"),
