@@ -4,6 +4,7 @@ import { z } from "zod";
 import { ToolRegistry } from "./tool-registry";
 import { BrowserTool } from "@/browser/core/browser-tool";
 import { ShortestError } from "@/utils/errors";
+import { GLMModel } from "@/types/config";
 
 describe("ToolRegistry", () => {
   let registry: ToolRegistry;
@@ -224,6 +225,34 @@ describe("ToolRegistry", () => {
       }).toThrow(
         "computer tool not found for key: anthropic_computer_20241022",
       );
+    });
+  });
+});
+
+describe("ToolRegistry - GLM Provider", () => {
+  let registry: ToolRegistry;
+  let mockBrowserTool: any;
+
+  beforeEach(() => {
+    registry = new ToolRegistry();
+    mockBrowserTool = {
+      page: {},
+    };
+  });
+
+  it("should return tools for GLM provider", () => {
+    const tools = registry.getTools("glm", "glm-4", mockBrowserTool);
+
+    expect(tools).toBeDefined();
+    expect(typeof tools).toBe("object");
+  });
+
+  it("should handle different GLM models", () => {
+    const models: GLMModel[] = ["glm-4-plus", "glm-4", "glm-4-flash", "glm-3-turbo"];
+
+    models.forEach((model) => {
+      const tools = registry.getTools("glm", model, mockBrowserTool);
+      expect(tools).toBeDefined();
     });
   });
 });
