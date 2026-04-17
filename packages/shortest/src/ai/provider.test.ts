@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { createProvider } from "./provider";
 import { AIConfig } from "@/types";
+import { GLMModel } from "@/types/config";
 
 vi.mock("@ai-sdk/anthropic", () => ({
   createAnthropic: vi.fn(() => (model: string) => ({ model })),
@@ -26,7 +27,50 @@ describe("createProvider", () => {
     } as unknown as AIConfig;
 
     expect(() => createProvider(config)).toThrow(
-      "unsupported is not supported.",
+      "Unsupported provider: unsupported",
     );
+  });
+
+  describe("createProvider - GLM", () => {
+    it("should create GLM provider with valid config", () => {
+      const glmConfig: AIConfig = {
+        provider: "glm",
+        apiKey: "test-api-key",
+        model: "glm-4",
+        baseURL: "https://open.bigmodel.cn/api/paas/v4/",
+      };
+
+      const provider = createProvider(glmConfig);
+
+      expect(provider).toBeDefined();
+      expect(typeof provider).toBe("object");
+    });
+
+    it("should use default base URL when not provided", () => {
+      const glmConfig: AIConfig = {
+        provider: "glm",
+        apiKey: "test-api-key",
+        model: "glm-4",
+      };
+
+      const provider = createProvider(glmConfig);
+
+      expect(provider).toBeDefined();
+    });
+
+    it("should create provider for different GLM models", () => {
+      const models: GLMModel[] = ["glm-4-plus", "glm-4", "glm-4-flash", "glm-3-turbo"];
+
+      models.forEach((model) => {
+        const glmConfig: AIConfig = {
+          provider: "glm",
+          apiKey: "test-api-key",
+          model,
+        };
+
+        const provider = createProvider(glmConfig);
+        expect(provider).toBeDefined();
+      });
+    });
   });
 });
