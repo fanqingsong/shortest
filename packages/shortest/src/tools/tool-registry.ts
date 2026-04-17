@@ -216,12 +216,15 @@ export class ToolRegistry {
       return this.getGLMTools(browserTool);
     }
 
+    // Type narrowing: After the early return for GLM provider above,
+    // we know 'model' must be an AnthropicModel, not a GLMModel.
+    // The type casting below is safe because we've eliminated the GLM case.
     const tools: Record<string, Tool> = {};
 
     try {
       const computerToolEntry = this.getProviderToolEntry(
         provider,
-        model as AnthropicModel,
+        model as AnthropicModel, // Safe: GLM case already handled
         "computer",
       );
       tools[computerToolEntry.name] = computerToolEntry.factory(browserTool);
@@ -233,7 +236,7 @@ export class ToolRegistry {
     try {
       const bashToolEntry = this.getProviderToolEntry(
         provider,
-        model as AnthropicModel,
+        model as AnthropicModel, // Safe: GLM case already handled
         "bash",
       );
       // @ts-ignore
