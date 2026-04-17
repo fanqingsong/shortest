@@ -2,7 +2,7 @@ import { Tool } from "ai";
 import { z } from "zod";
 import { BrowserTool } from "@/browser/core/browser-tool";
 import { getLogger, Log } from "@/log";
-import { AnthropicModel } from "@/types/config";
+import { AnthropicModel, glmModelSchema } from "@/types/config";
 import { ShortestError } from "@/utils/errors";
 
 const TOOL_ENTRY_CATEGORIES = ["provider", "custom"] as const;
@@ -46,6 +46,11 @@ export type AnthropicModelFamily = "claude-3-5" | "claude-3-7" | "claude-4";
 // eslint-disable-next-line zod/require-zod-schema-types
 export type AnthropicToolVersion = "20241022" | "20250124";
 
+// eslint-disable-next-line zod/require-zod-schema-types
+export type GLMModelFamily = "glm-4" | "glm-3";
+
+export type GLMModel = z.infer<typeof glmModelSchema>;
+
 const ANTHROPIC_MODEL_TO_FAMILY: Record<AnthropicModel, AnthropicModelFamily> =
   {
     "claude-4-sonnet-20250514": "claude-4",
@@ -57,6 +62,15 @@ const ANTHROPIC_MODEL_TO_FAMILY: Record<AnthropicModel, AnthropicModelFamily> =
     "claude-3-7-sonnet-latest": "claude-3-7",
     "claude-3-7-sonnet-20250219": "claude-3-7",
   };
+
+const GLM_MODEL_TO_FAMILY: Record<GLMModel, GLMModelFamily> = {
+  "glm-4-plus": "glm-4",
+  "glm-4-0520": "glm-4",
+  "glm-4": "glm-4",
+  "glm-4-air": "glm-4",
+  "glm-4-flash": "glm-4",
+  "glm-3-turbo": "glm-3",
+};
 
 const ANTHROPIC_TOOL_VERSION_MAP: Record<
   AnthropicModelFamily,
