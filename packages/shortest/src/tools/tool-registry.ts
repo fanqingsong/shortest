@@ -1,6 +1,7 @@
 import { Tool } from "ai";
 import { z } from "zod";
 import { BrowserTool } from "@/browser/core/browser-tool";
+import { BashTool } from "@/browser/core/bash-tool";
 import { getLogger, Log } from "@/log";
 import { AnthropicModel, glmModelSchema } from "@/types/config";
 import { ShortestError } from "@/utils/errors";
@@ -121,7 +122,7 @@ export class ToolRegistry {
    * Retrieves all tools for a specific provider and model
    *
    * @param provider - The provider name
-   * @param model - The Anthropic model to get tools for
+   * @param model - The Anthropic or GLM model to get tools for
    * @param browserTool - Browser tool instance
    * @returns Record of tool name to Tool instance
    *
@@ -129,7 +130,7 @@ export class ToolRegistry {
    */
   public getTools(
     provider: string,
-    model: AnthropicModel,
+    model: AnthropicModel | GLMModel,
     browserTool: BrowserTool,
   ): Record<string, Tool> {
     const selectedTools: Record<string, Tool> = {};
@@ -162,10 +163,45 @@ export class ToolRegistry {
   }
 
   /**
+   * Retrieves all GLM-specific tools
+   *
+   * GLM uses standard function calling via OpenAI SDK
+   * Creates tool instances using GLM-specific factory functions
+   *
+   * @param browserTool - Browser tool instance
+   * @returns Record of tool name to Tool instance
+   *
+   * @private
+   */
+  private getGLMTools(browserTool: BrowserTool): Record<string, Tool> {
+    const tools: Record<string, Tool> = {};
+
+    // GLM uses standard function calling via OpenAI SDK
+    // Create tool instances using GLM-specific factory functions
+    try {
+      const { createGLMComputer } = require("@/ai/tools/glm/computer");
+      const computerTool = createGLMComputer(browserTool);
+      tools["computer"] = computerTool;
+    } catch (error) {
+      this.log.trace("Computer tool creation failed for GLM, skipping", { error });
+    }
+
+    try {
+      const { createGLMBash } = require("@/ai/tools/glm/bash");
+      const bashTool = createGLMBash();
+      tools["bash"] = bashTool;
+    } catch (error) {
+      this.log.trace("Bash tool creation failed for GLM, skipping", { error });
+    }
+
+    return tools;
+  }
+
+  /**
    * Retrieves all provider-specific tools
    *
    * @param provider - The provider name
-   * @param model - The Anthropic model to get tools for
+   * @param model - The Anthropic or GLM model to get tools for
    * @param browserTool - Browser tool instance
    * @returns Record of tool name to Tool instance
    *
@@ -173,15 +209,19 @@ export class ToolRegistry {
    */
   private getProviderTools(
     provider: string,
-    model: AnthropicModel,
+    model: AnthropicModel | GLMModel,
     browserTool: BrowserTool,
   ): Record<string, Tool> {
+    if (provider === "glm") {
+      return this.getGLMTools(browserTool);
+    }
+
     const tools: Record<string, Tool> = {};
 
     try {
       const computerToolEntry = this.getProviderToolEntry(
         provider,
-        model,
+        model as AnthropicModel,
         "computer",
       );
       tools[computerToolEntry.name] = computerToolEntry.factory(browserTool);
@@ -191,7 +231,11 @@ export class ToolRegistry {
     }
 
     try {
-      const bashToolEntry = this.getProviderToolEntry(provider, model, "bash");
+      const bashToolEntry = this.getProviderToolEntry(
+        provider,
+        model as AnthropicModel,
+        "bash",
+      );
       // @ts-ignore
       // For some reason, it expects an argument, but it doesn't take any
       tools["bash"] = bashToolEntry.factory();
