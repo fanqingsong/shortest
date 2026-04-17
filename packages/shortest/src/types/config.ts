@@ -44,7 +44,11 @@ export const GLM_MODELS = [
 export const glmModelSchema = z.enum(GLM_MODELS);
 export type GLMModel = z.infer<typeof glmModelSchema>;
 
-const aiSchema = z
+const SHORTEST_ENV_PREFIX = "SHORTEST_";
+
+const getShortestEnvName = (key: string) => `${SHORTEST_ENV_PREFIX}${key}`;
+
+const anthropicAiSchema = z
   .object({
     provider: z.literal("anthropic"),
     apiKey: z
@@ -54,9 +58,33 @@ const aiSchema = z
           process.env[getShortestEnvName("ANTHROPIC_API_KEY")] ||
           process.env.ANTHROPIC_API_KEY!,
       ),
-    model: z.enum(ANTHROPIC_MODELS).default(ANTHROPIC_MODELS[0]),
+    model: anthropicModelSchema.default(ANTHROPIC_MODELS[0]),
   })
   .strict();
+
+const glmAiSchema = z
+  .object({
+    provider: z.literal("glm"),
+    apiKey: z
+      .string()
+      .default(
+        () =>
+          process.env.ZHIPU_API_KEY ||
+          process.env[getShortestEnvName("GLM_API_KEY")] ||
+          "",
+      ),
+    model: glmModelSchema.default("glm-4"),
+    baseURL: z.string().default("https://open.bigmodel.cn/api/paas/v4/"),
+  })
+  .strict();
+
+const aiSchema = z.union([anthropicAiSchema, glmAiSchema]);
+
+// Partial versions for user config (allows optional fields)
+const anthropicAiPartialSchema = anthropicAiSchema.partial();
+const glmAiPartialSchema = glmAiSchema.partial();
+const aiPartialSchema = z.union([anthropicAiPartialSchema, glmAiPartialSchema]);
+
 export type AIConfig = z.infer<typeof aiSchema>;
 
 const cachingSchema = z
@@ -98,13 +126,9 @@ export const configSchema = z
 export const userConfigSchema = configSchema.extend({
   browser: browserSchema.optional(),
   testPattern: testPatternSchema.optional(),
-  ai: aiSchema.strict().partial().optional(),
+  ai: aiPartialSchema.optional(),
   caching: cachingSchema.strict().partial().optional(),
 });
-
-const SHORTEST_ENV_PREFIX = "SHORTEST_";
-
-const getShortestEnvName = (key: string) => `${SHORTEST_ENV_PREFIX}${key}`;
 
 // User-provided config type - allows partial/optional AI settings
 // Used when reading config from shortest.config.ts
