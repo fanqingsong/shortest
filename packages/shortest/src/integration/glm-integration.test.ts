@@ -10,6 +10,7 @@ describe("GLM Integration Tests", () => {
       provider: "glm",
       apiKey: realApiKey!,
       model: "glm-4-flash",
+      baseURL: "https://open.bigmodel.cn/api/paas/v4/",
     };
 
     const provider = createProvider(glmConfig);
@@ -22,6 +23,7 @@ describe("GLM Integration Tests", () => {
       provider: "glm",
       apiKey: "invalid-key",
       model: "glm-4-flash",
+      baseURL: "https://open.bigmodel.cn/api/paas/v4/",
     };
 
     expect(() => createProvider(glmConfig)).not.toThrow();

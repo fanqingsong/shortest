@@ -80,8 +80,13 @@ const glmAiSchema = z
 const aiSchema = z.discriminatedUnion("provider", [anthropicAiSchema, glmAiSchema]);
 
 // Partial versions for user config (allows optional fields)
-const anthropicAiPartialSchema = anthropicAiSchema.partial();
-const glmAiPartialSchema = glmAiSchema.partial();
+// Note: provider must remain required for discriminated union to work
+const anthropicAiPartialSchema = anthropicAiSchema
+  .partial()
+  .required({ provider: true });
+const glmAiPartialSchema = glmAiSchema
+  .partial()
+  .required({ provider: true });
 const aiPartialSchema = z.discriminatedUnion("provider", [anthropicAiPartialSchema, glmAiPartialSchema]);
 
 export type AIConfig = z.infer<typeof aiSchema>;

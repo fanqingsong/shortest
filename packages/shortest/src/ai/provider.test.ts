@@ -51,6 +51,7 @@ describe("createProvider", () => {
         provider: "glm",
         apiKey: "test-api-key",
         model: "glm-4",
+        baseURL: "https://open.bigmodel.cn/api/paas/v4/",
       };
 
       const provider = createProvider(glmConfig);
@@ -66,6 +67,7 @@ describe("createProvider", () => {
           provider: "glm",
           apiKey: "test-api-key",
           model,
+          baseURL: "https://open.bigmodel.cn/api/paas/v4/",
         };
 
         const provider = createProvider(glmConfig);

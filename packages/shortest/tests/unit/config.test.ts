@@ -101,7 +101,7 @@ describe("Config parsing", () => {
           ...baseConfig.ai,
           invalidAIOption: "value",
         },
-      };
+      } as any;
       expect(() => parseConfig(userConfig)).toThrowError(
         "Unrecognized key(s) in object: 'invalidAIOption'",
       );
@@ -117,7 +117,7 @@ describe("Config parsing", () => {
             ...baseConfig.ai,
             apiKey: undefined,
           },
-        };
+        } as any;
         expect(() => parseConfig(userConfig)).toThrowError(
           /Invalid shortest\.config\n(?:\u001b\[\d+m)?ai\.apiKey(?:\u001b\[\d+m)?: Required \(received: "undefined"\)/,
         );
@@ -137,7 +137,7 @@ describe("Config parsing", () => {
               ...baseConfig.ai,
               apiKey: undefined,
             },
-          };
+          } as any;
           const config = parseConfig(userConfig);
           expect(config.ai).toEqual({
             apiKey: "env-api-key",
@@ -159,7 +159,7 @@ describe("Config parsing", () => {
               ...baseConfig.ai,
               apiKey: undefined,
             },
-          };
+          } as any;
           const config = parseConfig(userConfig);
           expect(config.ai).toEqual({
             apiKey: "shortest-env-api-key",
@@ -204,7 +204,7 @@ describe("Config parsing", () => {
           },
         };
         expect(() => parseConfig(userConfig)).toThrowError(
-          /Invalid shortest\.config\n(?:\u001b\[\d+m)?ai\.provider(?:\u001b\[\d+m)?: Invalid literal value, expected "anthropic" \(received: "unknown"\)/,
+          /Invalid shortest\.config\n(?:\u001b\[\d+m)?ai\.provider(?:\u001b\[\d+m)?: Invalid discriminator value\. Expected 'anthropic' \| 'glm'/,
         );
       });
     });
@@ -214,7 +214,7 @@ describe("Config parsing", () => {
         const userConfig = {
           ...baseConfig,
           ai: { ...baseConfig.ai, model: "invalid-model" as any },
-        };
+        } as any;
         expect(() => parseConfig(userConfig)).toThrowError(
           /Invalid shortest\.config\n(?:\u001b\[\d+m)?ai\.model(?:\u001b\[\d+m)?: Invalid enum value\. Expected 'claude-4-sonnet-20250514' | 'claude-4-sonnet-latest' | 'claude-4-opus-20250514' | 'claude-4-opus-latest' | 'claude-3-5-sonnet-20241022' | 'claude-3-5-sonnet-latest' | 'claude-3-7-sonnet-20250219' | 'claude-3-7-sonnet-latest', received 'invalid-model'(?:\s\(received: "invalid-model"\))?/,
         );
