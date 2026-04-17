@@ -358,7 +358,15 @@ export class AIClient {
    * @private
    */
   private isNonRetryableError(error: any) {
-    return [401, 403, 500].includes(error.status);
+    const status = error.status;
+    const provider = this.configAi.provider;
+
+    if (provider === "glm") {
+      // Zhipu API error codes - 429 for rate limiting
+      return [401, 403, 429, 500].includes(status);
+    }
+
+    return [401, 403, 500].includes(status);
   }
 
   /**
