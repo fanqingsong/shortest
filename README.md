@@ -83,6 +83,31 @@ The GLM API key defaults to `ZHIPU_API_KEY` / `SHORTEST_GLM_API_KEY` environment
 
 Available GLM models: `glm-4-plus`, `glm-4-0520`, `glm-4`, `glm-4-air`, `glm-4-flash`, `glm-3-turbo`.
 
+### Using Azure OpenAI Models
+
+To use Microsoft Azure OpenAI Service's GPT-4 models, configure your provider as follows:
+
+```typescript
+import type { ShortestConfig } from "@antiwork/shortest";
+
+export default {
+  headless: false,
+  baseUrl: "http://localhost:3000",
+  ai: {
+    provider: "azure",
+    model: "gpt-4o",
+    baseURL: "https://your-resource-name.openai.azure.com/openai/deployments/your-deployment-name",
+  },
+} satisfies ShortestConfig;
+```
+
+The Azure OpenAI API key defaults to `AZURE_OPENAI_API_KEY` / `SHORTEST_AZURE_OPENAI_API_KEY` environment variables. Can be overwritten via `ai.config.apiKey`.
+
+Available Azure OpenAI models: `gpt-4o`, `gpt-4o-mini`, `gpt-4-turbo`, `gpt-4`.
+
+> **Note**: The `baseURL` should follow the Azure OpenAI endpoint format:
+> `https://{resource-name}.openai.azure.com/openai/deployments/{deployment-name}`
+
 Optionally, you can configure browser behavior using the `browser.contextOptions` property in your configuration file. This allows you to pass custom [Playwright browser context options](https://playwright.dev/docs/api/class-browser#browser-new-context).
 
 2. Create test files using the pattern specified in the config: `app/login.test.ts`
@@ -258,6 +283,9 @@ ANTHROPIC_API_KEY=your_api_key
 
 # For GLM models (optional)
 ZHIPU_API_KEY=your_glm_api_key
+
+# For Azure OpenAI models (optional)
+AZURE_OPENAI_API_KEY=your_azure_api_key
 
 GITHUB_TOTP_SECRET=your_secret  # Only for GitHub auth tests
 ```

@@ -3,7 +3,7 @@ import { z } from "zod";
 import { BrowserTool } from "@/browser/core/browser-tool";
 import { BashTool } from "@/browser/core/bash-tool";
 import { getLogger, Log } from "@/log";
-import { AnthropicModel, glmModelSchema } from "@/types/config";
+import { AnthropicModel, glmModelSchema, azureOpenAIModelSchema, dashscopeModelSchema, siliconflowModelSchema } from "@/types/config";
 import { ShortestError } from "@/utils/errors";
 
 const TOOL_ENTRY_CATEGORIES = ["provider", "custom"] as const;
@@ -52,6 +52,21 @@ export type GLMModelFamily = "glm-4" | "glm-3";
 
 export type GLMModel = z.infer<typeof glmModelSchema>;
 
+// eslint-disable-next-line zod/require-zod-schema-types
+export type AzureOpenAIModelFamily = "gpt-4o" | "gpt-4-turbo" | "gpt-4";
+
+export type AzureOpenAIModel = z.infer<typeof azureOpenAIModelSchema>;
+
+export type DashScopeModel = z.infer<typeof dashscopeModelSchema>;
+
+// eslint-disable-next-line zod/require-zod-schema-types
+export type DashScopeModelFamily = "qwen";
+
+export type SiliconFlowModel = z.infer<typeof siliconflowModelSchema>;
+
+// eslint-disable-next-line zod/require-zod-schema-types
+export type SiliconFlowModelFamily = "deepseek" | "qwen" | "glm" | "llama" | "other";
+
 const ANTHROPIC_MODEL_TO_FAMILY: Record<AnthropicModel, AnthropicModelFamily> =
   {
     "claude-4-sonnet-20250514": "claude-4",
@@ -71,6 +86,44 @@ const GLM_MODEL_TO_FAMILY: Record<GLMModel, GLMModelFamily> = {
   "glm-4-air": "glm-4",
   "glm-4-flash": "glm-4",
   "glm-3-turbo": "glm-3",
+};
+
+const AZURE_OPENAI_MODEL_TO_FAMILY: Record<AzureOpenAIModel, AzureOpenAIModelFamily> = {
+  "gpt-4o": "gpt-4o",
+  "gpt-4o-mini": "gpt-4o",
+  "gpt-4-turbo": "gpt-4-turbo",
+  "gpt-4": "gpt-4",
+};
+
+const DASHSCOPE_MODEL_TO_FAMILY: Record<DashScopeModel, DashScopeModelFamily> = {
+  "qwen-max": "qwen",
+  "qwen-plus": "qwen",
+  "qwen-turbo": "qwen",
+  "qwen-flash": "qwen",
+  "qwen-long": "qwen",
+  "qwen-max-latest": "qwen",
+  "qwen-plus-latest": "qwen",
+};
+
+const SILICONFLOW_MODEL_TO_FAMILY: Record<SiliconFlowModel, SiliconFlowModelFamily> = {
+  // DeepSeek Series
+  "deepseek-ai/DeepSeek-V3": "deepseek",
+  "deepseek-ai/DeepSeek-R1": "deepseek",
+  "Pro/deepseek-ai/DeepSeek-V3": "deepseek",
+  "Pro/deepseek-ai/DeepSeek-R1": "deepseek",
+  // Qwen Series
+  "Qwen/Qwen2.5-72B-Instruct": "qwen",
+  "Qwen/Qwen2.5-7B-Instruct": "qwen",
+  "Qwen/Qwen2-72B-Instruct": "qwen",
+  "Qwen/Qwen2-7B-Instruct": "qwen",
+  // GLM Series
+  "THUDM/glm-4-9b-chat": "glm",
+  "THUDM/GLM-Z1-9B-0414": "glm",
+  // Other popular models
+  "meta-llama/Llama-3.1-70B-Instruct": "llama",
+  "meta-llama/Llama-3.1-8B-Instruct": "llama",
+  "mistralai/Mistral-7B-Instruct-v0.3": "other",
+  "01-ai/Yi-1.5-34B-Chat": "other",
 };
 
 const ANTHROPIC_TOOL_VERSION_MAP: Record<
@@ -122,7 +175,7 @@ export class ToolRegistry {
    * Retrieves all tools for a specific provider and model
    *
    * @param provider - The provider name
-   * @param model - The Anthropic or GLM model to get tools for
+   * @param model - The Anthropic, GLM, or Azure OpenAI model to get tools for
    * @param browserTool - Browser tool instance
    * @returns Record of tool name to Tool instance
    *
@@ -130,7 +183,7 @@ export class ToolRegistry {
    */
   public getTools(
     provider: string,
-    model: AnthropicModel | GLMModel,
+    model: AnthropicModel | GLMModel | AzureOpenAIModel | DashScopeModel,
     browserTool: BrowserTool,
   ): Record<string, Tool> {
     const selectedTools: Record<string, Tool> = {};
@@ -198,10 +251,112 @@ export class ToolRegistry {
   }
 
   /**
+   * Retrieves all Azure OpenAI-specific tools
+   *
+   * Azure OpenAI uses standard function calling via Azure SDK
+   * Creates tool instances using Azure-specific factory functions
+   *
+   * @param browserTool - Browser tool instance
+   * @returns Record of tool name to Tool instance
+   *
+   * @private
+   */
+  private getAzureTools(browserTool: BrowserTool): Record<string, Tool> {
+    const tools: Record<string, Tool> = {};
+
+    // Azure OpenAI uses standard function calling
+    try {
+      const { createAzureComputer } = require("@/ai/tools/azure/computer");
+      const computerTool = createAzureComputer(browserTool);
+      tools["computer"] = computerTool;
+    } catch (error) {
+      this.log.trace("Computer tool creation failed for Azure, skipping", { error });
+    }
+
+    try {
+      const { createAzureBash } = require("@/ai/tools/azure/bash");
+      const bashTool = createAzureBash();
+      tools["bash"] = bashTool;
+    } catch (error) {
+      this.log.trace("Bash tool creation failed for Azure, skipping", { error });
+    }
+
+    return tools;
+  }
+
+  /**
+   * Retrieves all DashScope-specific tools
+   *
+   * DashScope uses standard function calling via OpenAI SDK
+   * Creates tool instances using DashScope-specific factory functions
+   *
+   * @param browserTool - Browser tool instance
+   * @returns Record of tool name to Tool instance
+   *
+   * @private
+   */
+  private getDashScopeTools(browserTool: BrowserTool): Record<string, Tool> {
+    const tools: Record<string, Tool> = {};
+
+    // DashScope uses standard function calling via OpenAI SDK
+    try {
+      const { createDashScopeComputer } = require("@/ai/tools/dashscope/computer");
+      const computerTool = createDashScopeComputer(browserTool);
+      tools["computer"] = computerTool;
+    } catch (error) {
+      this.log.trace("Computer tool creation failed for DashScope, skipping", { error });
+    }
+
+    try {
+      const { createDashScopeBash } = require("@/ai/tools/dashscope/bash");
+      const bashTool = createDashScopeBash();
+      tools["bash"] = bashTool;
+    } catch (error) {
+      this.log.trace("Bash tool creation failed for DashScope, skipping", { error });
+    }
+
+    return tools;
+  }
+
+  /**
+   * Retrieves all SiliconFlow-specific tools
+   *
+   * SiliconFlow uses standard function calling via OpenAI SDK
+   * Creates tool instances using SiliconFlow-specific factory functions
+   *
+   * @param browserTool - Browser tool instance
+   * @returns Record of tool name to Tool instance
+   *
+   * @private
+   */
+  private getSiliconFlowTools(browserTool: BrowserTool): Record<string, Tool> {
+    const tools: Record<string, Tool> = {};
+
+    // SiliconFlow uses standard function calling via OpenAI SDK
+    try {
+      const { createSiliconFlowComputer } = require("@/ai/tools/siliconflow/computer");
+      const computerTool = createSiliconFlowComputer(browserTool);
+      tools["computer"] = computerTool;
+    } catch (error) {
+      this.log.trace("Computer tool creation failed for SiliconFlow, skipping", { error });
+    }
+
+    try {
+      const { createSiliconFlowBash } = require("@/ai/tools/siliconflow/bash");
+      const bashTool = createSiliconFlowBash();
+      tools["bash"] = bashTool;
+    } catch (error) {
+      this.log.trace("Bash tool creation failed for SiliconFlow, skipping", { error });
+    }
+
+    return tools;
+  }
+
+  /**
    * Retrieves all provider-specific tools
    *
    * @param provider - The provider name
-   * @param model - The Anthropic or GLM model to get tools for
+   * @param model - The Anthropic, GLM, Azure OpenAI, DashScope, or SiliconFlow model to get tools for
    * @param browserTool - Browser tool instance
    * @returns Record of tool name to Tool instance
    *
@@ -209,22 +364,34 @@ export class ToolRegistry {
    */
   private getProviderTools(
     provider: string,
-    model: AnthropicModel | GLMModel,
+    model: AnthropicModel | GLMModel | AzureOpenAIModel | DashScopeModel | SiliconFlowModel,
     browserTool: BrowserTool,
   ): Record<string, Tool> {
     if (provider === "glm") {
       return this.getGLMTools(browserTool);
     }
 
-    // Type narrowing: After the early return for GLM provider above,
-    // we know 'model' must be an AnthropicModel, not a GLMModel.
-    // The type casting below is safe because we've eliminated the GLM case.
+    if (provider === "azure") {
+      return this.getAzureTools(browserTool);
+    }
+
+    if (provider === "dashscope") {
+      return this.getDashScopeTools(browserTool);
+    }
+
+    if (provider === "siliconflow") {
+      return this.getSiliconFlowTools(browserTool);
+    }
+
+    // Type narrowing: After the early return for GLM, Azure, DashScope, and SiliconFlow providers above,
+    // we know 'model' must be an AnthropicModel, not a GLMModel, AzureOpenAIModel, DashScopeModel, or SiliconFlowModel.
+    // The type casting below is safe because we've eliminated the GLM, Azure, DashScope, and SiliconFlow cases.
     const tools: Record<string, Tool> = {};
 
     try {
       const computerToolEntry = this.getProviderToolEntry(
         provider,
-        model as AnthropicModel, // Safe: GLM case already handled
+        model as AnthropicModel, // Safe: GLM, Azure, DashScope, and SiliconFlow cases already handled
         "computer",
       );
       tools[computerToolEntry.name] = computerToolEntry.factory(browserTool);
@@ -236,7 +403,7 @@ export class ToolRegistry {
     try {
       const bashToolEntry = this.getProviderToolEntry(
         provider,
-        model as AnthropicModel, // Safe: GLM case already handled
+        model as AnthropicModel, // Safe: GLM, Azure, DashScope, and SiliconFlow cases already handled
         "bash",
       );
       // @ts-ignore

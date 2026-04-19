@@ -4,7 +4,7 @@ import { z } from "zod";
 import { ToolRegistry } from "./tool-registry";
 import { BrowserTool } from "@/browser/core/browser-tool";
 import { ShortestError } from "@/utils/errors";
-import { GLMModel } from "@/types/config";
+import { GLMModel, AzureOpenAIModel } from "@/types/config";
 
 describe("ToolRegistry", () => {
   let registry: ToolRegistry;
@@ -252,6 +252,34 @@ describe("ToolRegistry - GLM Provider", () => {
 
     models.forEach((model) => {
       const tools = registry.getTools("glm", model, mockBrowserTool);
+      expect(tools).toBeDefined();
+    });
+  });
+});
+
+describe("ToolRegistry - Azure OpenAI Provider", () => {
+  let registry: ToolRegistry;
+  let mockBrowserTool: any;
+
+  beforeEach(() => {
+    registry = new ToolRegistry();
+    mockBrowserTool = {
+      page: {},
+    };
+  });
+
+  it("should return tools for Azure provider", () => {
+    const tools = registry.getTools("azure", "gpt-4o", mockBrowserTool);
+
+    expect(tools).toBeDefined();
+    expect(typeof tools).toBe("object");
+  });
+
+  it("should handle different Azure models", () => {
+    const models: AzureOpenAIModel[] = ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo", "gpt-4"];
+
+    models.forEach((model) => {
+      const tools = registry.getTools("azure", model, mockBrowserTool);
       expect(tools).toBeDefined();
     });
   });

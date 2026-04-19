@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { createProvider } from "./provider";
 import { AIConfig } from "@/types";
-import { GLMModel } from "@/types/config";
+import { GLMModel, AzureOpenAIModel } from "@/types/config";
 
 vi.mock("@ai-sdk/anthropic", () => ({
   createAnthropic: vi.fn(() => (model: string) => ({ model })),
@@ -71,6 +71,51 @@ describe("createProvider", () => {
         };
 
         const provider = createProvider(glmConfig);
+        expect(provider).toBeDefined();
+      });
+    });
+  });
+
+  describe("createProvider - Azure OpenAI", () => {
+    it("should create Azure provider with valid config", () => {
+      const azureConfig: AIConfig = {
+        provider: "azure",
+        apiKey: "test-api-key",
+        model: "gpt-4o",
+        baseURL: "https://my-resource.openai.azure.com/openai/deployments/my-deployment",
+      };
+
+      const provider = createProvider(azureConfig);
+
+      expect(provider).toBeDefined();
+      expect(typeof provider).toBe("object");
+    });
+
+    it("should create provider with custom baseURL", () => {
+      const azureConfig: AIConfig = {
+        provider: "azure",
+        apiKey: "test-api-key",
+        model: "gpt-4o",
+        baseURL: "https://custom-resource.openai.azure.com/openai/deployments/custom-deployment",
+      };
+
+      const provider = createProvider(azureConfig);
+
+      expect(provider).toBeDefined();
+    });
+
+    it("should create provider for different Azure models", () => {
+      const models: AzureOpenAIModel[] = ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo", "gpt-4"];
+
+      models.forEach((model) => {
+        const azureConfig: AIConfig = {
+          provider: "azure",
+          apiKey: "test-api-key",
+          model,
+          baseURL: "https://my-resource.openai.azure.com/openai/deployments/my-deployment",
+        };
+
+        const provider = createProvider(azureConfig);
         expect(provider).toBeDefined();
       });
     });

@@ -210,6 +210,8 @@ export class AIClient {
             maxTokens: 1024,
             tools: this.tools,
             messages: this.conversationHistory,
+            temperature: 0.7,
+            maxRetries: 2,
             onStepFinish: async (result) => {
               // Useful for additional logging
               // this.log.trace("onStepFinish", {
@@ -364,6 +366,24 @@ export class AIClient {
     if (provider === "glm") {
       // Zhipu API error codes - 429 for rate limiting
       return [401, 403, 429, 500].includes(status);
+    }
+
+    if (provider === "azure") {
+      // Azure OpenAI error codes
+      // 400: Bad Request, 401: Unauthorized, 429: Rate Limit
+      return [400, 401, 403, 429, 500].includes(status);
+    }
+
+    if (provider === "dashscope") {
+      // Alibaba DashScope error codes
+      // Similar to OpenAI: 400: Bad Request, 401: Unauthorized, 429: Rate Limit
+      return [400, 401, 403, 429, 500].includes(status);
+    }
+
+    if (provider === "siliconflow") {
+      // SiliconFlow error codes
+      // Similar to OpenAI: 400: Bad Request, 401: Unauthorized, 429: Rate Limit
+      return [400, 401, 403, 429, 500].includes(status);
     }
 
     return [401, 403, 500].includes(status);

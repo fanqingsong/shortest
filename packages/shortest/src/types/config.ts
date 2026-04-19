@@ -39,10 +39,72 @@ export const GLM_MODELS = [
   "glm-4",
   "glm-4-air",
   "glm-4-flash",
+  "glm-4.7-flash",
+  "glm-4.6v-flash",
   "glm-3-turbo",
 ] as const;
 export const glmModelSchema = z.enum(GLM_MODELS);
 export type GLMModel = z.infer<typeof glmModelSchema>;
+
+/**
+ * List of Azure OpenAI GPT-4 models that are supported by the AI client.
+ *
+ * @see https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models
+ */
+export const AZURE_OPENAI_GPT_4_MODELS = [
+  "gpt-4o",
+  "gpt-4o-mini",
+  "gpt-4-turbo",
+  "gpt-4",
+] as const;
+export const azureOpenAIModelSchema = z.enum(AZURE_OPENAI_GPT_4_MODELS);
+export type AzureOpenAIModel = z.infer<typeof azureOpenAIModelSchema>;
+
+/**
+ * List of Alibaba Cloud DashScope Qwen models that are supported by the AI client.
+ *
+ * @see https://help.aliyun.com/zh/model-builder/developer-reference/use-qwen-by-calling-api
+ */
+export const DASHSCOPE_QWEN_MODELS = [
+  "qwen-max",
+  "qwen-plus",
+  "qwen-turbo",
+  "qwen-flash",
+  "qwen-long",
+  "qwen-max-latest",
+  "qwen-plus-latest",
+] as const;
+export const dashscopeModelSchema = z.enum(DASHSCOPE_QWEN_MODELS);
+export type DashScopeModel = z.infer<typeof dashscopeModelSchema>;
+
+/**
+ * List of SiliconFlow models that are supported by the AI client.
+ *
+ * @see https://docs.siliconflow.cn/cn/userguide/quickstart
+ * @see https://siliconflow.cn/models
+ */
+export const SILICONFLOW_MODELS = [
+  // DeepSeek Series
+  "deepseek-ai/DeepSeek-V3",
+  "deepseek-ai/DeepSeek-R1",
+  "Pro/deepseek-ai/DeepSeek-V3",
+  "Pro/deepseek-ai/DeepSeek-R1",
+  // Qwen Series
+  "Qwen/Qwen2.5-72B-Instruct",
+  "Qwen/Qwen2.5-7B-Instruct",
+  "Qwen/Qwen2-72B-Instruct",
+  "Qwen/Qwen2-7B-Instruct",
+  // GLM Series
+  "THUDM/glm-4-9b-chat",
+  "THUDM/GLM-Z1-9B-0414",
+  // Other popular models
+  "meta-llama/Llama-3.1-70B-Instruct",
+  "meta-llama/Llama-3.1-8B-Instruct",
+  "mistralai/Mistral-7B-Instruct-v0.3",
+  "01-ai/Yi-1.5-34B-Chat",
+] as const;
+export const siliconflowModelSchema = z.enum(SILICONFLOW_MODELS);
+export type SiliconFlowModel = z.infer<typeof siliconflowModelSchema>;
 
 const SHORTEST_ENV_PREFIX = "SHORTEST_";
 
@@ -77,7 +139,52 @@ const glmAiSchema = z
   })
   .strict();
 
-const aiSchema = z.discriminatedUnion("provider", [anthropicAiSchema, glmAiSchema]);
+const azureOpenAISchema = z
+  .object({
+    provider: z.literal("azure"),
+    apiKey: z
+      .string()
+      .default(
+        () =>
+          process.env.AZURE_OPENAI_API_KEY ||
+          process.env[getShortestEnvName("AZURE_OPENAI_API_KEY")]!,
+      ),
+    model: azureOpenAIModelSchema.default("gpt-4o"),
+    baseURL: z.string().min(1, "Azure OpenAI baseURL is required"),
+  })
+  .strict();
+
+const dashscopeAiSchema = z
+  .object({
+    provider: z.literal("dashscope"),
+    apiKey: z
+      .string()
+      .default(
+        () =>
+          process.env.DASHSCOPE_API_KEY ||
+          process.env[getShortestEnvName("DASHSCOPE_API_KEY")]!,
+      ),
+    model: dashscopeModelSchema.default("qwen-plus"),
+    baseURL: z.string().default("https://dashscope.aliyuncs.com/compatible-mode/v1"),
+  })
+  .strict();
+
+const siliconflowAiSchema = z
+  .object({
+    provider: z.literal("siliconflow"),
+    apiKey: z
+      .string()
+      .default(
+        () =>
+          process.env.SILICONFLOW_API_KEY ||
+          process.env[getShortestEnvName("SILICONFLOW_API_KEY")]!,
+      ),
+    model: siliconflowModelSchema.default("deepseek-ai/DeepSeek-V3"),
+    baseURL: z.string().default("https://api.siliconflow.cn/v1"),
+  })
+  .strict();
+
+const aiSchema = z.discriminatedUnion("provider", [anthropicAiSchema, glmAiSchema, azureOpenAISchema, dashscopeAiSchema, siliconflowAiSchema]);
 
 // Partial versions for user config (allows optional fields)
 // Note: provider must remain required for discriminated union to work
@@ -87,7 +194,16 @@ const anthropicAiPartialSchema = anthropicAiSchema
 const glmAiPartialSchema = glmAiSchema
   .partial()
   .required({ provider: true });
-const aiPartialSchema = z.discriminatedUnion("provider", [anthropicAiPartialSchema, glmAiPartialSchema]);
+const azureOpenAIPartialSchema = azureOpenAISchema
+  .partial()
+  .required({ provider: true });
+const dashscopeAiPartialSchema = dashscopeAiSchema
+  .partial()
+  .required({ provider: true });
+const siliconflowAiPartialSchema = siliconflowAiSchema
+  .partial()
+  .required({ provider: true });
+const aiPartialSchema = z.discriminatedUnion("provider", [anthropicAiPartialSchema, glmAiPartialSchema, azureOpenAIPartialSchema, dashscopeAiPartialSchema, siliconflowAiPartialSchema]);
 
 export type AIConfig = z.infer<typeof aiSchema>;
 
