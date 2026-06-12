@@ -1,0 +1,3726 @@
+{
+  "inputs": {
+    "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/helpers/util.js": {
+      "bytes": 4055,
+      "imports": [],
+      "format": "esm"
+    },
+    "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/ZodError.js": {
+      "bytes": 4349,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/helpers/util.js",
+          "kind": "import-statement",
+          "original": "./helpers/util.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/locales/en.js": {
+      "bytes": 5602,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/ZodError.js",
+          "kind": "import-statement",
+          "original": "../ZodError.js"
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/helpers/util.js",
+          "kind": "import-statement",
+          "original": "../helpers/util.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/errors.js": {
+      "bytes": 243,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/locales/en.js",
+          "kind": "import-statement",
+          "original": "./locales/en.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/helpers/parseUtil.js": {
+      "bytes": 3601,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/errors.js",
+          "kind": "import-statement",
+          "original": "../errors.js"
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/locales/en.js",
+          "kind": "import-statement",
+          "original": "../locales/en.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/helpers/typeAliases.js": {
+      "bytes": 11,
+      "imports": [],
+      "format": "esm"
+    },
+    "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/helpers/errorUtil.js": {
+      "bytes": 300,
+      "imports": [],
+      "format": "esm"
+    },
+    "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/types.js": {
+      "bytes": 131212,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/ZodError.js",
+          "kind": "import-statement",
+          "original": "./ZodError.js"
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/errors.js",
+          "kind": "import-statement",
+          "original": "./errors.js"
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/helpers/errorUtil.js",
+          "kind": "import-statement",
+          "original": "./helpers/errorUtil.js"
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/helpers/parseUtil.js",
+          "kind": "import-statement",
+          "original": "./helpers/parseUtil.js"
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/helpers/util.js",
+          "kind": "import-statement",
+          "original": "./helpers/util.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/external.js": {
+      "bytes": 205,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/errors.js",
+          "kind": "import-statement",
+          "original": "./errors.js"
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/helpers/parseUtil.js",
+          "kind": "import-statement",
+          "original": "./helpers/parseUtil.js"
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/helpers/typeAliases.js",
+          "kind": "import-statement",
+          "original": "./helpers/typeAliases.js"
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/helpers/util.js",
+          "kind": "import-statement",
+          "original": "./helpers/util.js"
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/types.js",
+          "kind": "import-statement",
+          "original": "./types.js"
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/ZodError.js",
+          "kind": "import-statement",
+          "original": "./ZodError.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js": {
+      "bytes": 105,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/external.js",
+          "kind": "import-statement",
+          "original": "./v3/external.js"
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/external.js",
+          "kind": "import-statement",
+          "original": "./v3/external.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/log/config.ts": {
+      "bytes": 843,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
+          "kind": "import-statement",
+          "original": "zod"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/log/event.ts": {
+      "bytes": 3637,
+      "imports": [
+        {
+          "path": "@/log/config",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/log/group.ts": {
+      "bytes": 2411,
+      "imports": [
+        {
+          "path": "@/log",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/log/event.ts",
+          "kind": "import-statement",
+          "original": "@/log/event"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/utils/errors.ts": {
+      "bytes": 3298,
+      "imports": [
+        {
+          "path": "picocolors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
+          "kind": "import-statement",
+          "original": "zod"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/log/output.ts": {
+      "bytes": 4328,
+      "imports": [
+        {
+          "path": "node:stream",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "picocolors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/log/config.ts",
+          "kind": "import-statement",
+          "original": "@/log/config"
+        },
+        {
+          "path": "@/log/event",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@/log/group",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/log/log.ts": {
+      "bytes": 4422,
+      "imports": [
+        {
+          "path": "node:stream",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "picocolors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
+          "kind": "import-statement",
+          "original": "zod"
+        },
+        {
+          "path": "src/log/config.ts",
+          "kind": "import-statement",
+          "original": "@/log/config"
+        },
+        {
+          "path": "src/log/event.ts",
+          "kind": "import-statement",
+          "original": "@/log/event"
+        },
+        {
+          "path": "src/log/group.ts",
+          "kind": "import-statement",
+          "original": "@/log/group"
+        },
+        {
+          "path": "src/log/output.ts",
+          "kind": "import-statement",
+          "original": "@/log/output"
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/log/index.ts": {
+      "bytes": 1020,
+      "imports": [
+        {
+          "path": "@/log/config",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/log/log.ts",
+          "kind": "import-statement",
+          "original": "@/log/log"
+        },
+        {
+          "path": "src/log/group.ts",
+          "kind": "import-statement",
+          "original": "@/log/group"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/cli/utils/command-builder.ts": {
+      "bytes": 582,
+      "imports": [
+        {
+          "path": "@/log/config",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log/index"
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/core/runner/test-run.ts": {
+      "bytes": 6388,
+      "imports": [
+        {
+          "path": "src/core/runner/test-run-repository.ts",
+          "kind": "import-statement",
+          "original": "./test-run-repository"
+        },
+        {
+          "path": "@/core/runner",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@/core/runner/test-case",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log"
+        },
+        {
+          "path": "@/types/ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@/types/cache",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/core/runner/test-run-repository.ts": {
+      "bytes": 15764,
+      "imports": [
+        {
+          "path": "fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/cache/index.ts",
+          "kind": "import-statement",
+          "original": "@/cache"
+        },
+        {
+          "path": "@/core/runner/test-case",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/core/runner/test-run.ts",
+          "kind": "import-statement",
+          "original": "@/core/runner/test-run"
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log"
+        },
+        {
+          "path": "@/types/cache",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/utils/directory-exists.ts": {
+      "bytes": 230,
+      "imports": [
+        {
+          "path": "fs",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "fs/promises",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/cache/index.ts": {
+      "bytes": 4498,
+      "imports": [
+        {
+          "path": "fs",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/core/runner/test-run-repository.ts",
+          "kind": "import-statement",
+          "original": "@/core/runner/test-run-repository"
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log"
+        },
+        {
+          "path": "@/types/cache",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/utils/directory-exists.ts",
+          "kind": "import-statement",
+          "original": "@/utils/directory-exists"
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/core/app-analyzer/utils/get-tree-structure.ts": {
+      "bytes": 2749,
+      "imports": [
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "globby",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
+          "kind": "import-statement",
+          "original": "zod"
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/utils/assert.ts": {
+      "bytes": 413,
+      "imports": [
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/utils/get-git-info.ts": {
+      "bytes": 686,
+      "imports": [
+        {
+          "path": "simple-git",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log"
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/core/app-analyzer/next-js-analyzer.ts": {
+      "bytes": 28451,
+      "imports": [
+        {
+          "path": "fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "module",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@babel/parser",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@babel/types",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "./types",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/cache/index.ts",
+          "kind": "import-statement",
+          "original": "@/cache"
+        },
+        {
+          "path": "@/core/app-analyzer",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/core/app-analyzer/utils/get-tree-structure.ts",
+          "kind": "import-statement",
+          "original": "@/core/app-analyzer/utils/get-tree-structure"
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log"
+        },
+        {
+          "path": "src/utils/assert.ts",
+          "kind": "import-statement",
+          "original": "@/utils/assert"
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        },
+        {
+          "path": "src/utils/get-git-info.ts",
+          "kind": "import-statement",
+          "original": "@/utils/get-git-info"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/core/framework-detector/index.ts": {
+      "bytes": 3495,
+      "imports": [
+        {
+          "path": "fs",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@netlify/framework-info",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@netlify/framework-info/lib/types",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/cache/index.ts",
+          "kind": "import-statement",
+          "original": "@/cache"
+        },
+        {
+          "path": "@/core/app-analyzer",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/core/app-analyzer/utils/get-tree-structure.ts",
+          "kind": "import-statement",
+          "original": "@/core/app-analyzer/utils/get-tree-structure"
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log"
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        },
+        {
+          "path": "src/utils/get-git-info.ts",
+          "kind": "import-statement",
+          "original": "@/utils/get-git-info"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/core/app-analyzer/index.ts": {
+      "bytes": 3548,
+      "imports": [
+        {
+          "path": "fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/cache/index.ts",
+          "kind": "import-statement",
+          "original": "@/cache"
+        },
+        {
+          "path": "src/core/app-analyzer/next-js-analyzer.ts",
+          "kind": "import-statement",
+          "original": "@/core/app-analyzer/next-js-analyzer"
+        },
+        {
+          "path": "@/core/app-analyzer/types",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/core/framework-detector/index.ts",
+          "kind": "import-statement",
+          "original": "@/core/framework-detector"
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log"
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/cli/commands/analyze.ts": {
+      "bytes": 1417,
+      "imports": [
+        {
+          "path": "commander",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/cli/utils/command-builder.ts",
+          "kind": "import-statement",
+          "original": "@/cli/utils/command-builder"
+        },
+        {
+          "path": "src/core/app-analyzer/index.ts",
+          "kind": "import-statement",
+          "original": "@/core/app-analyzer"
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log"
+        },
+        {
+          "path": "src/log/config.ts",
+          "kind": "import-statement",
+          "original": "@/log/config"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/cli/commands/cache.ts": {
+      "bytes": 1022,
+      "imports": [
+        {
+          "path": "commander",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/cache/index.ts",
+          "kind": "import-statement",
+          "original": "@/cache"
+        },
+        {
+          "path": "src/cli/utils/command-builder.ts",
+          "kind": "import-statement",
+          "original": "@/cli/utils/command-builder"
+        },
+        {
+          "path": "src/log/config.ts",
+          "kind": "import-statement",
+          "original": "@/log/config"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/cli/commands/detect-framework.ts": {
+      "bytes": 970,
+      "imports": [
+        {
+          "path": "commander",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/cli/utils/command-builder.ts",
+          "kind": "import-statement",
+          "original": "@/cli/utils/command-builder"
+        },
+        {
+          "path": "src/core/framework-detector/index.ts",
+          "kind": "import-statement",
+          "original": "@/core/framework-detector"
+        },
+        {
+          "path": "src/log/config.ts",
+          "kind": "import-statement",
+          "original": "@/log/config"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/constants.ts": {
+      "bytes": 101,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/ai/prompts/index.ts": {
+      "bytes": 4426,
+      "imports": [
+        {
+          "path": "os",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/ai/provider.ts": {
+      "bytes": 2130,
+      "imports": [
+        {
+          "path": "@ai-sdk/anthropic",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@ai-sdk/openai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@/types",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/ai/utils/json.ts": {
+      "bytes": 1490,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
+          "kind": "import-statement",
+          "original": "zod"
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/browser/core/api-request.ts": {
+      "bytes": 2355,
+      "imports": [
+        {
+          "path": "@/types/request",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/core/compiler/index.ts": {
+      "bytes": 2858,
+      "imports": [
+        {
+          "path": "fs",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "os",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "esbuild",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/utils/create-hash.ts": {
+      "bytes": 593,
+      "imports": [
+        {
+          "path": "crypto",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/core/runner/test-case.ts": {
+      "bytes": 3390,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
+          "kind": "import-statement",
+          "original": "zod"
+        },
+        {
+          "path": "src/utils/create-hash.ts",
+          "kind": "import-statement",
+          "original": "@/utils/create-hash"
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/types/test.ts": {
+      "bytes": 2600,
+      "imports": [
+        {
+          "path": "@/core/runner/test-run",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/types/globals.ts": {
+      "bytes": 407,
+      "imports": [
+        {
+          "path": "@/core/runner/test-case",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/types/browser.ts": {
+      "bytes": 2571,
+      "imports": [
+        {
+          "path": "@/types/test",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/types/ai.ts": {
+      "bytes": 341,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
+          "kind": "import-statement",
+          "original": "zod"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/types/config.ts": {
+      "bytes": 7960,
+      "imports": [
+        {
+          "path": "playwright",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
+          "kind": "import-statement",
+          "original": "zod"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/types/index.ts": {
+      "bytes": 156,
+      "imports": [
+        {
+          "path": "src/types/test.ts",
+          "kind": "import-statement",
+          "original": "@/types/test"
+        },
+        {
+          "path": "src/types/globals.ts",
+          "kind": "import-statement",
+          "original": "@/types/globals"
+        },
+        {
+          "path": "src/types/browser.ts",
+          "kind": "import-statement",
+          "original": "@/types/browser"
+        },
+        {
+          "path": "src/types/ai.ts",
+          "kind": "import-statement",
+          "original": "@/types/ai"
+        },
+        {
+          "path": "src/types/config.ts",
+          "kind": "import-statement",
+          "original": "@/types/config"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/utils/config.ts": {
+      "bytes": 3514,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
+          "kind": "import-statement",
+          "original": "zod"
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log/index"
+        },
+        {
+          "path": "src/types/index.ts",
+          "kind": "import-statement",
+          "original": "@/types"
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/globals.ts": {
+      "bytes": 98,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/index.ts": {
+      "bytes": 7934,
+      "imports": [
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "dotenv",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "expect",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/browser/core/api-request.ts",
+          "kind": "import-statement",
+          "original": "@/browser/core/api-request"
+        },
+        {
+          "path": "src/constants.ts",
+          "kind": "import-statement",
+          "original": "@/constants"
+        },
+        {
+          "path": "src/core/compiler/index.ts",
+          "kind": "import-statement",
+          "original": "@/core/compiler"
+        },
+        {
+          "path": "src/core/runner/test-case.ts",
+          "kind": "import-statement",
+          "original": "@/core/runner/test-case"
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log"
+        },
+        {
+          "path": "@/types",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/utils/config.ts",
+          "kind": "import-statement",
+          "original": "@/utils/config"
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        },
+        {
+          "path": "src/globals.ts",
+          "kind": "import-statement",
+          "original": "./globals"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/browser/core/bash-tool.ts": {
+      "bytes": 2160,
+      "imports": [
+        {
+          "path": "child_process",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log"
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/ai/tools/anthropic/bash_20241022.ts": {
+      "bytes": 497,
+      "imports": [
+        {
+          "path": "@ai-sdk/anthropic",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/browser/core/bash-tool.ts",
+          "kind": "import-statement",
+          "original": "@/browser/core/bash-tool"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/ai/tools/anthropic/bash_20250124.ts": {
+      "bytes": 497,
+      "imports": [
+        {
+          "path": "@ai-sdk/anthropic",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/browser/core/bash-tool.ts",
+          "kind": "import-statement",
+          "original": "@/browser/core/bash-tool"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/ai/tools/anthropic/computer_20241022.ts": {
+      "bytes": 1779,
+      "imports": [
+        {
+          "path": "@ai-sdk/anthropic",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@/browser/core/browser-tool",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log"
+        },
+        {
+          "path": "src/types/browser.ts",
+          "kind": "import-statement",
+          "original": "@/types/browser"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/ai/tools/anthropic/computer_20250124.ts": {
+      "bytes": 2045,
+      "imports": [
+        {
+          "path": "@ai-sdk/anthropic",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@/browser/core/browser-tool",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log"
+        },
+        {
+          "path": "src/types/browser.ts",
+          "kind": "import-statement",
+          "original": "@/types/browser"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/ai/tools/custom/check_email.ts": {
+      "bytes": 531,
+      "imports": [
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
+          "kind": "import-statement",
+          "original": "zod"
+        },
+        {
+          "path": "@/browser/core/browser-tool",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/ai/tools/custom/github_login.ts": {
+      "bytes": 510,
+      "imports": [
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
+          "kind": "import-statement",
+          "original": "zod"
+        },
+        {
+          "path": "@/browser/core/browser-tool",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/ai/tools/custom/navigate.ts": {
+      "bytes": 512,
+      "imports": [
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
+          "kind": "import-statement",
+          "original": "zod"
+        },
+        {
+          "path": "@/browser/core/browser-tool",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/ai/tools/custom/run_callback.ts": {
+      "bytes": 463,
+      "imports": [
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
+          "kind": "import-statement",
+          "original": "zod"
+        },
+        {
+          "path": "@/browser/core/browser-tool",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/ai/tools/custom/sleep.ts": {
+      "bytes": 496,
+      "imports": [
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
+          "kind": "import-statement",
+          "original": "zod"
+        },
+        {
+          "path": "@/browser/core/browser-tool",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/ai/tools/glm/computer.ts": {
+      "bytes": 2343,
+      "imports": [
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
+          "kind": "import-statement",
+          "original": "zod"
+        },
+        {
+          "path": "@/browser/core/browser-tool",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/types/browser.ts",
+          "kind": "import-statement",
+          "original": "@/types/browser"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/ai/tools/glm/bash.ts": {
+      "bytes": 758,
+      "imports": [
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
+          "kind": "import-statement",
+          "original": "zod"
+        },
+        {
+          "path": "src/browser/core/bash-tool.ts",
+          "kind": "import-statement",
+          "original": "@/browser/core/bash-tool"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/ai/tools/dashscope/computer.ts": {
+      "bytes": 2367,
+      "imports": [
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
+          "kind": "import-statement",
+          "original": "zod"
+        },
+        {
+          "path": "@/browser/core/browser-tool",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/types/browser.ts",
+          "kind": "import-statement",
+          "original": "@/types/browser"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/ai/tools/dashscope/bash.ts": {
+      "bytes": 776,
+      "imports": [
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
+          "kind": "import-statement",
+          "original": "zod"
+        },
+        {
+          "path": "src/browser/core/bash-tool.ts",
+          "kind": "import-statement",
+          "original": "@/browser/core/bash-tool"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/ai/tools/siliconflow/computer.ts": {
+      "bytes": 2375,
+      "imports": [
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
+          "kind": "import-statement",
+          "original": "zod"
+        },
+        {
+          "path": "@/browser/core/browser-tool",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/types/browser.ts",
+          "kind": "import-statement",
+          "original": "@/types/browser"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/ai/tools/siliconflow/bash.ts": {
+      "bytes": 782,
+      "imports": [
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
+          "kind": "import-statement",
+          "original": "zod"
+        },
+        {
+          "path": "src/browser/core/bash-tool.ts",
+          "kind": "import-statement",
+          "original": "@/browser/core/bash-tool"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/tools/tool-registry.ts": {
+      "bytes": 14628,
+      "imports": [
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
+          "kind": "import-statement",
+          "original": "zod"
+        },
+        {
+          "path": "@/browser/core/browser-tool",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@/browser/core/bash-tool",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log"
+        },
+        {
+          "path": "@/types/config",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        },
+        {
+          "path": "src/ai/tools/glm/computer.ts",
+          "kind": "require-call",
+          "original": "@/ai/tools/glm/computer"
+        },
+        {
+          "path": "src/ai/tools/glm/bash.ts",
+          "kind": "require-call",
+          "original": "@/ai/tools/glm/bash"
+        },
+        {
+          "path": "@/ai/tools/azure/computer",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "@/ai/tools/azure/bash",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "src/ai/tools/dashscope/computer.ts",
+          "kind": "require-call",
+          "original": "@/ai/tools/dashscope/computer"
+        },
+        {
+          "path": "src/ai/tools/dashscope/bash.ts",
+          "kind": "require-call",
+          "original": "@/ai/tools/dashscope/bash"
+        },
+        {
+          "path": "src/ai/tools/siliconflow/computer.ts",
+          "kind": "require-call",
+          "original": "@/ai/tools/siliconflow/computer"
+        },
+        {
+          "path": "src/ai/tools/siliconflow/bash.ts",
+          "kind": "require-call",
+          "original": "@/ai/tools/siliconflow/bash"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/tools/index.ts": {
+      "bytes": 2809,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
+          "kind": "import-statement",
+          "original": "zod"
+        },
+        {
+          "path": "src/ai/tools/anthropic/bash_20241022.ts",
+          "kind": "import-statement",
+          "original": "@/ai/tools/anthropic/bash_20241022"
+        },
+        {
+          "path": "src/ai/tools/anthropic/bash_20250124.ts",
+          "kind": "import-statement",
+          "original": "@/ai/tools/anthropic/bash_20250124"
+        },
+        {
+          "path": "src/ai/tools/anthropic/computer_20241022.ts",
+          "kind": "import-statement",
+          "original": "@/ai/tools/anthropic/computer_20241022"
+        },
+        {
+          "path": "src/ai/tools/anthropic/computer_20250124.ts",
+          "kind": "import-statement",
+          "original": "@/ai/tools/anthropic/computer_20250124"
+        },
+        {
+          "path": "src/ai/tools/custom/check_email.ts",
+          "kind": "import-statement",
+          "original": "@/ai/tools/custom/check_email"
+        },
+        {
+          "path": "src/ai/tools/custom/github_login.ts",
+          "kind": "import-statement",
+          "original": "@/ai/tools/custom/github_login"
+        },
+        {
+          "path": "src/ai/tools/custom/navigate.ts",
+          "kind": "import-statement",
+          "original": "@/ai/tools/custom/navigate"
+        },
+        {
+          "path": "src/ai/tools/custom/run_callback.ts",
+          "kind": "import-statement",
+          "original": "@/ai/tools/custom/run_callback"
+        },
+        {
+          "path": "src/ai/tools/custom/sleep.ts",
+          "kind": "import-statement",
+          "original": "@/ai/tools/custom/sleep"
+        },
+        {
+          "path": "src/tools/tool-registry.ts",
+          "kind": "import-statement",
+          "original": "@/tools/tool-registry"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/utils/sleep.ts": {
+      "bytes": 90,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/ai/client.ts": {
+      "bytes": 12580,
+      "imports": [
+        {
+          "path": "@ai-sdk/provider",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/ai/prompts/index.ts",
+          "kind": "import-statement",
+          "original": "@/ai/prompts"
+        },
+        {
+          "path": "src/ai/provider.ts",
+          "kind": "import-statement",
+          "original": "@/ai/provider"
+        },
+        {
+          "path": "src/ai/utils/json.ts",
+          "kind": "import-statement",
+          "original": "@/ai/utils/json"
+        },
+        {
+          "path": "@/browser/core/browser-tool",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@/core/runner/test-run",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/index.ts",
+          "kind": "import-statement",
+          "original": "@/index"
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log"
+        },
+        {
+          "path": "src/tools/index.ts",
+          "kind": "import-statement",
+          "original": "@/tools/index"
+        },
+        {
+          "path": "src/types/ai.ts",
+          "kind": "import-statement",
+          "original": "@/types/ai"
+        },
+        {
+          "path": "@/types/config",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        },
+        {
+          "path": "src/utils/sleep.ts",
+          "kind": "import-statement",
+          "original": "@/utils/sleep"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/browser/actions/index.ts": {
+      "bytes": 3691,
+      "imports": [
+        {
+          "path": "playwright",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/browser/core/index.ts": {
+      "bytes": 1335,
+      "imports": [
+        {
+          "path": "@/types/browser",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/browser/integrations/github.ts": {
+      "bytes": 4062,
+      "imports": [
+        {
+          "path": "dotenv",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "otplib",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/constants.ts",
+          "kind": "import-statement",
+          "original": "@/constants"
+        },
+        {
+          "path": "@/types/browser",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/browser/integrations/mailosaur.ts": {
+      "bytes": 939,
+      "imports": [
+        {
+          "path": "mailosaur",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/browser/core/browser-tool.ts": {
+      "bytes": 31443,
+      "imports": [
+        {
+          "path": "fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "playwright",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/browser/actions/index.ts",
+          "kind": "import-statement",
+          "original": "@/browser/actions"
+        },
+        {
+          "path": "src/browser/core/index.ts",
+          "kind": "import-statement",
+          "original": "@/browser/core"
+        },
+        {
+          "path": "src/browser/integrations/github.ts",
+          "kind": "import-statement",
+          "original": "@/browser/integrations/github"
+        },
+        {
+          "path": "src/browser/integrations/mailosaur.ts",
+          "kind": "import-statement",
+          "original": "@/browser/integrations/mailosaur"
+        },
+        {
+          "path": "@/browser/manager",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/core/runner/test-run-repository.ts",
+          "kind": "import-statement",
+          "original": "@/core/runner/test-run-repository"
+        },
+        {
+          "path": "src/index.ts",
+          "kind": "import-statement",
+          "original": "@/index"
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log/index"
+        },
+        {
+          "path": "@/types",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/types/browser.ts",
+          "kind": "import-statement",
+          "original": "@/types/browser"
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/.pnpm/package-manager-detector@0.2.9/node_modules/package-manager-detector/dist/commands.mjs": {
+      "bytes": 3746,
+      "imports": [],
+      "format": "esm"
+    },
+    "node_modules/.pnpm/package-manager-detector@0.2.9/node_modules/package-manager-detector/dist/constants.mjs": {
+      "bytes": 691,
+      "imports": [],
+      "format": "esm"
+    },
+    "node_modules/.pnpm/package-manager-detector@0.2.9/node_modules/package-manager-detector/dist/detect.mjs": {
+      "bytes": 3359,
+      "imports": [
+        {
+          "path": "node:fs",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:process",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node_modules/.pnpm/package-manager-detector@0.2.9/node_modules/package-manager-detector/dist/constants.mjs",
+          "kind": "import-statement",
+          "original": "./constants.mjs"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/.pnpm/package-manager-detector@0.2.9/node_modules/package-manager-detector/dist/index.mjs": {
+      "bytes": 293,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/package-manager-detector@0.2.9/node_modules/package-manager-detector/dist/commands.mjs",
+          "kind": "import-statement",
+          "original": "./commands.mjs"
+        },
+        {
+          "path": "node_modules/.pnpm/package-manager-detector@0.2.9/node_modules/package-manager-detector/dist/constants.mjs",
+          "kind": "import-statement",
+          "original": "./constants.mjs"
+        },
+        {
+          "path": "node_modules/.pnpm/package-manager-detector@0.2.9/node_modules/package-manager-detector/dist/detect.mjs",
+          "kind": "import-statement",
+          "original": "./detect.mjs"
+        },
+        {
+          "path": "node:fs",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:process",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/utils/platform.ts": {
+      "bytes": 610,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/package-manager-detector@0.2.9/node_modules/package-manager-detector/dist/index.mjs",
+          "kind": "import-statement",
+          "original": "package-manager-detector"
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/browser/manager/index.ts": {
+      "bytes": 3603,
+      "imports": [
+        {
+          "path": "child_process",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "url",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "picocolors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "playwright",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log/index"
+        },
+        {
+          "path": "@/types/config",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        },
+        {
+          "path": "src/utils/platform.ts",
+          "kind": "import-statement",
+          "original": "@/utils/platform"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/core/runner/test-file-parser.ts": {
+      "bytes": 4881,
+      "imports": [
+        {
+          "path": "fs",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "module",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@babel/parser",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@babel/types",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
+          "kind": "import-statement",
+          "original": "zod"
+        },
+        {
+          "path": "src/cli/commands/shortest.ts",
+          "kind": "import-statement",
+          "original": "@/cli/commands/shortest"
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/core/runner/test-reporter.ts": {
+      "bytes": 5989,
+      "imports": [
+        {
+          "path": "picocolors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@/core/runner/index",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@/core/runner/test-case",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@/core/runner/test-run",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log/index"
+        },
+        {
+          "path": "@/types/test",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/core/runner/index.ts": {
+      "bytes": 16784,
+      "imports": [
+        {
+          "path": "url",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "glob",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "playwright",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "playwright",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
+          "kind": "import-statement",
+          "original": "zod"
+        },
+        {
+          "path": "src/ai/client.ts",
+          "kind": "import-statement",
+          "original": "@/ai/client"
+        },
+        {
+          "path": "src/browser/core/browser-tool.ts",
+          "kind": "import-statement",
+          "original": "@/browser/core/browser-tool"
+        },
+        {
+          "path": "src/browser/manager/index.ts",
+          "kind": "import-statement",
+          "original": "@/browser/manager"
+        },
+        {
+          "path": "src/core/compiler/index.ts",
+          "kind": "import-statement",
+          "original": "@/core/compiler"
+        },
+        {
+          "path": "@/core/runner/test-case",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/core/runner/test-file-parser.ts",
+          "kind": "import-statement",
+          "original": "@/core/runner/test-file-parser"
+        },
+        {
+          "path": "src/core/runner/test-reporter.ts",
+          "kind": "import-statement",
+          "original": "@/core/runner/test-reporter"
+        },
+        {
+          "path": "src/core/runner/test-run.ts",
+          "kind": "import-statement",
+          "original": "@/core/runner/test-run"
+        },
+        {
+          "path": "src/core/runner/test-run-repository.ts",
+          "kind": "import-statement",
+          "original": "@/core/runner/test-run-repository"
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log"
+        },
+        {
+          "path": "src/types/index.ts",
+          "kind": "import-statement",
+          "original": "@/types"
+        },
+        {
+          "path": "src/utils/assert.ts",
+          "kind": "import-statement",
+          "original": "@/utils/assert"
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    },
+    "package.json": {
+      "bytes": 3437,
+      "imports": []
+    },
+    "src/cli/commands/shortest.ts": {
+      "bytes": 3472,
+      "imports": [
+        {
+          "path": "commander",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "picocolors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/cache/index.ts",
+          "kind": "import-statement",
+          "original": "@/cache"
+        },
+        {
+          "path": "src/cli/utils/command-builder.ts",
+          "kind": "import-statement",
+          "original": "@/cli/utils/command-builder"
+        },
+        {
+          "path": "src/constants.ts",
+          "kind": "import-statement",
+          "original": "@/constants"
+        },
+        {
+          "path": "src/core/runner/index.ts",
+          "kind": "import-statement",
+          "original": "@/core/runner"
+        },
+        {
+          "path": "src/index.ts",
+          "kind": "import-statement",
+          "original": "@/index"
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log"
+        },
+        {
+          "path": "src/log/config.ts",
+          "kind": "import-statement",
+          "original": "@/log/config"
+        },
+        {
+          "path": "src/types/config.ts",
+          "kind": "import-statement",
+          "original": "@/types/config"
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        },
+        {
+          "path": "package.json",
+          "kind": "require-call",
+          "original": "../../../package.json"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/core/test-generator/utils/format-code.ts": {
+      "bytes": 2568,
+      "imports": [
+        {
+          "path": "fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "module",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log"
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/core/test-generator/utils/lint-code.ts": {
+      "bytes": 1592,
+      "imports": [
+        {
+          "path": "module",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log"
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/core/test-planner/system-prompt.ts": {
+      "bytes": 2069,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/core/test-planner/index.ts": {
+      "bytes": 4052,
+      "imports": [
+        {
+          "path": "fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
+          "kind": "import-statement",
+          "original": "zod"
+        },
+        {
+          "path": "src/core/test-planner/system-prompt.ts",
+          "kind": "import-statement",
+          "original": "./system-prompt"
+        },
+        {
+          "path": "src/ai/provider.ts",
+          "kind": "import-statement",
+          "original": "@/ai/provider"
+        },
+        {
+          "path": "src/cache/index.ts",
+          "kind": "import-statement",
+          "original": "@/cache"
+        },
+        {
+          "path": "src/core/app-analyzer/index.ts",
+          "kind": "import-statement",
+          "original": "@/core/app-analyzer"
+        },
+        {
+          "path": "src/index.ts",
+          "kind": "import-statement",
+          "original": "@/index"
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log"
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        },
+        {
+          "path": "src/utils/get-git-info.ts",
+          "kind": "import-statement",
+          "original": "@/utils/get-git-info"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/core/test-generator/index.ts": {
+      "bytes": 5068,
+      "imports": [
+        {
+          "path": "fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "module",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@babel/types",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/cache/index.ts",
+          "kind": "import-statement",
+          "original": "@/cache"
+        },
+        {
+          "path": "src/cli/commands/shortest.ts",
+          "kind": "import-statement",
+          "original": "@/cli/commands/shortest"
+        },
+        {
+          "path": "@/core/app-analyzer",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/core/test-generator/utils/format-code.ts",
+          "kind": "import-statement",
+          "original": "@/core/test-generator/utils/format-code"
+        },
+        {
+          "path": "src/core/test-generator/utils/lint-code.ts",
+          "kind": "import-statement",
+          "original": "@/core/test-generator/utils/lint-code"
+        },
+        {
+          "path": "src/core/test-planner/index.ts",
+          "kind": "import-statement",
+          "original": "@/core/test-planner"
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log"
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/cli/commands/generate.ts": {
+      "bytes": 1309,
+      "imports": [
+        {
+          "path": "commander",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/cli/utils/command-builder.ts",
+          "kind": "import-statement",
+          "original": "@/cli/utils/command-builder"
+        },
+        {
+          "path": "src/core/app-analyzer/index.ts",
+          "kind": "import-statement",
+          "original": "@/core/app-analyzer"
+        },
+        {
+          "path": "src/core/test-generator/index.ts",
+          "kind": "import-statement",
+          "original": "@/core/test-generator"
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log"
+        },
+        {
+          "path": "src/log/config.ts",
+          "kind": "import-statement",
+          "original": "@/log/config"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/cli/commands/github-code.ts": {
+      "bytes": 1737,
+      "imports": [
+        {
+          "path": "commander",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "picocolors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/browser/integrations/github.ts",
+          "kind": "import-statement",
+          "original": "@/browser/integrations/github"
+        },
+        {
+          "path": "src/cli/utils/command-builder.ts",
+          "kind": "import-statement",
+          "original": "@/cli/utils/command-builder"
+        },
+        {
+          "path": "src/constants.ts",
+          "kind": "import-statement",
+          "original": "@/constants"
+        },
+        {
+          "path": "src/log/config.ts",
+          "kind": "import-statement",
+          "original": "@/log/config"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/cli/commands/init/generate-config-file.ts": {
+      "bytes": 1674,
+      "imports": [
+        {
+          "path": "module",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "url",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@babel/types",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/constants.ts",
+          "kind": "import-statement",
+          "original": "@/constants"
+        },
+        {
+          "path": "src/core/test-generator/utils/format-code.ts",
+          "kind": "import-statement",
+          "original": "@/core/test-generator/utils/format-code"
+        },
+        {
+          "path": "src/core/test-generator/utils/lint-code.ts",
+          "kind": "import-statement",
+          "original": "@/core/test-generator/utils/lint-code"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/utils/add-to-gitignore.ts": {
+      "bytes": 1465,
+      "imports": [
+        {
+          "path": "node:fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "os",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/utils/env-file.ts": {
+      "bytes": 2394,
+      "imports": [
+        {
+          "path": "fs",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "os",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/cli/commands/init.ts": {
+      "bytes": 20965,
+      "imports": [
+        {
+          "path": "node:child_process",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:stream",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@inquirer/prompts",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@listr2/prompt-adapter-inquirer",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "commander",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "listr2",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node_modules/.pnpm/package-manager-detector@0.2.9/node_modules/package-manager-detector/dist/index.mjs",
+          "kind": "import-statement",
+          "original": "package-manager-detector"
+        },
+        {
+          "path": "picocolors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/cli/commands/init/generate-config-file.ts",
+          "kind": "import-statement",
+          "original": "./init/generate-config-file"
+        },
+        {
+          "path": "src/cache/index.ts",
+          "kind": "import-statement",
+          "original": "@/cache"
+        },
+        {
+          "path": "src/cli/utils/command-builder.ts",
+          "kind": "import-statement",
+          "original": "@/cli/utils/command-builder"
+        },
+        {
+          "path": "src/constants.ts",
+          "kind": "import-statement",
+          "original": "@/constants"
+        },
+        {
+          "path": "src/core/app-analyzer/index.ts",
+          "kind": "import-statement",
+          "original": "@/core/app-analyzer"
+        },
+        {
+          "path": "src/core/framework-detector/index.ts",
+          "kind": "import-statement",
+          "original": "@/core/framework-detector"
+        },
+        {
+          "path": "src/core/test-generator/index.ts",
+          "kind": "import-statement",
+          "original": "@/core/test-generator"
+        },
+        {
+          "path": "src/core/test-planner/index.ts",
+          "kind": "import-statement",
+          "original": "@/core/test-planner"
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log"
+        },
+        {
+          "path": "src/log/config.ts",
+          "kind": "import-statement",
+          "original": "@/log/config"
+        },
+        {
+          "path": "src/types/config.ts",
+          "kind": "import-statement",
+          "original": "@/types/config"
+        },
+        {
+          "path": "src/utils/add-to-gitignore.ts",
+          "kind": "import-statement",
+          "original": "@/utils/add-to-gitignore"
+        },
+        {
+          "path": "src/utils/assert.ts",
+          "kind": "import-statement",
+          "original": "@/utils/assert"
+        },
+        {
+          "path": "src/utils/env-file.ts",
+          "kind": "import-statement",
+          "original": "@/utils/env-file"
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/cli/commands/plan.ts": {
+      "bytes": 1315,
+      "imports": [
+        {
+          "path": "commander",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/cli/utils/command-builder.ts",
+          "kind": "import-statement",
+          "original": "@/cli/utils/command-builder"
+        },
+        {
+          "path": "src/core/app-analyzer/index.ts",
+          "kind": "import-statement",
+          "original": "@/core/app-analyzer"
+        },
+        {
+          "path": "src/core/test-planner/index.ts",
+          "kind": "import-statement",
+          "original": "@/core/test-planner"
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log"
+        },
+        {
+          "path": "src/log/config.ts",
+          "kind": "import-statement",
+          "original": "@/log/config"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/cli/commands/index.ts": {
+      "bytes": 662,
+      "imports": [
+        {
+          "path": "src/cli/commands/analyze.ts",
+          "kind": "import-statement",
+          "original": "@/cli/commands/analyze"
+        },
+        {
+          "path": "src/cli/commands/cache.ts",
+          "kind": "import-statement",
+          "original": "@/cli/commands/cache"
+        },
+        {
+          "path": "src/cli/commands/detect-framework.ts",
+          "kind": "import-statement",
+          "original": "@/cli/commands/detect-framework"
+        },
+        {
+          "path": "src/cli/commands/generate.ts",
+          "kind": "import-statement",
+          "original": "@/cli/commands/generate"
+        },
+        {
+          "path": "src/cli/commands/github-code.ts",
+          "kind": "import-statement",
+          "original": "@/cli/commands/github-code"
+        },
+        {
+          "path": "src/cli/commands/init.ts",
+          "kind": "import-statement",
+          "original": "@/cli/commands/init"
+        },
+        {
+          "path": "src/cli/commands/plan.ts",
+          "kind": "import-statement",
+          "original": "@/cli/commands/plan"
+        },
+        {
+          "path": "src/cli/commands/shortest.ts",
+          "kind": "import-statement",
+          "original": "@/cli/commands/shortest"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/cli/bin.ts": {
+      "bytes": 1883,
+      "imports": [
+        {
+          "path": "picocolors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/cli/commands/index.ts",
+          "kind": "import-statement",
+          "original": "@/cli/commands"
+        },
+        {
+          "path": "src/log/index.ts",
+          "kind": "import-statement",
+          "original": "@/log/index"
+        },
+        {
+          "path": "src/utils/errors.ts",
+          "kind": "import-statement",
+          "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "dist/cli/bin.js": {
+      "imports": [
+        {
+          "path": "picocolors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "picocolors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "picocolors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "child_process",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "picocolors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "commander",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "fs",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "fs",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "module",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@babel/parser",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@babel/types",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "globby",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "simple-git",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "fs",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@netlify/framework-info",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "commander",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "commander",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "commander",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "module",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@babel/types",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "commander",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "picocolors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "url",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "glob",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "playwright",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "playwright",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "os",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@ai-sdk/anthropic",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@ai-sdk/openai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "dotenv",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "expect",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "fs",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "os",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "esbuild",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "crypto",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@ai-sdk/anthropic",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@ai-sdk/anthropic",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@ai-sdk/anthropic",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@ai-sdk/anthropic",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@/ai/tools/azure/computer",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "@/ai/tools/azure/bash",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "dotenv",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "otplib",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "mailosaur",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "child_process",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "url",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "picocolors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "playwright",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:fs",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:process",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "fs",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "module",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@babel/parser",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@babel/types",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "picocolors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "module",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "module",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "commander",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "picocolors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:child_process",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:stream",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@inquirer/prompts",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@listr2/prompt-adapter-inquirer",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "commander",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "listr2",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "picocolors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "module",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "url",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@babel/types",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "os",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "fs",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "node:fs/promises",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "os",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "commander",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "exports": [],
+      "entryPoint": "src/cli/bin.ts",
+      "inputs": {
+        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/helpers/util.js": {
+          "bytesInOutput": 4056
+        },
+        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/ZodError.js": {
+          "bytesInOutput": 3767
+        },
+        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/locales/en.js": {
+          "bytesInOutput": 5366
+        },
+        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/errors.js": {
+          "bytesInOutput": 285
+        },
+        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/helpers/parseUtil.js": {
+          "bytesInOutput": 3591
+        },
+        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/helpers/typeAliases.js": {
+          "bytesInOutput": 121
+        },
+        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/helpers/errorUtil.js": {
+          "bytesInOutput": 398
+        },
+        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/types.js": {
+          "bytesInOutput": 116941
+        },
+        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/external.js": {
+          "bytesInOutput": 3510
+        },
+        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js": {
+          "bytesInOutput": 138
+        },
+        "src/log/config.ts": {
+          "bytesInOutput": 499
+        },
+        "src/log/event.ts": {
+          "bytesInOutput": 3061
+        },
+        "src/log/group.ts": {
+          "bytesInOutput": 1863
+        },
+        "src/utils/errors.ts": {
+          "bytesInOutput": 3247
+        },
+        "src/log/output.ts": {
+          "bytesInOutput": 3663
+        },
+        "src/log/log.ts": {
+          "bytesInOutput": 3248
+        },
+        "src/log/index.ts": {
+          "bytesInOutput": 304
+        },
+        "src/types/browser.ts": {
+          "bytesInOutput": 82
+        },
+        "src/browser/core/bash-tool.ts": {
+          "bytesInOutput": 2077
+        },
+        "src/ai/tools/glm/computer.ts": {
+          "bytesInOutput": 2405
+        },
+        "src/ai/tools/glm/bash.ts": {
+          "bytesInOutput": 765
+        },
+        "src/ai/tools/dashscope/computer.ts": {
+          "bytesInOutput": 2438
+        },
+        "src/ai/tools/dashscope/bash.ts": {
+          "bytesInOutput": 798
+        },
+        "src/ai/tools/siliconflow/computer.ts": {
+          "bytesInOutput": 2450
+        },
+        "src/ai/tools/siliconflow/bash.ts": {
+          "bytesInOutput": 810
+        },
+        "package.json": {
+          "bytesInOutput": 3856
+        },
+        "src/cli/bin.ts": {
+          "bytesInOutput": 1590
+        },
+        "src/cli/commands/analyze.ts": {
+          "bytesInOutput": 1117
+        },
+        "src/cli/utils/command-builder.ts": {
+          "bytesInOutput": 338
+        },
+        "src/core/app-analyzer/index.ts": {
+          "bytesInOutput": 2728
+        },
+        "src/cache/index.ts": {
+          "bytesInOutput": 3435
+        },
+        "src/core/runner/test-run-repository.ts": {
+          "bytesInOutput": 13042
+        },
+        "src/core/runner/test-run.ts": {
+          "bytesInOutput": 4694
+        },
+        "src/utils/directory-exists.ts": {
+          "bytesInOutput": 218
+        },
+        "src/core/app-analyzer/next-js-analyzer.ts": {
+          "bytesInOutput": 24263
+        },
+        "src/core/app-analyzer/utils/get-tree-structure.ts": {
+          "bytesInOutput": 2501
+        },
+        "src/utils/assert.ts": {
+          "bytesInOutput": 220
+        },
+        "src/utils/get-git-info.ts": {
+          "bytesInOutput": 455
+        },
+        "src/core/framework-detector/index.ts": {
+          "bytesInOutput": 2818
+        },
+        "src/cli/commands/cache.ts": {
+          "bytesInOutput": 694
+        },
+        "src/cli/commands/detect-framework.ts": {
+          "bytesInOutput": 763
+        },
+        "src/cli/commands/generate.ts": {
+          "bytesInOutput": 1003
+        },
+        "src/core/test-generator/index.ts": {
+          "bytesInOutput": 4234
+        },
+        "src/cli/commands/shortest.ts": {
+          "bytesInOutput": 2851
+        },
+        "src/constants.ts": {
+          "bytesInOutput": 83
+        },
+        "src/core/runner/index.ts": {
+          "bytesInOutput": 14021
+        },
+        "src/ai/client.ts": {
+          "bytesInOutput": 9003
+        },
+        "src/ai/prompts/index.ts": {
+          "bytesInOutput": 4416
+        },
+        "src/ai/provider.ts": {
+          "bytesInOutput": 1460
+        },
+        "src/ai/utils/json.ts": {
+          "bytesInOutput": 984
+        },
+        "src/index.ts": {
+          "bytesInOutput": 5952
+        },
+        "src/core/compiler/index.ts": {
+          "bytesInOutput": 2731
+        },
+        "src/core/runner/test-case.ts": {
+          "bytesInOutput": 1509
+        },
+        "src/utils/create-hash.ts": {
+          "bytesInOutput": 261
+        },
+        "src/utils/config.ts": {
+          "bytesInOutput": 2183
+        },
+        "src/types/index.ts": {
+          "bytesInOutput": 16
+        },
+        "src/types/ai.ts": {
+          "bytesInOutput": 229
+        },
+        "src/types/config.ts": {
+          "bytesInOutput": 6010
+        },
+        "src/tools/index.ts": {
+          "bytesInOutput": 1712
+        },
+        "src/ai/tools/anthropic/bash_20241022.ts": {
+          "bytesInOutput": 342
+        },
+        "src/ai/tools/anthropic/bash_20250124.ts": {
+          "bytesInOutput": 357
+        },
+        "src/ai/tools/anthropic/computer_20241022.ts": {
+          "bytesInOutput": 1278
+        },
+        "src/ai/tools/anthropic/computer_20250124.ts": {
+          "bytesInOutput": 1544
+        },
+        "src/ai/tools/custom/check_email.ts": {
+          "bytesInOutput": 461
+        },
+        "src/ai/tools/custom/github_login.ts": {
+          "bytesInOutput": 463
+        },
+        "src/ai/tools/custom/navigate.ts": {
+          "bytesInOutput": 452
+        },
+        "src/ai/tools/custom/run_callback.ts": {
+          "bytesInOutput": 390
+        },
+        "src/ai/tools/custom/sleep.ts": {
+          "bytesInOutput": 434
+        },
+        "src/tools/tool-registry.ts": {
+          "bytesInOutput": 9960
+        },
+        "src/utils/sleep.ts": {
+          "bytesInOutput": 73
+        },
+        "src/browser/core/browser-tool.ts": {
+          "bytesInOutput": 27255
+        },
+        "src/browser/actions/index.ts": {
+          "bytesInOutput": 3106
+        },
+        "src/browser/core/index.ts": {
+          "bytesInOutput": 679
+        },
+        "src/browser/integrations/github.ts": {
+          "bytesInOutput": 3219
+        },
+        "src/browser/integrations/mailosaur.ts": {
+          "bytesInOutput": 778
+        },
+        "src/browser/manager/index.ts": {
+          "bytesInOutput": 2875
+        },
+        "node_modules/.pnpm/package-manager-detector@0.2.9/node_modules/package-manager-detector/dist/commands.mjs": {
+          "bytesInOutput": 3676
+        },
+        "node_modules/.pnpm/package-manager-detector@0.2.9/node_modules/package-manager-detector/dist/index.mjs": {
+          "bytesInOutput": 0
+        },
+        "node_modules/.pnpm/package-manager-detector@0.2.9/node_modules/package-manager-detector/dist/constants.mjs": {
+          "bytesInOutput": 288
+        },
+        "node_modules/.pnpm/package-manager-detector@0.2.9/node_modules/package-manager-detector/dist/detect.mjs": {
+          "bytesInOutput": 2132
+        },
+        "src/utils/platform.ts": {
+          "bytesInOutput": 495
+        },
+        "src/core/runner/test-file-parser.ts": {
+          "bytesInOutput": 4402
+        },
+        "src/core/runner/test-reporter.ts": {
+          "bytesInOutput": 5299
+        },
+        "src/core/test-generator/utils/format-code.ts": {
+          "bytesInOutput": 2346
+        },
+        "src/core/test-generator/utils/lint-code.ts": {
+          "bytesInOutput": 1491
+        },
+        "src/core/test-planner/index.ts": {
+          "bytesInOutput": 3207
+        },
+        "src/core/test-planner/system-prompt.ts": {
+          "bytesInOutput": 2061
+        },
+        "src/cli/commands/github-code.ts": {
+          "bytesInOutput": 1322
+        },
+        "src/cli/commands/init.ts": {
+          "bytesInOutput": 17345
+        },
+        "src/cli/commands/init/generate-config-file.ts": {
+          "bytesInOutput": 1466
+        },
+        "src/utils/add-to-gitignore.ts": {
+          "bytesInOutput": 1230
+        },
+        "src/utils/env-file.ts": {
+          "bytesInOutput": 2086
+        },
+        "src/cli/commands/plan.ts": {
+          "bytesInOutput": 1013
+        }
+      },
+      "bytes": 396614
+    }
+  }
+}
