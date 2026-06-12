@@ -55,6 +55,7 @@
     "simple-git": "^3.27.0"
   },
   "devDependencies": {
+    "@antiwork/shortest": "github:fanqingsong/shortest",
     "@babel/generator": "^7.27.0",
     "@types/babel__generator": "^7.6.8",
     "@types/jest": "^29.5.14",
