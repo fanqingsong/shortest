@@ -19,7 +19,7 @@ import { LogLevel } from "@/log/config";
  * @private
  */
 export class LogEvent {
-  static readonly FILTERED_METADATA_KEYS = ["anthropicKey", "apiKey"];
+  static readonly FILTERED_METADATA_KEYS = ["apiKey"];
   static readonly FILTERED_PLACEHOLDER = "[FILTERED]";
   static readonly TRUNCATED_METADATA_KEYS = ["base64_image", "data"];
   static readonly TRUNCATED_PLACEHOLDER = "[TRUNCATED]";

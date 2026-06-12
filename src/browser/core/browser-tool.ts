@@ -12,6 +12,7 @@ import { join } from "path";
 import { Page } from "playwright";
 import * as actions from "@/browser/actions";
 import { BaseBrowserTool } from "@/browser/core";
+import { AriaSnapshotSession } from "@/browser/snapshot/aria-snapshot-session";
 import { GitHubTool } from "@/browser/integrations/github";
 import { MailosaurTool } from "@/browser/integrations/mailosaur";
 import { BrowserManager } from "@/browser/manager";
@@ -40,6 +41,7 @@ export class BrowserTool extends BaseBrowserTool {
   private readonly MAX_SCREENSHOTS = 10;
   private readonly MAX_AGE_HOURS = 5;
   private mailosaurTool?: MailosaurTool;
+  private ariaSnapshotSession?: AriaSnapshotSession;
   private config!: ShortestConfig;
   private log: Log;
   constructor(
@@ -57,6 +59,7 @@ export class BrowserTool extends BaseBrowserTool {
       this.log.trace("Update active page reference to a newly opened tab");
       await newPage.waitForLoadState("domcontentloaded").catch(() => {});
       this.page = newPage;
+      this.ariaSnapshotSession?.setPage(newPage);
     });
 
     this.initialize();
@@ -347,6 +350,8 @@ export class BrowserTool extends BaseBrowserTool {
 
             // Switch focus
             this.page = newPage;
+            this.ariaSnapshotSession?.setPage(newPage);
+            this.ariaSnapshotSession?.invalidate();
 
             output = `Navigated to ${input.url}`;
             metadata = {
@@ -630,6 +635,10 @@ export class BrowserTool extends BaseBrowserTool {
 
   getPage(): Page {
     return this.page;
+  }
+
+  setAriaSnapshotSession(session: AriaSnapshotSession) {
+    this.ariaSnapshotSession = session;
   }
 
   public async waitForNavigation(options?: { timeout: number }): Promise<void> {

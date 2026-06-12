@@ -2,7 +2,7 @@ import type { ShortestConfig } from "@antiwork/shortest";
 
 export default {
   headless: false,
-  baseUrl: "http://101.132.253.246:5173",
+  baseUrl: "http://localhost:8085",
   testPattern: "**/*.test.ts",
   ai: {
     provider: "glm",

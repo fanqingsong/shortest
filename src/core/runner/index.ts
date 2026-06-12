@@ -10,6 +10,7 @@ import * as playwright from "playwright";
 import { z } from "zod";
 import { AIClient, AIClientResponse } from "@/ai/client";
 import { BrowserTool } from "@/browser/core/browser-tool";
+import { AriaSnapshotSession } from "@/browser/snapshot/aria-snapshot-session";
 import { BrowserManager } from "@/browser/manager";
 import { TestCompiler } from "@/core/compiler";
 import { TestCase } from "@/core/runner/test-case";
@@ -135,46 +136,14 @@ export class TestRunner {
       },
     });
 
-    const initialState = await browserTool.execute({
-      action: "screenshot",
-    });
+    const ariaSnapshotSession = new AriaSnapshotSession(testContext.page);
+    browserTool.setAriaSnapshotSession(ariaSnapshotSession);
 
-    if (this.config.caching.enabled && !skipCache) {
-      try {
-        await this.runCachedTest(testRun, browserTool);
-        if (testCase.afterFn) {
-          try {
-            await testCase.afterFn(testContext);
-          } catch (error) {
-            testRun.markFailed({
-              reason:
-                testRun.status === "failed"
-                  ? `AI: ${testRun.reason}, After: ${
-                      error instanceof Error ? error.message : String(error)
-                    }`
-                  : error instanceof Error
-                    ? error.message
-                    : String(error),
-            });
-          }
-        }
-        return testRun;
-      } catch (error) {
-        if (!(error instanceof CacheError)) throw error;
-        this.log.error(
-          "Cache execution interrupted, falling back to normal execution",
-          getErrorDetails(error),
-        );
-        const page = browserTool.getPage();
-        await page.goto(initialState.metadata?.window_info?.url!);
-        return await this.executeTest(testRun, context, true);
-      }
-    } else {
-      this.log.trace("Skipping cache", {
-        cachingEnabled: this.config.caching.enabled,
-        skipCache,
-      });
-    }
+    // Action cache replays coordinate-based steps and is incompatible with snapshot/ref tools.
+    this.log.trace("Skipping cache", {
+      cachingEnabled: this.config.caching.enabled,
+      skipCache,
+    });
 
     if (testCase.beforeFn) {
       try {
@@ -190,7 +159,9 @@ export class TestRunner {
     let aiResponse: AIClientResponse;
     try {
       this.log.setGroup("🤖");
-      // Build prompt with initial state and screenshot
+      // Build prompt with initial state
+      const pageStateSection = await ariaSnapshotSession.captureFormatted();
+
       const prompt = [
         `Test: "${testCase.name}"`,
         testCase.payload ? `Context: ${JSON.stringify(testCase.payload)}` : "",
@@ -209,13 +180,15 @@ export class TestRunner {
             ]
           : ["\nExpect:", `1. "${testCase.name}" expected to be successful`]),
 
-        "\nCurrent Page State:",
-        `URL: ${initialState.metadata?.window_info?.url || "unknown"}`,
-        `Title: ${initialState.metadata?.window_info?.title || "unknown"}`,
+        pageStateSection,
       ]
         .filter(Boolean)
         .join("\n");
-      const aiClient = new AIClient({ browserTool, testRun });
+      const aiClient = new AIClient({
+        browserTool,
+        testRun,
+        ariaSnapshotSession,
+      });
       aiResponse = await aiClient.runAction(prompt);
     } finally {
       this.log.resetGroup();

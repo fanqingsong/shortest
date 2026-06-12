@@ -6,9 +6,10 @@ import {
   LanguageModelV1,
   NoSuchToolError,
 } from "ai";
-import { SYSTEM_PROMPT } from "@/ai/prompts";
+import { getSystemPrompt } from "@/ai/prompts";
 import { createProvider } from "@/ai/provider";
 import { AIJSONResponse, extractJsonPayload } from "@/ai/utils/json";
+import { AriaSnapshotSession } from "@/browser/snapshot/aria-snapshot-session";
 import { BrowserTool } from "@/browser/core/browser-tool";
 import { TestRun } from "@/core/runner/test-run";
 import { getConfig } from "@/index";
@@ -85,12 +86,15 @@ export class AIClient {
   private toolRegistry: ToolRegistry;
   private _tools: Record<string, Tool> | null = null;
   private configAi: AIConfig;
+  private ariaSnapshotSession: AriaSnapshotSession | null = null;
   constructor({
     browserTool,
     testRun,
+    ariaSnapshotSession,
   }: {
     browserTool: BrowserTool;
     testRun: TestRun;
+    ariaSnapshotSession?: AriaSnapshotSession;
   }) {
     this.log = getLogger();
     this.log.trace("Initializing AIClient");
@@ -100,6 +104,9 @@ export class AIClient {
     this.testRun = testRun;
     this.usage = TokenUsageSchema.parse({});
     this.toolRegistry = createToolRegistry();
+    this.ariaSnapshotSession =
+      ariaSnapshotSession ?? new AriaSnapshotSession(browserTool.getPage());
+    browserTool.setAriaSnapshotSession(this.ariaSnapshotSession);
     this.log.trace(
       "Available tools",
       Object.fromEntries(
@@ -129,6 +136,7 @@ export class AIClient {
       this.configAi.provider,
       this.configAi.model,
       this.browserTool,
+      this.ariaSnapshotSession ?? undefined,
     );
 
     return this._tools;
@@ -205,7 +213,7 @@ export class AIClient {
           });
 
           resp = await generateText({
-            system: SYSTEM_PROMPT,
+            system: getSystemPrompt(this.configAi.provider),
             model: this.client,
             maxTokens: 1024,
             tools: this.tools,
@@ -213,18 +221,8 @@ export class AIClient {
             temperature: 0.7,
             maxRetries: 2,
             onStepFinish: async (result) => {
-              // Useful for additional logging
-              // this.log.trace("onStepFinish", {
-              //   stepType: result.stepType,
-              //   text: result.text,
-              //   toolCalls: result.toolCalls,
-              //   toolResults: result.toolResults,
-              //   finishReason: result.finishReason,
-              //   isContinued: result.isContinued,
-              //   usage: result.usage,
-              // });
               const isMouseMove = (args: any) =>
-                args.action === "mouse_move" && args.coordinate.length;
+                args?.action === "mouse_move" && args?.coordinate?.length;
 
               for (const toolResult of result.toolResults as any[]) {
                 const extras: Record<string, unknown> = {};
@@ -236,14 +234,21 @@ export class AIClient {
                       y,
                     );
                 }
+                const actionName =
+                  toolResult.toolName ??
+                  toolResult.args?.action ??
+                  "unknown";
                 this.testRun.addStep({
                   reasoning: result.text,
                   action: {
-                    name: toolResult.args.action,
-                    input: toolResult.args,
+                    name: actionName,
+                    input: toolResult.args ?? {},
                     type: "tool_use",
                   },
-                  result: toolResult.result.output,
+                  result:
+                    typeof toolResult.result === "string"
+                      ? toolResult.result
+                      : toolResult.result?.output,
                   extras,
                   timestamp: Date.now(),
                 });

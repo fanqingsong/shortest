@@ -1,1 +1,23 @@
-{"devDependencies":{"@antiwork/shortest":"github:fanqingsong/shortest"},"dependencies":{"zod":"^4.4.3"}}
+{
+  "name": "shortest-example-standalone",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare:browsers": "pnpm dlx playwright install chromium",
+    "test": "shortest",
+    "test:local": "shortest local.test.ts",
+    "test:login": "shortest login-verify.test.ts"
+  },
+  "devDependencies": {
+    "@antiwork/shortest": "file:.."
+  },
+  "dependencies": {
+    "zod": "^4.4.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@antiwork/shortest",
+      "esbuild"
+    ]
+  }
+}

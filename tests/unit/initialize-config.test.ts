@@ -7,7 +7,7 @@ describe("initializeConfig", () => {
 
   beforeEach(async () => {
     vi.resetModules();
-    delete process.env.ANTHROPIC_API_KEY;
+    delete process.env.ZHIPU_API_KEY;
     await fs.mkdir(tempDir, { recursive: true });
   });
 
@@ -24,7 +24,7 @@ describe("initializeConfig", () => {
         baseUrl: "https://example.com",
         testPattern: ".*",
         ai: {
-          provider: "anthropic",
+          provider: "glm",
           apiKey: "test-key",
         }
     }
@@ -39,9 +39,10 @@ describe("initializeConfig", () => {
       browser: {},
       testPattern: ".*",
       ai: {
-        provider: "anthropic",
+        provider: "glm",
         apiKey: "test-key",
-        model: "claude-4-sonnet-20250514",
+        model: "glm-4",
+        baseURL: "https://open.bigmodel.cn/api/paas/v4/",
       },
       caching: {
         enabled: true,
@@ -50,6 +51,7 @@ describe("initializeConfig", () => {
   });
 
   test("loads JavaScript config file", async () => {
+    await fs.rm(path.join(tempDir, "shortest.config.ts"), { force: true });
     await fs.writeFile(
       path.join(tempDir, "shortest.config.js"),
       `
@@ -58,9 +60,8 @@ describe("initializeConfig", () => {
         baseUrl: "https://example.com",
         testPattern: ".*",
         ai: {
-          provider: "anthropic",
+          provider: "glm",
           apiKey: "test-key",
-          model: "claude-3-5-sonnet-20241022",
         },
       }
       `,
@@ -74,9 +75,10 @@ describe("initializeConfig", () => {
       browser: {},
       testPattern: ".*",
       ai: {
-        provider: "anthropic",
+        provider: "glm",
         apiKey: "test-key",
-        model: "claude-4-sonnet-20250514",
+        model: "glm-4",
+        baseURL: "https://open.bigmodel.cn/api/paas/v4/",
       },
       caching: {
         enabled: true,
@@ -92,7 +94,10 @@ describe("initializeConfig", () => {
         headless: true,
         baseUrl: "https://example.com",
         testPattern: ".*",
-        anthropicKey: "test-key",
+        ai: {
+          provider: "glm",
+          apiKey: "test-key",
+        }
       }
       `,
     );
@@ -104,7 +109,10 @@ describe("initializeConfig", () => {
         headless: true,
         baseUrl: "https://example.com",
         testPattern: ".*",
-        anthropicKey: "test-key",
+        ai: {
+          provider: "glm",
+          apiKey: "test-key",
+        }
       }
       `,
     );
@@ -136,7 +144,7 @@ describe("initializeConfig", () => {
         baseUrl: "https://example.com",
         testPattern: ".*",
         ai: {
-          provider: "anthropic",
+          provider: "glm",
           apiKey: "test-key",
         }
       }
@@ -159,9 +167,10 @@ describe("initializeConfig", () => {
         browser: {},
         testPattern: "custom-pattern/**/*.test.ts",
         ai: {
-          provider: "anthropic",
+          provider: "glm",
           apiKey: "test-key",
-          model: "claude-4-sonnet-20250514",
+          model: "glm-4",
+          baseURL: "https://open.bigmodel.cn/api/paas/v4/",
         },
         caching: {
           enabled: false,

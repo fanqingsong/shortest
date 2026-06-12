@@ -33,8 +33,8 @@ export const shortestCommand = new Command(SHORTEST_NAME)
 ${pc.bold("Environment setup:")}
   Required in ${ENV_LOCAL_FILENAME}:
     AI authentication
-      SHORTEST_ANTHROPIC_API_KEY                  Anthropic API key for AI test execution
-      ANTHROPIC_API_KEY                           Alternative Anthropic API key (only one is required)
+      ZHIPU_API_KEY                               GLM API key for AI test execution
+      GLM_API_KEY                                 Alternative GLM API key name
 
 ${pc.bold("Documentation:")}
   ${pc.cyan("https://github.com/antiwork/shortest")}

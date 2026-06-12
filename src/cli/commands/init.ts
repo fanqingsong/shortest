@@ -42,7 +42,7 @@ export const initCommand = new Command("init")
 ${pc.bold("The command will:")}
 - Automatically install the @antiwork/shortest package as a dev dependency if it is not already installed
 - Create a default shortest.config.ts file with boilerplate configuration
-- Generate a ${ENV_LOCAL_FILENAME} file (unless present) with placeholders for required environment variables, such as ANTHROPIC_API_KEY
+- Generate a ${ENV_LOCAL_FILENAME} file (unless present) with placeholders for required environment variables, such as ZHIPU_API_KEY
 - Add ${ENV_LOCAL_FILENAME} and ${DOT_SHORTEST_DIR_NAME} to .gitignore
 
 ${pc.bold("Documentation:")}
@@ -64,10 +64,9 @@ initCommand
 
 interface Ctx {
   alreadyInstalled: boolean;
-  anthropicApiKeyExists: boolean;
-  anthropicApiKeyName: string;
-  anthropicApiKeyValueNeeded: boolean;
-  anthropicApiKeyValue: string;
+  glmApiKeyExists: boolean;
+  glmApiKeyName: string;
+  glmApiKeyValue: string;
   envFile: EnvFile;
   generateSampleTestFile: boolean;
   supportedFrameworkInfo: FrameworkInfo | null;
@@ -143,39 +142,40 @@ export const executeInitCommand = async () => {
                         },
                       },
                       {
-                        title: `Adding Anthropic API key`,
+                        title: `Adding GLM API key`,
                         task: async (_, task): Promise<Listr> => {
                           await Promise.resolve();
                           return task.newListr(
                             (parent) => [
                               {
-                                title: "Checking for Anthropic API key",
+                                title: "Checking for GLM API key",
                                 task: async (ctx, _) => {
                                   await Promise.resolve();
-                                  ctx.anthropicApiKeyExists =
-                                    ctx.envFile.keyExists("ANTHROPIC_API_KEY");
+                                  ctx.glmApiKeyExists =
+                                    ctx.envFile.keyExists("ZHIPU_API_KEY") ||
+                                    ctx.envFile.keyExists("GLM_API_KEY");
                                 },
                               },
                               {
-                                title: "Select Anthropic API key name",
+                                title: "Select GLM API key name",
                                 task: async (ctx, task) =>
-                                  (ctx.anthropicApiKeyName = await task
+                                  (ctx.glmApiKeyName = await task
                                     .prompt(ListrInquirerPromptAdapter)
                                     .run(select, {
-                                      message: ctx.anthropicApiKeyExists
-                                        ? "Anthropic API key already exists. Select the name of the key you want to use."
-                                        : "Select the name of the Anthropic API key you want to use.",
+                                      message: ctx.glmApiKeyExists
+                                        ? "GLM API key already exists. Select the name of the key you want to use."
+                                        : "Select the name of the GLM API key you want to use.",
                                       choices: [
                                         {
-                                          name: "ANTHROPIC_API_KEY",
-                                          value: "ANTHROPIC_API_KEY",
-                                          description: ctx.anthropicApiKeyExists
+                                          name: "ZHIPU_API_KEY",
+                                          value: "ZHIPU_API_KEY",
+                                          description: ctx.glmApiKeyExists
                                             ? "Use existing API key"
                                             : "Use the default API key name",
                                         },
                                         {
-                                          name: "SHORTEST_ANTHROPIC_API_KEY",
-                                          value: "SHORTEST_ANTHROPIC_API_KEY",
+                                          name: "GLM_API_KEY",
+                                          value: "GLM_API_KEY",
                                           description:
                                             "Use a dedicated API key for Shortest",
                                         },
@@ -184,29 +184,27 @@ export const executeInitCommand = async () => {
                               },
                               {
                                 title: "Enter API key value",
-                                enabled: (ctx): boolean =>
-                                  !ctx.anthropicApiKeyExists,
+                                enabled: (ctx): boolean => !ctx.glmApiKeyExists,
                                 task: async (ctx, task) =>
-                                  (ctx.anthropicApiKeyValue = await task
+                                  (ctx.glmApiKeyValue = await task
                                     .prompt(ListrInquirerPromptAdapter)
                                     .run(password, {
-                                      message: `Enter value for ${ctx.anthropicApiKeyName}`,
+                                      message: `Enter value for ${ctx.glmApiKeyName}`,
                                       mask: true,
                                     })),
                               },
                               {
                                 title: "Saving API key",
-                                enabled: (ctx): boolean =>
-                                  !!ctx.anthropicApiKeyValue,
+                                enabled: (ctx): boolean => !!ctx.glmApiKeyValue,
                                 task: async (ctx, _) => {
                                   const keyAdded = await ctx.envFile.add({
-                                    key: ctx.anthropicApiKeyName,
-                                    value: ctx.anthropicApiKeyValue,
+                                    key: ctx.glmApiKeyName,
+                                    value: ctx.glmApiKeyValue,
                                   });
                                   if (keyAdded) {
-                                    parent.title = `${ctx.anthropicApiKeyName} added`;
+                                    parent.title = `${ctx.glmApiKeyName} added`;
                                   } else {
-                                    parent.title = `${ctx.anthropicApiKeyName} already exists, skipped`;
+                                    parent.title = `${ctx.glmApiKeyName} already exists, skipped`;
                                   }
                                 },
                               },

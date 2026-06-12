@@ -164,7 +164,7 @@
       "format": "esm"
     },
     "src/log/event.ts": {
-      "bytes": 3637,
+      "bytes": 3621,
       "imports": [
         {
           "path": "@/log/config",
@@ -804,7 +804,7 @@
       "format": "esm"
     },
     "src/ai/prompts/index.ts": {
-      "bytes": 4426,
+      "bytes": 2359,
       "imports": [
         {
           "path": "os",
@@ -815,13 +815,8 @@
       "format": "esm"
     },
     "src/ai/provider.ts": {
-      "bytes": 2130,
+      "bytes": 1643,
       "imports": [
-        {
-          "path": "@ai-sdk/anthropic",
-          "kind": "import-statement",
-          "external": true
-        },
         {
           "path": "@ai-sdk/openai",
           "kind": "import-statement",
@@ -857,6 +852,27 @@
           "path": "src/utils/errors.ts",
           "kind": "import-statement",
           "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/browser/snapshot/format-page-state.ts": {
+      "bytes": 315,
+      "imports": [],
+      "format": "esm"
+    },
+    "src/browser/snapshot/aria-snapshot-session.ts": {
+      "bytes": 3060,
+      "imports": [
+        {
+          "path": "playwright",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/browser/snapshot/format-page-state.ts",
+          "kind": "import-statement",
+          "original": "@/browser/snapshot/format-page-state"
         }
       ],
       "format": "esm"
@@ -980,7 +996,7 @@
       "format": "esm"
     },
     "src/types/config.ts": {
-      "bytes": 8008,
+      "bytes": 6863,
       "imports": [
         {
           "path": "playwright",
@@ -1027,7 +1043,7 @@
       "format": "esm"
     },
     "src/utils/config.ts": {
-      "bytes": 3514,
+      "bytes": 2152,
       "imports": [
         {
           "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
@@ -1119,121 +1135,6 @@
           "path": "src/globals.ts",
           "kind": "import-statement",
           "original": "./globals"
-        }
-      ],
-      "format": "esm"
-    },
-    "src/browser/core/bash-tool.ts": {
-      "bytes": 2160,
-      "imports": [
-        {
-          "path": "child_process",
-          "kind": "import-statement",
-          "external": true
-        },
-        {
-          "path": "src/log/index.ts",
-          "kind": "import-statement",
-          "original": "@/log"
-        },
-        {
-          "path": "src/utils/errors.ts",
-          "kind": "import-statement",
-          "original": "@/utils/errors"
-        }
-      ],
-      "format": "esm"
-    },
-    "src/ai/tools/anthropic/bash_20241022.ts": {
-      "bytes": 497,
-      "imports": [
-        {
-          "path": "@ai-sdk/anthropic",
-          "kind": "import-statement",
-          "external": true
-        },
-        {
-          "path": "src/browser/core/bash-tool.ts",
-          "kind": "import-statement",
-          "original": "@/browser/core/bash-tool"
-        }
-      ],
-      "format": "esm"
-    },
-    "src/ai/tools/anthropic/bash_20250124.ts": {
-      "bytes": 497,
-      "imports": [
-        {
-          "path": "@ai-sdk/anthropic",
-          "kind": "import-statement",
-          "external": true
-        },
-        {
-          "path": "src/browser/core/bash-tool.ts",
-          "kind": "import-statement",
-          "original": "@/browser/core/bash-tool"
-        }
-      ],
-      "format": "esm"
-    },
-    "src/ai/tools/anthropic/computer_20241022.ts": {
-      "bytes": 1779,
-      "imports": [
-        {
-          "path": "@ai-sdk/anthropic",
-          "kind": "import-statement",
-          "external": true
-        },
-        {
-          "path": "ai",
-          "kind": "import-statement",
-          "external": true
-        },
-        {
-          "path": "@/browser/core/browser-tool",
-          "kind": "import-statement",
-          "external": true
-        },
-        {
-          "path": "src/log/index.ts",
-          "kind": "import-statement",
-          "original": "@/log"
-        },
-        {
-          "path": "src/types/browser.ts",
-          "kind": "import-statement",
-          "original": "@/types/browser"
-        }
-      ],
-      "format": "esm"
-    },
-    "src/ai/tools/anthropic/computer_20250124.ts": {
-      "bytes": 2045,
-      "imports": [
-        {
-          "path": "@ai-sdk/anthropic",
-          "kind": "import-statement",
-          "external": true
-        },
-        {
-          "path": "ai",
-          "kind": "import-statement",
-          "external": true
-        },
-        {
-          "path": "@/browser/core/browser-tool",
-          "kind": "import-statement",
-          "external": true
-        },
-        {
-          "path": "src/log/index.ts",
-          "kind": "import-statement",
-          "original": "@/log"
-        },
-        {
-          "path": "src/types/browser.ts",
-          "kind": "import-statement",
-          "original": "@/types/browser"
         }
       ],
       "format": "esm"
@@ -1343,28 +1244,23 @@
       ],
       "format": "esm"
     },
-    "src/ai/tools/glm/computer.ts": {
-      "bytes": 2343,
+    "src/browser/core/bash-tool.ts": {
+      "bytes": 2160,
       "imports": [
         {
-          "path": "ai",
+          "path": "child_process",
           "kind": "import-statement",
           "external": true
         },
         {
-          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
+          "path": "src/log/index.ts",
           "kind": "import-statement",
-          "original": "zod"
+          "original": "@/log"
         },
         {
-          "path": "@/browser/core/browser-tool",
+          "path": "src/utils/errors.ts",
           "kind": "import-statement",
-          "external": true
-        },
-        {
-          "path": "src/types/browser.ts",
-          "kind": "import-statement",
-          "original": "@/types/browser"
+          "original": "@/utils/errors"
         }
       ],
       "format": "esm"
@@ -1390,8 +1286,8 @@
       ],
       "format": "esm"
     },
-    "src/ai/tools/dashscope/computer.ts": {
-      "bytes": 2367,
+    "src/ai/tools/openai-compat/browser.ts": {
+      "bytes": 1674,
       "imports": [
         {
           "path": "ai",
@@ -1404,88 +1300,20 @@
           "original": "zod"
         },
         {
-          "path": "@/browser/core/browser-tool",
+          "path": "@/browser/snapshot/aria-snapshot-session",
           "kind": "import-statement",
           "external": true
         },
         {
-          "path": "src/types/browser.ts",
+          "path": "src/ai/tools/glm/bash.ts",
           "kind": "import-statement",
-          "original": "@/types/browser"
-        }
-      ],
-      "format": "esm"
-    },
-    "src/ai/tools/dashscope/bash.ts": {
-      "bytes": 776,
-      "imports": [
-        {
-          "path": "ai",
-          "kind": "import-statement",
-          "external": true
-        },
-        {
-          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
-          "kind": "import-statement",
-          "original": "zod"
-        },
-        {
-          "path": "src/browser/core/bash-tool.ts",
-          "kind": "import-statement",
-          "original": "@/browser/core/bash-tool"
-        }
-      ],
-      "format": "esm"
-    },
-    "src/ai/tools/siliconflow/computer.ts": {
-      "bytes": 2375,
-      "imports": [
-        {
-          "path": "ai",
-          "kind": "import-statement",
-          "external": true
-        },
-        {
-          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
-          "kind": "import-statement",
-          "original": "zod"
-        },
-        {
-          "path": "@/browser/core/browser-tool",
-          "kind": "import-statement",
-          "external": true
-        },
-        {
-          "path": "src/types/browser.ts",
-          "kind": "import-statement",
-          "original": "@/types/browser"
-        }
-      ],
-      "format": "esm"
-    },
-    "src/ai/tools/siliconflow/bash.ts": {
-      "bytes": 782,
-      "imports": [
-        {
-          "path": "ai",
-          "kind": "import-statement",
-          "external": true
-        },
-        {
-          "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
-          "kind": "import-statement",
-          "original": "zod"
-        },
-        {
-          "path": "src/browser/core/bash-tool.ts",
-          "kind": "import-statement",
-          "original": "@/browser/core/bash-tool"
+          "original": "@/ai/tools/glm/bash"
         }
       ],
       "format": "esm"
     },
     "src/tools/tool-registry.ts": {
-      "bytes": 14628,
+      "bytes": 4108,
       "imports": [
         {
           "path": "ai",
@@ -1498,12 +1326,17 @@
           "original": "zod"
         },
         {
-          "path": "@/browser/core/browser-tool",
+          "path": "src/ai/tools/openai-compat/browser.ts",
+          "kind": "import-statement",
+          "original": "@/ai/tools/openai-compat/browser"
+        },
+        {
+          "path": "@/browser/snapshot/aria-snapshot-session",
           "kind": "import-statement",
           "external": true
         },
         {
-          "path": "@/browser/core/bash-tool",
+          "path": "@/browser/core/browser-tool",
           "kind": "import-statement",
           "external": true
         },
@@ -1521,77 +1354,17 @@
           "path": "src/utils/errors.ts",
           "kind": "import-statement",
           "original": "@/utils/errors"
-        },
-        {
-          "path": "src/ai/tools/glm/computer.ts",
-          "kind": "require-call",
-          "original": "@/ai/tools/glm/computer"
-        },
-        {
-          "path": "src/ai/tools/glm/bash.ts",
-          "kind": "require-call",
-          "original": "@/ai/tools/glm/bash"
-        },
-        {
-          "path": "@/ai/tools/azure/computer",
-          "kind": "require-call",
-          "external": true
-        },
-        {
-          "path": "@/ai/tools/azure/bash",
-          "kind": "require-call",
-          "external": true
-        },
-        {
-          "path": "src/ai/tools/dashscope/computer.ts",
-          "kind": "require-call",
-          "original": "@/ai/tools/dashscope/computer"
-        },
-        {
-          "path": "src/ai/tools/dashscope/bash.ts",
-          "kind": "require-call",
-          "original": "@/ai/tools/dashscope/bash"
-        },
-        {
-          "path": "src/ai/tools/siliconflow/computer.ts",
-          "kind": "require-call",
-          "original": "@/ai/tools/siliconflow/computer"
-        },
-        {
-          "path": "src/ai/tools/siliconflow/bash.ts",
-          "kind": "require-call",
-          "original": "@/ai/tools/siliconflow/bash"
         }
       ],
       "format": "esm"
     },
     "src/tools/index.ts": {
-      "bytes": 2809,
+      "bytes": 1742,
       "imports": [
         {
           "path": "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js",
           "kind": "import-statement",
           "original": "zod"
-        },
-        {
-          "path": "src/ai/tools/anthropic/bash_20241022.ts",
-          "kind": "import-statement",
-          "original": "@/ai/tools/anthropic/bash_20241022"
-        },
-        {
-          "path": "src/ai/tools/anthropic/bash_20250124.ts",
-          "kind": "import-statement",
-          "original": "@/ai/tools/anthropic/bash_20250124"
-        },
-        {
-          "path": "src/ai/tools/anthropic/computer_20241022.ts",
-          "kind": "import-statement",
-          "original": "@/ai/tools/anthropic/computer_20241022"
-        },
-        {
-          "path": "src/ai/tools/anthropic/computer_20250124.ts",
-          "kind": "import-statement",
-          "original": "@/ai/tools/anthropic/computer_20250124"
         },
         {
           "path": "src/ai/tools/custom/check_email.ts",
@@ -1632,7 +1405,7 @@
       "format": "esm"
     },
     "src/ai/client.ts": {
-      "bytes": 12580,
+      "bytes": 12884,
       "imports": [
         {
           "path": "@ai-sdk/provider",
@@ -1658,6 +1431,11 @@
           "path": "src/ai/utils/json.ts",
           "kind": "import-statement",
           "original": "@/ai/utils/json"
+        },
+        {
+          "path": "src/browser/snapshot/aria-snapshot-session.ts",
+          "kind": "import-statement",
+          "original": "@/browser/snapshot/aria-snapshot-session"
         },
         {
           "path": "@/browser/core/browser-tool",
@@ -1787,7 +1565,7 @@
       "format": "esm"
     },
     "src/browser/core/browser-tool.ts": {
-      "bytes": 31443,
+      "bytes": 31836,
       "imports": [
         {
           "path": "fs/promises",
@@ -1813,6 +1591,11 @@
           "path": "src/browser/core/index.ts",
           "kind": "import-statement",
           "original": "@/browser/core"
+        },
+        {
+          "path": "@/browser/snapshot/aria-snapshot-session",
+          "kind": "import-statement",
+          "external": true
         },
         {
           "path": "src/browser/integrations/github.ts",
@@ -2084,7 +1867,7 @@
       "format": "esm"
     },
     "src/core/runner/index.ts": {
-      "bytes": 16784,
+      "bytes": 15856,
       "imports": [
         {
           "path": "url",
@@ -2120,6 +1903,11 @@
           "path": "src/browser/core/browser-tool.ts",
           "kind": "import-statement",
           "original": "@/browser/core/browser-tool"
+        },
+        {
+          "path": "src/browser/snapshot/aria-snapshot-session.ts",
+          "kind": "import-statement",
+          "original": "@/browser/snapshot/aria-snapshot-session"
         },
         {
           "path": "src/browser/manager/index.ts",
@@ -2180,11 +1968,11 @@
       "format": "esm"
     },
     "package.json": {
-      "bytes": 3404,
+      "bytes": 3368,
       "imports": []
     },
     "src/cli/commands/shortest.ts": {
-      "bytes": 3472,
+      "bytes": 3442,
       "imports": [
         {
           "path": "commander",
@@ -2604,7 +2392,7 @@
       "format": "esm"
     },
     "src/cli/commands/init.ts": {
-      "bytes": 20965,
+      "bytes": 20768,
       "imports": [
         {
           "path": "node:child_process",
@@ -2852,57 +2640,22 @@
           "external": true
         },
         {
-          "path": "picocolors",
-          "kind": "import-statement",
-          "external": true
-        },
-        {
-          "path": "picocolors",
-          "kind": "import-statement",
-          "external": true
-        },
-        {
-          "path": "child_process",
-          "kind": "import-statement",
-          "external": true
-        },
-        {
-          "path": "ai",
-          "kind": "import-statement",
-          "external": true
-        },
-        {
-          "path": "ai",
-          "kind": "import-statement",
-          "external": true
-        },
-        {
-          "path": "ai",
-          "kind": "import-statement",
-          "external": true
-        },
-        {
-          "path": "ai",
-          "kind": "import-statement",
-          "external": true
-        },
-        {
-          "path": "ai",
-          "kind": "import-statement",
-          "external": true
-        },
-        {
-          "path": "ai",
-          "kind": "import-statement",
-          "external": true
-        },
-        {
-          "path": "picocolors",
-          "kind": "import-statement",
-          "external": true
-        },
-        {
           "path": "commander",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "picocolors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "picocolors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "picocolors",
           "kind": "import-statement",
           "external": true
         },
@@ -3087,11 +2840,6 @@
           "external": true
         },
         {
-          "path": "@ai-sdk/anthropic",
-          "kind": "import-statement",
-          "external": true
-        },
-        {
           "path": "@ai-sdk/openai",
           "kind": "import-statement",
           "external": true
@@ -3137,22 +2885,7 @@
           "external": true
         },
         {
-          "path": "@ai-sdk/anthropic",
-          "kind": "import-statement",
-          "external": true
-        },
-        {
-          "path": "@ai-sdk/anthropic",
-          "kind": "import-statement",
-          "external": true
-        },
-        {
-          "path": "@ai-sdk/anthropic",
-          "kind": "import-statement",
-          "external": true
-        },
-        {
-          "path": "@ai-sdk/anthropic",
+          "path": "ai",
           "kind": "import-statement",
           "external": true
         },
@@ -3182,13 +2915,13 @@
           "external": true
         },
         {
-          "path": "@/ai/tools/azure/computer",
-          "kind": "require-call",
+          "path": "ai",
+          "kind": "import-statement",
           "external": true
         },
         {
-          "path": "@/ai/tools/azure/bash",
-          "kind": "require-call",
+          "path": "child_process",
+          "kind": "import-statement",
           "external": true
         },
         {
@@ -3440,233 +3173,209 @@
       "exports": [],
       "entryPoint": "src/cli/bin.ts",
       "inputs": {
-        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/helpers/util.js": {
-          "bytesInOutput": 4056
-        },
-        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/ZodError.js": {
-          "bytesInOutput": 3767
-        },
-        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/locales/en.js": {
-          "bytesInOutput": 5366
-        },
-        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/errors.js": {
-          "bytesInOutput": 285
-        },
-        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/helpers/parseUtil.js": {
-          "bytesInOutput": 3591
-        },
-        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/helpers/typeAliases.js": {
-          "bytesInOutput": 121
-        },
-        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/helpers/errorUtil.js": {
-          "bytesInOutput": 398
-        },
-        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/types.js": {
-          "bytesInOutput": 116941
-        },
-        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/external.js": {
-          "bytesInOutput": 3510
-        },
-        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js": {
-          "bytesInOutput": 138
-        },
-        "src/log/config.ts": {
-          "bytesInOutput": 499
-        },
-        "src/log/event.ts": {
-          "bytesInOutput": 3061
-        },
-        "src/log/group.ts": {
-          "bytesInOutput": 1863
-        },
-        "src/utils/errors.ts": {
-          "bytesInOutput": 3247
-        },
-        "src/log/output.ts": {
-          "bytesInOutput": 3663
-        },
-        "src/log/log.ts": {
-          "bytesInOutput": 3248
-        },
-        "src/log/index.ts": {
-          "bytesInOutput": 304
-        },
-        "src/types/browser.ts": {
-          "bytesInOutput": 82
-        },
-        "src/browser/core/bash-tool.ts": {
-          "bytesInOutput": 2077
-        },
-        "src/ai/tools/glm/computer.ts": {
-          "bytesInOutput": 2405
-        },
-        "src/ai/tools/glm/bash.ts": {
-          "bytesInOutput": 765
-        },
-        "src/ai/tools/dashscope/computer.ts": {
-          "bytesInOutput": 2438
-        },
-        "src/ai/tools/dashscope/bash.ts": {
-          "bytesInOutput": 798
-        },
-        "src/ai/tools/siliconflow/computer.ts": {
-          "bytesInOutput": 2450
-        },
-        "src/ai/tools/siliconflow/bash.ts": {
-          "bytesInOutput": 810
-        },
         "package.json": {
-          "bytesInOutput": 3821
+          "bytesInOutput": 3781
         },
         "src/cli/bin.ts": {
-          "bytesInOutput": 1590
+          "bytesInOutput": 1561
         },
         "src/cli/commands/analyze.ts": {
-          "bytesInOutput": 1117
+          "bytesInOutput": 1089
+        },
+        "src/log/log.ts": {
+          "bytesInOutput": 2645
+        },
+        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/external.js": {
+          "bytesInOutput": 3282
+        },
+        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/helpers/util.js": {
+          "bytesInOutput": 3411
+        },
+        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/ZodError.js": {
+          "bytesInOutput": 3148
+        },
+        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/locales/en.js": {
+          "bytesInOutput": 4803
+        },
+        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/errors.js": {
+          "bytesInOutput": 145
+        },
+        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/helpers/parseUtil.js": {
+          "bytesInOutput": 3026
+        },
+        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/helpers/errorUtil.js": {
+          "bytesInOutput": 265
+        },
+        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/types.js": {
+          "bytesInOutput": 102936
+        },
+        "node_modules/.pnpm/zod@3.25.76/node_modules/zod/index.js": {
+          "bytesInOutput": 0
+        },
+        "src/log/config.ts": {
+          "bytesInOutput": 319
+        },
+        "src/log/event.ts": {
+          "bytesInOutput": 2623
+        },
+        "src/log/group.ts": {
+          "bytesInOutput": 1499
+        },
+        "src/log/output.ts": {
+          "bytesInOutput": 3147
+        },
+        "src/utils/errors.ts": {
+          "bytesInOutput": 2632
+        },
+        "src/log/index.ts": {
+          "bytesInOutput": 146
         },
         "src/cli/utils/command-builder.ts": {
-          "bytesInOutput": 338
+          "bytesInOutput": 309
         },
         "src/core/app-analyzer/index.ts": {
-          "bytesInOutput": 2728
+          "bytesInOutput": 2699
         },
         "src/cache/index.ts": {
-          "bytesInOutput": 3435
+          "bytesInOutput": 3406
         },
         "src/core/runner/test-run-repository.ts": {
-          "bytesInOutput": 13042
+          "bytesInOutput": 13013
         },
         "src/core/runner/test-run.ts": {
-          "bytesInOutput": 4694
+          "bytesInOutput": 4665
         },
         "src/utils/directory-exists.ts": {
           "bytesInOutput": 218
         },
         "src/core/app-analyzer/next-js-analyzer.ts": {
-          "bytesInOutput": 24263
+          "bytesInOutput": 24234
         },
         "src/core/app-analyzer/utils/get-tree-structure.ts": {
-          "bytesInOutput": 2501
+          "bytesInOutput": 2476
         },
         "src/utils/assert.ts": {
-          "bytesInOutput": 220
+          "bytesInOutput": 204
         },
         "src/utils/get-git-info.ts": {
-          "bytesInOutput": 455
+          "bytesInOutput": 426
         },
         "src/core/framework-detector/index.ts": {
-          "bytesInOutput": 2818
+          "bytesInOutput": 2789
         },
         "src/cli/commands/cache.ts": {
-          "bytesInOutput": 694
+          "bytesInOutput": 679
         },
         "src/cli/commands/detect-framework.ts": {
-          "bytesInOutput": 763
+          "bytesInOutput": 748
         },
         "src/cli/commands/generate.ts": {
-          "bytesInOutput": 1003
+          "bytesInOutput": 975
         },
         "src/core/test-generator/index.ts": {
-          "bytesInOutput": 4234
+          "bytesInOutput": 4205
         },
         "src/cli/commands/shortest.ts": {
-          "bytesInOutput": 2851
+          "bytesInOutput": 2777
         },
         "src/constants.ts": {
           "bytesInOutput": 83
         },
         "src/core/runner/index.ts": {
-          "bytesInOutput": 14021
+          "bytesInOutput": 13019
         },
         "src/ai/client.ts": {
-          "bytesInOutput": 9003
+          "bytesInOutput": 9417
         },
         "src/ai/prompts/index.ts": {
-          "bytesInOutput": 4416
+          "bytesInOutput": 2323
         },
         "src/ai/provider.ts": {
-          "bytesInOutput": 1460
+          "bytesInOutput": 1257
         },
         "src/ai/utils/json.ts": {
-          "bytesInOutput": 984
+          "bytesInOutput": 956
+        },
+        "src/browser/snapshot/format-page-state.ts": {
+          "bytesInOutput": 195
+        },
+        "src/browser/snapshot/aria-snapshot-session.ts": {
+          "bytesInOutput": 2542
         },
         "src/index.ts": {
-          "bytesInOutput": 5952
+          "bytesInOutput": 5923
         },
         "src/core/compiler/index.ts": {
-          "bytesInOutput": 2731
-        },
-        "src/core/runner/test-case.ts": {
-          "bytesInOutput": 1509
+          "bytesInOutput": 2715
         },
         "src/utils/create-hash.ts": {
           "bytesInOutput": 261
         },
-        "src/utils/config.ts": {
-          "bytesInOutput": 2183
+        "src/core/runner/test-case.ts": {
+          "bytesInOutput": 1481
         },
         "src/types/index.ts": {
-          "bytesInOutput": 16
+          "bytesInOutput": 0
         },
         "src/types/ai.ts": {
-          "bytesInOutput": 229
+          "bytesInOutput": 217
         },
         "src/types/config.ts": {
-          "bytesInOutput": 6058
+          "bytesInOutput": 5228
         },
-        "src/tools/index.ts": {
-          "bytesInOutput": 1712
-        },
-        "src/ai/tools/anthropic/bash_20241022.ts": {
-          "bytesInOutput": 342
-        },
-        "src/ai/tools/anthropic/bash_20250124.ts": {
-          "bytesInOutput": 357
-        },
-        "src/ai/tools/anthropic/computer_20241022.ts": {
-          "bytesInOutput": 1278
-        },
-        "src/ai/tools/anthropic/computer_20250124.ts": {
-          "bytesInOutput": 1544
+        "src/utils/config.ts": {
+          "bytesInOutput": 1147
         },
         "src/ai/tools/custom/check_email.ts": {
-          "bytesInOutput": 461
+          "bytesInOutput": 449
         },
         "src/ai/tools/custom/github_login.ts": {
-          "bytesInOutput": 463
+          "bytesInOutput": 451
         },
         "src/ai/tools/custom/navigate.ts": {
-          "bytesInOutput": 452
+          "bytesInOutput": 440
         },
         "src/ai/tools/custom/run_callback.ts": {
-          "bytesInOutput": 390
+          "bytesInOutput": 378
         },
         "src/ai/tools/custom/sleep.ts": {
-          "bytesInOutput": 434
+          "bytesInOutput": 422
+        },
+        "src/ai/tools/openai-compat/browser.ts": {
+          "bytesInOutput": 1507
+        },
+        "src/ai/tools/glm/bash.ts": {
+          "bytesInOutput": 476
+        },
+        "src/browser/core/bash-tool.ts": {
+          "bytesInOutput": 1717
         },
         "src/tools/tool-registry.ts": {
-          "bytesInOutput": 9960
+          "bytesInOutput": 2438
+        },
+        "src/tools/index.ts": {
+          "bytesInOutput": 970
         },
         "src/utils/sleep.ts": {
           "bytesInOutput": 73
         },
         "src/browser/core/browser-tool.ts": {
-          "bytesInOutput": 27255
+          "bytesInOutput": 27471
         },
         "src/browser/actions/index.ts": {
-          "bytesInOutput": 3106
+          "bytesInOutput": 3090
         },
         "src/browser/core/index.ts": {
-          "bytesInOutput": 679
+          "bytesInOutput": 663
         },
         "src/browser/integrations/github.ts": {
-          "bytesInOutput": 3219
+          "bytesInOutput": 3203
         },
         "src/browser/integrations/mailosaur.ts": {
-          "bytesInOutput": 778
+          "bytesInOutput": 762
         },
         "src/browser/manager/index.ts": {
-          "bytesInOutput": 2875
+          "bytesInOutput": 2846
         },
         "node_modules/.pnpm/package-manager-detector@0.2.9/node_modules/package-manager-detector/dist/commands.mjs": {
           "bytesInOutput": 3676
@@ -3681,31 +3390,31 @@
           "bytesInOutput": 2132
         },
         "src/utils/platform.ts": {
-          "bytesInOutput": 495
+          "bytesInOutput": 479
         },
         "src/core/runner/test-file-parser.ts": {
-          "bytesInOutput": 4402
+          "bytesInOutput": 4377
         },
         "src/core/runner/test-reporter.ts": {
-          "bytesInOutput": 5299
+          "bytesInOutput": 5286
         },
         "src/core/test-generator/utils/format-code.ts": {
-          "bytesInOutput": 2346
+          "bytesInOutput": 2317
         },
         "src/core/test-generator/utils/lint-code.ts": {
-          "bytesInOutput": 1491
+          "bytesInOutput": 1462
         },
         "src/core/test-planner/index.ts": {
-          "bytesInOutput": 3207
+          "bytesInOutput": 3166
         },
         "src/core/test-planner/system-prompt.ts": {
           "bytesInOutput": 2061
         },
         "src/cli/commands/github-code.ts": {
-          "bytesInOutput": 1322
+          "bytesInOutput": 1307
         },
         "src/cli/commands/init.ts": {
-          "bytesInOutput": 17345
+          "bytesInOutput": 17193
         },
         "src/cli/commands/init/generate-config-file.ts": {
           "bytesInOutput": 1466
@@ -3717,10 +3426,10 @@
           "bytesInOutput": 2086
         },
         "src/cli/commands/plan.ts": {
-          "bytesInOutput": 1013
+          "bytesInOutput": 985
         }
       },
-      "bytes": 396627
+      "bytes": 352084
     }
   }
 }

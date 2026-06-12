@@ -20,7 +20,7 @@ cd ../.. && pnpm link --global shortest
 3. Configure environment
 ```bash
 cp .env.example .env.local
-# Add your ANTHROPIC_API_KEY to .env.local
+# Add your ZHIPU_API_KEY to .env.local
 ```
 
 ## Feature implementation process

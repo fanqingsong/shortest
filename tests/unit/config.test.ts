@@ -10,7 +10,7 @@ describe("Config parsing", () => {
     const minimalConfig = {
       baseUrl: "https://example.com",
       ai: {
-        provider: "anthropic",
+        provider: "glm",
         apiKey: "foo",
       },
     } as ShortestConfig;
@@ -31,8 +31,9 @@ describe("Config parsing", () => {
       expect(config.testPattern).toBe("**/*.test.ts");
       expect(config.ai).toEqual({
         apiKey: "foo",
-        model: "claude-4-sonnet-20250514",
-        provider: "anthropic",
+        model: "glm-4",
+        provider: "glm",
+        baseURL: "https://open.bigmodel.cn/api/paas/v4/",
       });
       expect(config.caching).toEqual({
         enabled: true,
@@ -46,7 +47,7 @@ describe("Config parsing", () => {
       baseUrl: "https://example.com",
       testPattern: ".*",
       ai: {
-        provider: "anthropic",
+        provider: "glm",
         apiKey: "explicit-api-key",
       },
     };
@@ -109,8 +110,13 @@ describe("Config parsing", () => {
   });
 
   describe("with config.ai", () => {
-    describe("without ANTHROPIC_API_KEY", () => {
-      test("it throws an error", () => {
+    describe("without ZHIPU_API_KEY", () => {
+      beforeEach(() => {
+        delete process.env.ZHIPU_API_KEY;
+        delete process.env.GLM_API_KEY;
+      });
+
+      test("it throws an error when apiKey is missing", () => {
         const userConfig = {
           ...baseConfig,
           ai: {
@@ -124,13 +130,13 @@ describe("Config parsing", () => {
       });
     });
 
-    describe("with ANTHROPIC_API_KEY", () => {
+    describe("with ZHIPU_API_KEY", () => {
       beforeEach(() => {
-        process.env.ANTHROPIC_API_KEY = "env-api-key";
+        process.env.ZHIPU_API_KEY = "env-api-key";
       });
 
       describe("without ai.apiKey", () => {
-        test("uses value from ANTHROPIC_API_KEY", () => {
+        test("uses value from ZHIPU_API_KEY", () => {
           const userConfig = {
             ...baseConfig,
             ai: {
@@ -141,56 +147,24 @@ describe("Config parsing", () => {
           const config = parseConfig(userConfig);
           expect(config.ai).toEqual({
             apiKey: "env-api-key",
-            provider: "anthropic",
-            model: "claude-4-sonnet-20250514",
-          });
-        });
-      });
-
-      describe("with SHORTEST_ANTHROPIC_API_KEY", () => {
-        beforeEach(() => {
-          process.env.SHORTEST_ANTHROPIC_API_KEY = "shortest-env-api-key";
-        });
-
-        test("uses value from SHORTEST_ANTHROPIC_API_KEY", () => {
-          const userConfig = {
-            ...baseConfig,
-            ai: {
-              ...baseConfig.ai,
-              apiKey: undefined,
-            },
-          } as any;
-          const config = parseConfig(userConfig);
-          expect(config.ai).toEqual({
-            apiKey: "shortest-env-api-key",
-            provider: "anthropic",
-            model: "claude-4-sonnet-20250514",
+            provider: "glm",
+            model: "glm-4",
+            baseURL: "https://open.bigmodel.cn/api/paas/v4/",
           });
         });
       });
 
       describe("with ai.apiKey", () => {
         test("uses the explicit ai.apiKey", () => {
-          process.env.ANTHROPIC_API_KEY = "env-api-key";
+          process.env.ZHIPU_API_KEY = "env-api-key";
           const config = parseConfig(baseConfig);
           expect(config.ai).toEqual({
             apiKey: "explicit-api-key",
-            provider: "anthropic",
-            model: "claude-4-sonnet-20250514",
+            provider: "glm",
+            model: "glm-4",
+            baseURL: "https://open.bigmodel.cn/api/paas/v4/",
           });
         });
-      });
-    });
-
-    describe("with config.anthropicKey set", () => {
-      test("throws ConfigError", () => {
-        const userConfig = {
-          ...baseConfig,
-          anthropicKey: "deprecated-api-key",
-        };
-        expect(() => parseConfig(userConfig)).toThrowError(
-          "'config.anthropicKey' conflicts with 'config.ai.apiKey'. Please remove 'config.anthropicKey'.",
-        );
       });
     });
 
@@ -204,7 +178,7 @@ describe("Config parsing", () => {
           },
         };
         expect(() => parseConfig(userConfig)).toThrowError(
-          /Invalid shortest\.config\n(?:\u001b\[\d+m)?ai\.provider(?:\u001b\[\d+m)?: Invalid discriminator value\. Expected 'anthropic' \| 'glm'/,
+          /Invalid shortest\.config\n(?:\u001b\[\d+m)?ai\.provider(?:\u001b\[\d+m)?: Invalid discriminator value\. Expected 'glm' \| 'azure'/,
         );
       });
     });
@@ -216,48 +190,21 @@ describe("Config parsing", () => {
           ai: { ...baseConfig.ai, model: "invalid-model" as any },
         } as any;
         expect(() => parseConfig(userConfig)).toThrowError(
-          /Invalid shortest\.config\n(?:\u001b\[\d+m)?ai\.model(?:\u001b\[\d+m)?: Invalid enum value\. Expected 'claude-4-sonnet-20250514' | 'claude-4-sonnet-latest' | 'claude-4-opus-20250514' | 'claude-4-opus-latest' | 'claude-3-5-sonnet-20241022' | 'claude-3-5-sonnet-latest' | 'claude-3-7-sonnet-20250219' | 'claude-3-7-sonnet-latest', received 'invalid-model'(?:\s\(received: "invalid-model"\))?/,
+          /Invalid shortest\.config\n(?:\u001b\[\d+m)?ai\.model(?:\u001b\[\d+m)?: Invalid enum value\. Expected 'glm-5.1'/,
         );
       });
     });
   });
 
   describe("without config.ai", () => {
-    describe("without ANTHROPIC_API_KEY", () => {
-      describe("with config.anthropicKey", () => {
-        test("logs deprecation warning and creates config.ai", () => {
-          const mockWarn = vi.fn();
-          vi.spyOn(getLogger(), "warn").mockImplementation(mockWarn);
-
-          const userConfig = {
-            ...baseConfig,
-            anthropicKey: "deprecated-api-key",
-          };
-          delete userConfig.ai;
-          const config = parseConfig(userConfig);
-
-          expect(mockWarn).toHaveBeenCalledWith(
-            "'config.anthropicKey' option is deprecated. Use 'config.ai' structure instead.",
-          );
-          expect(config.ai).toEqual({
-            provider: "anthropic",
-            apiKey: "deprecated-api-key",
-            model: "claude-4-sonnet-20250514",
-          });
-        });
-      });
-
-      describe("without config.anthropicKey", () => {
-        test("throws an error", () => {
-          const userConfig = {
-            ...baseConfig,
-          };
-          delete userConfig.ai;
-          expect(() => parseConfig(userConfig)).toThrowError(
-            /Invalid shortest\.config\n(?:\u001b\[\d+m)?ai(?:\u001b\[\d+m)?: Required \(received: "undefined"\)/,
-          );
-        });
-      });
+    test("throws an error", () => {
+      const userConfig = {
+        ...baseConfig,
+      };
+      delete userConfig.ai;
+      expect(() => parseConfig(userConfig)).toThrowError(
+        /Invalid shortest\.config\n(?:\u001b\[\d+m)?ai(?:\u001b\[\d+m)?: Required \(received: "undefined"\)/,
+      );
     });
   });
 

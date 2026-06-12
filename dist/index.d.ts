@@ -525,20 +525,7 @@ declare const configSchema: z.ZodObject<{
         contextOptions?: BrowserContextOptions | undefined;
     }>>;
     testPattern: z.ZodDefault<z.ZodString>;
-    anthropicKey: z.ZodOptional<z.ZodString>;
     ai: z.ZodDiscriminatedUnion<"provider", [z.ZodObject<{
-        provider: z.ZodLiteral<"anthropic">;
-        apiKey: z.ZodDefault<z.ZodString>;
-        model: z.ZodDefault<z.ZodEnum<["claude-4-sonnet-20250514", "claude-4-sonnet-latest", "claude-4-opus-20250514", "claude-4-opus-latest", "claude-3-5-sonnet-20241022", "claude-3-5-sonnet-latest", "claude-3-7-sonnet-20250219", "claude-3-7-sonnet-latest"]>>;
-    }, "strict", z.ZodTypeAny, {
-        provider: "anthropic";
-        apiKey: string;
-        model: "claude-4-sonnet-20250514" | "claude-4-sonnet-latest" | "claude-4-opus-20250514" | "claude-4-opus-latest" | "claude-3-5-sonnet-20241022" | "claude-3-5-sonnet-latest" | "claude-3-7-sonnet-20250219" | "claude-3-7-sonnet-latest";
-    }, {
-        provider: "anthropic";
-        apiKey?: string | undefined;
-        model?: "claude-4-sonnet-20250514" | "claude-4-sonnet-latest" | "claude-4-opus-20250514" | "claude-4-opus-latest" | "claude-3-5-sonnet-20241022" | "claude-3-5-sonnet-latest" | "claude-3-7-sonnet-20250219" | "claude-3-7-sonnet-latest" | undefined;
-    }>, z.ZodObject<{
         provider: z.ZodLiteral<"glm">;
         apiKey: z.ZodDefault<z.ZodString>;
         model: z.ZodDefault<z.ZodEnum<["glm-5.1", "glm-5.1-plus", "glm-5.1-air", "glm-5.1-flash", "glm-4-plus", "glm-4-0520", "glm-4", "glm-4-air", "glm-4-flash", "glm-4.7", "glm-4.7-plus", "glm-4.7-air", "glm-4.7-flash", "glm-4.6v-flash", "glm-3-turbo"]>>;
@@ -624,10 +611,6 @@ declare const configSchema: z.ZodObject<{
     };
     testPattern: string;
     ai: {
-        provider: "anthropic";
-        apiKey: string;
-        model: "claude-4-sonnet-20250514" | "claude-4-sonnet-latest" | "claude-4-opus-20250514" | "claude-4-opus-latest" | "claude-3-5-sonnet-20241022" | "claude-3-5-sonnet-latest" | "claude-3-7-sonnet-20250219" | "claude-3-7-sonnet-latest";
-    } | {
         provider: "glm";
         apiKey: string;
         model: "glm-5.1" | "glm-5.1-plus" | "glm-5.1-air" | "glm-5.1-flash" | "glm-4-plus" | "glm-4-0520" | "glm-4" | "glm-4-air" | "glm-4-flash" | "glm-4.7" | "glm-4.7-plus" | "glm-4.7-air" | "glm-4.7-flash" | "glm-4.6v-flash" | "glm-3-turbo";
@@ -651,7 +634,6 @@ declare const configSchema: z.ZodObject<{
     caching: {
         enabled: boolean;
     };
-    anthropicKey?: string | undefined;
     mailosaur?: {
         apiKey: string;
         serverId: string;
@@ -659,10 +641,6 @@ declare const configSchema: z.ZodObject<{
 }, {
     baseUrl: string;
     ai: {
-        provider: "anthropic";
-        apiKey?: string | undefined;
-        model?: "claude-4-sonnet-20250514" | "claude-4-sonnet-latest" | "claude-4-opus-20250514" | "claude-4-opus-latest" | "claude-3-5-sonnet-20241022" | "claude-3-5-sonnet-latest" | "claude-3-7-sonnet-20250219" | "claude-3-7-sonnet-latest" | undefined;
-    } | {
         provider: "glm";
         apiKey?: string | undefined;
         model?: "glm-5.1" | "glm-5.1-plus" | "glm-5.1-air" | "glm-5.1-flash" | "glm-4-plus" | "glm-4-0520" | "glm-4" | "glm-4-air" | "glm-4-flash" | "glm-4.7" | "glm-4.7-plus" | "glm-4.7-air" | "glm-4.7-flash" | "glm-4.6v-flash" | "glm-3-turbo" | undefined;
@@ -688,7 +666,6 @@ declare const configSchema: z.ZodObject<{
         contextOptions?: BrowserContextOptions | undefined;
     } | undefined;
     testPattern?: string | undefined;
-    anthropicKey?: string | undefined;
     mailosaur?: {
         apiKey: string;
         serverId: string;
@@ -700,7 +677,6 @@ declare const configSchema: z.ZodObject<{
 declare const userConfigSchema: z.ZodObject<{
     headless: z.ZodDefault<z.ZodBoolean>;
     baseUrl: z.ZodString;
-    anthropicKey: z.ZodOptional<z.ZodString>;
     mailosaur: z.ZodOptional<z.ZodOptional<z.ZodObject<{
         apiKey: z.ZodString;
         serverId: z.ZodString;
@@ -724,18 +700,6 @@ declare const userConfigSchema: z.ZodObject<{
     }>>;
     testPattern: z.ZodOptional<z.ZodDefault<z.ZodString>>;
     ai: z.ZodOptional<z.ZodDiscriminatedUnion<"provider", [z.ZodObject<{
-        provider: z.ZodLiteral<"anthropic">;
-        apiKey: z.ZodOptional<z.ZodDefault<z.ZodString>>;
-        model: z.ZodOptional<z.ZodDefault<z.ZodEnum<["claude-4-sonnet-20250514", "claude-4-sonnet-latest", "claude-4-opus-20250514", "claude-4-opus-latest", "claude-3-5-sonnet-20241022", "claude-3-5-sonnet-latest", "claude-3-7-sonnet-20250219", "claude-3-7-sonnet-latest"]>>>;
-    }, "strict", z.ZodTypeAny, {
-        provider: "anthropic";
-        apiKey?: string | undefined;
-        model?: "claude-4-sonnet-20250514" | "claude-4-sonnet-latest" | "claude-4-opus-20250514" | "claude-4-opus-latest" | "claude-3-5-sonnet-20241022" | "claude-3-5-sonnet-latest" | "claude-3-7-sonnet-20250219" | "claude-3-7-sonnet-latest" | undefined;
-    }, {
-        provider: "anthropic";
-        apiKey?: string | undefined;
-        model?: "claude-4-sonnet-20250514" | "claude-4-sonnet-latest" | "claude-4-opus-20250514" | "claude-4-opus-latest" | "claude-3-5-sonnet-20241022" | "claude-3-5-sonnet-latest" | "claude-3-7-sonnet-20250219" | "claude-3-7-sonnet-latest" | undefined;
-    }>, z.ZodObject<{
         provider: z.ZodLiteral<"glm">;
         apiKey: z.ZodOptional<z.ZodDefault<z.ZodString>>;
         model: z.ZodOptional<z.ZodDefault<z.ZodEnum<["glm-5.1", "glm-5.1-plus", "glm-5.1-air", "glm-5.1-flash", "glm-4-plus", "glm-4-0520", "glm-4", "glm-4-air", "glm-4-flash", "glm-4.7", "glm-4.7-plus", "glm-4.7-air", "glm-4.7-flash", "glm-4.6v-flash", "glm-3-turbo"]>>>;
@@ -810,12 +774,7 @@ declare const userConfigSchema: z.ZodObject<{
         contextOptions?: BrowserContextOptions | undefined;
     } | undefined;
     testPattern?: string | undefined;
-    anthropicKey?: string | undefined;
     ai?: {
-        provider: "anthropic";
-        apiKey?: string | undefined;
-        model?: "claude-4-sonnet-20250514" | "claude-4-sonnet-latest" | "claude-4-opus-20250514" | "claude-4-opus-latest" | "claude-3-5-sonnet-20241022" | "claude-3-5-sonnet-latest" | "claude-3-7-sonnet-20250219" | "claude-3-7-sonnet-latest" | undefined;
-    } | {
         provider: "glm";
         apiKey?: string | undefined;
         model?: "glm-5.1" | "glm-5.1-plus" | "glm-5.1-air" | "glm-5.1-flash" | "glm-4-plus" | "glm-4-0520" | "glm-4" | "glm-4-air" | "glm-4-flash" | "glm-4.7" | "glm-4.7-plus" | "glm-4.7-air" | "glm-4.7-flash" | "glm-4.6v-flash" | "glm-3-turbo" | undefined;
@@ -850,12 +809,7 @@ declare const userConfigSchema: z.ZodObject<{
         contextOptions?: BrowserContextOptions | undefined;
     } | undefined;
     testPattern?: string | undefined;
-    anthropicKey?: string | undefined;
     ai?: {
-        provider: "anthropic";
-        apiKey?: string | undefined;
-        model?: "claude-4-sonnet-20250514" | "claude-4-sonnet-latest" | "claude-4-opus-20250514" | "claude-4-opus-latest" | "claude-3-5-sonnet-20241022" | "claude-3-5-sonnet-latest" | "claude-3-7-sonnet-20250219" | "claude-3-7-sonnet-latest" | undefined;
-    } | {
         provider: "glm";
         apiKey?: string | undefined;
         model?: "glm-5.1" | "glm-5.1-plus" | "glm-5.1-air" | "glm-5.1-flash" | "glm-4-plus" | "glm-4-0520" | "glm-4" | "glm-4-air" | "glm-4-flash" | "glm-4.7" | "glm-4.7-plus" | "glm-4.7-air" | "glm-4.7-flash" | "glm-4.6v-flash" | "glm-3-turbo" | undefined;
@@ -902,10 +856,6 @@ declare const initializeConfig: ({ cliOptions, configDir, }: {
     };
     testPattern: string;
     ai: {
-        provider: "anthropic";
-        apiKey: string;
-        model: "claude-4-sonnet-20250514" | "claude-4-sonnet-latest" | "claude-4-opus-20250514" | "claude-4-opus-latest" | "claude-3-5-sonnet-20241022" | "claude-3-5-sonnet-latest" | "claude-3-7-sonnet-20250219" | "claude-3-7-sonnet-latest";
-    } | {
         provider: "glm";
         apiKey: string;
         model: "glm-5.1" | "glm-5.1-plus" | "glm-5.1-air" | "glm-5.1-flash" | "glm-4-plus" | "glm-4-0520" | "glm-4" | "glm-4-air" | "glm-4-flash" | "glm-4.7" | "glm-4.7-plus" | "glm-4.7-air" | "glm-4.7-flash" | "glm-4.6v-flash" | "glm-3-turbo";
@@ -929,7 +879,6 @@ declare const initializeConfig: ({ cliOptions, configDir, }: {
     caching: {
         enabled: boolean;
     };
-    anthropicKey?: string | undefined;
     mailosaur?: {
         apiKey: string;
         serverId: string;

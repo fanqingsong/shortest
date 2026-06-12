@@ -9,6 +9,14 @@ import { GLMModel, AzureOpenAIModel } from "@/types/config";
 describe("ToolRegistry", () => {
   let registry: ToolRegistry;
   let mockBrowserTool: BrowserTool;
+  let mockSession: {
+    snapshotOnly: ReturnType<typeof vi.fn>;
+    click: ReturnType<typeof vi.fn>;
+    fill: ReturnType<typeof vi.fn>;
+    press: ReturnType<typeof vi.fn>;
+    invalidate: ReturnType<typeof vi.fn>;
+    captureFormatted: ReturnType<typeof vi.fn>;
+  };
 
   const createMockTool = (name: string): Tool =>
     ({
@@ -20,8 +28,15 @@ describe("ToolRegistry", () => {
 
   beforeEach(() => {
     registry = new ToolRegistry();
-
     mockBrowserTool = {} as BrowserTool;
+    mockSession = {
+      snapshotOnly: vi.fn(),
+      click: vi.fn(),
+      fill: vi.fn(),
+      press: vi.fn(),
+      invalidate: vi.fn(),
+      captureFormatted: vi.fn(),
+    };
   });
 
   describe("registerTool", () => {
@@ -35,9 +50,10 @@ describe("ToolRegistry", () => {
       registry.registerTool("mock_tool", toolEntry);
 
       const tools = registry.getTools(
-        "anthropic",
-        "claude-3-5-sonnet-latest",
+        "glm",
+        "glm-4",
         mockBrowserTool,
+        mockSession as any,
       );
       expect(tools).toHaveProperty("mockTool");
     });
@@ -58,7 +74,7 @@ describe("ToolRegistry", () => {
   });
 
   describe("getTools", () => {
-    it("returns custom tools", () => {
+    it("returns custom tools with snapshot browser tools", () => {
       const customToolEntry = {
         name: "customTool",
         category: "custom" as const,
@@ -68,163 +84,22 @@ describe("ToolRegistry", () => {
       registry.registerTool("custom_tool", customToolEntry);
 
       const tools = registry.getTools(
-        "anthropic",
-        "claude-3-5-sonnet-latest",
+        "glm",
+        "glm-4",
         mockBrowserTool,
+        mockSession as any,
       );
+
       expect(tools).toHaveProperty("customTool");
-    });
-
-    it("returns provider tools", () => {
-      const computerToolEntry = {
-        name: "computer",
-        category: "provider" as const,
-        factory: (_browserTool: BrowserTool) => createMockTool("computer"),
-      };
-
-      registry.registerTool("anthropic_computer_20241022", computerToolEntry);
-
-      const tools = registry.getTools(
-        "anthropic",
-        "claude-3-5-sonnet-latest",
-        mockBrowserTool,
-      );
-      expect(tools).toHaveProperty("computer");
-    });
-
-    it("returns bash tool without requiring browserTool argument", () => {
-      const bashToolEntry = {
-        name: "bash",
-        category: "provider" as const,
-        factory: () => createMockTool("bash"),
-      };
-
-      registry.registerTool("anthropic_bash_20241022", bashToolEntry);
-
-      const tools = registry.getTools(
-        "anthropic",
-        "claude-3-5-sonnet-latest",
-        mockBrowserTool,
-      );
+      expect(tools).toHaveProperty("browser_snapshot");
+      expect(tools).toHaveProperty("browser_click");
       expect(tools).toHaveProperty("bash");
     });
 
-    it("combines provider and custom tools", () => {
-      const customToolEntry = {
-        name: "customTool",
-        category: "custom" as const,
-        factory: (_browserTool: BrowserTool) => createMockTool("customTool"),
-      };
-
-      const providerToolEntry = {
-        name: "computer",
-        category: "provider" as const,
-        factory: (_browserTool: BrowserTool) => createMockTool("computer"),
-      };
-
-      const bashToolEntry = {
-        name: "bash",
-        category: "provider" as const,
-        factory: () => createMockTool("bash"),
-      };
-
-      registry.registerTool("custom_tool", customToolEntry);
-      registry.registerTool("anthropic_computer_20241022", providerToolEntry);
-      registry.registerTool("anthropic_bash_20241022", bashToolEntry);
-
-      const tools = registry.getTools(
-        "anthropic",
-        "claude-3-5-sonnet-latest",
-        mockBrowserTool,
-      );
-
-      expect(tools).toHaveProperty("customTool");
-      expect(tools).toHaveProperty("computer");
-      expect(tools).toHaveProperty("bash");
-      expect(Object.keys(tools).length).toBe(3);
-    });
-
-    it("handles missing provider tools gracefully", () => {
-      const customToolEntry = {
-        name: "customTool",
-        category: "custom" as const,
-        factory: (_browserTool: BrowserTool) => createMockTool("customTool"),
-      };
-
-      registry.registerTool("custom_tool", customToolEntry);
-
-      const tools = registry.getTools(
-        "anthropic",
-        "claude-3-5-sonnet-latest",
-        mockBrowserTool,
-      );
-
-      expect(tools).toHaveProperty("customTool");
-      expect(Object.keys(tools).length).toBe(1);
-    });
-
-    it("respects model-specific tool versions", () => {
-      const computerToolLatest = {
-        name: "computer",
-        category: "provider" as const,
-        factory: (_browserTool: BrowserTool) =>
-          createMockTool("computer-latest"),
-      };
-
-      registry.registerTool("anthropic_computer_20241022", computerToolLatest);
-      registry.registerTool("anthropic_computer_20250124", computerToolLatest);
-
-      const tools35Latest = registry.getTools(
-        "anthropic",
-        "claude-3-5-sonnet-latest",
-        mockBrowserTool,
-      );
-      const tools35Fixed = registry.getTools(
-        "anthropic",
-        "claude-3-5-sonnet-20241022",
-        mockBrowserTool,
-      );
-      const tools37Latest = registry.getTools(
-        "anthropic",
-        "claude-3-7-sonnet-latest",
-        mockBrowserTool,
-      );
-      const tools37Fixed = registry.getTools(
-        "anthropic",
-        "claude-3-7-sonnet-20250219",
-        mockBrowserTool,
-      );
-
-      expect(tools35Latest).toHaveProperty("computer");
-      expect(tools35Fixed).toHaveProperty("computer");
-      expect(tools37Latest).toHaveProperty("computer");
-      expect(tools37Fixed).toHaveProperty("computer");
-    });
-  });
-
-  describe("getProviderToolEntry", () => {
-    it("throws ShortestError when tool not found", () => {
-      const getProviderToolEntry = (registry as any).getProviderToolEntry.bind(
-        registry,
-      );
-
-      expect(() => {
-        getProviderToolEntry(
-          "anthropic",
-          "claude-3-5-sonnet-latest",
-          "computer",
-        );
-      }).toThrow(ShortestError);
-
-      expect(() => {
-        getProviderToolEntry(
-          "anthropic",
-          "claude-3-5-sonnet-latest",
-          "computer",
-        );
-      }).toThrow(
-        "computer tool not found for key: anthropic_computer_20241022",
-      );
+    it("throws when aria snapshot session is missing", () => {
+      expect(() =>
+        registry.getTools("glm", "glm-4", mockBrowserTool),
+      ).toThrow(ShortestError);
     });
   });
 });
@@ -232,26 +107,52 @@ describe("ToolRegistry", () => {
 describe("ToolRegistry - GLM Provider", () => {
   let registry: ToolRegistry;
   let mockBrowserTool: any;
+  let mockSession: any;
 
   beforeEach(() => {
     registry = new ToolRegistry();
     mockBrowserTool = {
       page: {},
     };
+    mockSession = {
+      snapshotOnly: vi.fn(),
+      click: vi.fn(),
+      fill: vi.fn(),
+      press: vi.fn(),
+      invalidate: vi.fn(),
+      captureFormatted: vi.fn(),
+    };
   });
 
   it("should return tools for GLM provider", () => {
-    const tools = registry.getTools("glm", "glm-4", mockBrowserTool);
+    const tools = registry.getTools(
+      "glm",
+      "glm-4",
+      mockBrowserTool,
+      mockSession,
+    );
 
     expect(tools).toBeDefined();
-    expect(typeof tools).toBe("object");
+    expect(tools.browser_snapshot).toBeDefined();
+    expect(tools.browser_click).toBeDefined();
+    expect(tools.bash).toBeDefined();
   });
 
   it("should handle different GLM models", () => {
-    const models: GLMModel[] = ["glm-4-plus", "glm-4", "glm-4-flash", "glm-3-turbo"];
+    const models: GLMModel[] = [
+      "glm-4-plus",
+      "glm-4",
+      "glm-4-flash",
+      "glm-3-turbo",
+    ];
 
     models.forEach((model) => {
-      const tools = registry.getTools("glm", model, mockBrowserTool);
+      const tools = registry.getTools(
+        "glm",
+        model,
+        mockBrowserTool,
+        mockSession,
+      );
       expect(tools).toBeDefined();
     });
   });
@@ -260,26 +161,50 @@ describe("ToolRegistry - GLM Provider", () => {
 describe("ToolRegistry - Azure OpenAI Provider", () => {
   let registry: ToolRegistry;
   let mockBrowserTool: any;
+  let mockSession: any;
 
   beforeEach(() => {
     registry = new ToolRegistry();
     mockBrowserTool = {
       page: {},
     };
+    mockSession = {
+      snapshotOnly: vi.fn(),
+      click: vi.fn(),
+      fill: vi.fn(),
+      press: vi.fn(),
+      invalidate: vi.fn(),
+      captureFormatted: vi.fn(),
+    };
   });
 
   it("should return tools for Azure provider", () => {
-    const tools = registry.getTools("azure", "gpt-4o", mockBrowserTool);
+    const tools = registry.getTools(
+      "azure",
+      "gpt-4o",
+      mockBrowserTool,
+      mockSession,
+    );
 
     expect(tools).toBeDefined();
-    expect(typeof tools).toBe("object");
+    expect(tools.browser_fill).toBeDefined();
   });
 
   it("should handle different Azure models", () => {
-    const models: AzureOpenAIModel[] = ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo", "gpt-4"];
+    const models: AzureOpenAIModel[] = [
+      "gpt-4o",
+      "gpt-4o-mini",
+      "gpt-4-turbo",
+      "gpt-4",
+    ];
 
     models.forEach((model) => {
-      const tools = registry.getTools("azure", model, mockBrowserTool);
+      const tools = registry.getTools(
+        "azure",
+        model,
+        mockBrowserTool,
+        mockSession,
+      );
       expect(tools).toBeDefined();
     });
   });

@@ -25,9 +25,10 @@ vi.mock("@/utils/sleep", () => ({
 vi.mock("@/index", () => ({
   getConfig: () => ({
     ai: {
-      provider: "anthropic",
+      provider: "glm",
       apiKey: "test-key",
-      model: "claude-3-5-sonnet-latest",
+      model: "glm-4",
+      baseURL: "https://open.bigmodel.cn/api/paas/v4/",
     },
   }),
 }));
@@ -73,9 +74,14 @@ describe("AIClient", () => {
         [number, number],
         Promise<string>
       >(),
+      getPage: vi.fn().mockReturnValue({}),
+      setAriaSnapshotSession: vi.fn(),
     } as Pick<
       BrowserTool,
-      "execute" | "getNormalizedComponentStringByCoords"
+      | "execute"
+      | "getNormalizedComponentStringByCoords"
+      | "getPage"
+      | "setAriaSnapshotSession"
     > as BrowserTool;
 
     const testCase = createTestCase({

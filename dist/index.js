@@ -4407,7 +4407,7 @@ var LogConfigSchema = external_exports.object({
 
 // src/log/event.ts
 var LogEvent = class _LogEvent {
-  static FILTERED_METADATA_KEYS = ["anthropicKey", "apiKey"];
+  static FILTERED_METADATA_KEYS = ["apiKey"];
   static FILTERED_PLACEHOLDER = "[FILTERED]";
   static TRUNCATED_METADATA_KEYS = ["base64_image", "data"];
   static TRUNCATED_PLACEHOLDER = "[TRUNCATED]";
@@ -4789,17 +4789,6 @@ var cliOptionsSchema = external_exports.object({
   testPattern: external_exports.string().optional().default("**/*.test.ts"),
   noCache: external_exports.boolean().optional()
 });
-var ANTHROPIC_MODELS = [
-  "claude-4-sonnet-20250514",
-  "claude-4-sonnet-latest",
-  "claude-4-opus-20250514",
-  "claude-4-opus-latest",
-  "claude-3-5-sonnet-20241022",
-  "claude-3-5-sonnet-latest",
-  "claude-3-7-sonnet-20250219",
-  "claude-3-7-sonnet-latest"
-];
-var anthropicModelSchema = external_exports.enum(ANTHROPIC_MODELS);
 var GLM_MODELS = [
   // GLM 5.x Series
   "glm-5.1",
@@ -4861,13 +4850,6 @@ var SILICONFLOW_MODELS = [
 var siliconflowModelSchema = external_exports.enum(SILICONFLOW_MODELS);
 var SHORTEST_ENV_PREFIX = "SHORTEST_";
 var getShortestEnvName = (key) => `${SHORTEST_ENV_PREFIX}${key}`;
-var anthropicAiSchema = external_exports.object({
-  provider: external_exports.literal("anthropic"),
-  apiKey: external_exports.string().default(
-    () => process.env[getShortestEnvName("ANTHROPIC_API_KEY")] || process.env.ANTHROPIC_API_KEY
-  ),
-  model: anthropicModelSchema.default(ANTHROPIC_MODELS[0])
-}).strict();
 var glmAiSchema = external_exports.object({
   provider: external_exports.literal("glm"),
   apiKey: external_exports.string().default(
@@ -4900,13 +4882,22 @@ var siliconflowAiSchema = external_exports.object({
   model: siliconflowModelSchema.default("deepseek-ai/DeepSeek-V3"),
   baseURL: external_exports.string().default("https://api.siliconflow.cn/v1")
 }).strict();
-var aiSchema = external_exports.discriminatedUnion("provider", [anthropicAiSchema, glmAiSchema, azureOpenAISchema, dashscopeAiSchema, siliconflowAiSchema]);
-var anthropicAiPartialSchema = anthropicAiSchema.partial().required({ provider: true });
+var aiSchema = external_exports.discriminatedUnion("provider", [
+  glmAiSchema,
+  azureOpenAISchema,
+  dashscopeAiSchema,
+  siliconflowAiSchema
+]);
 var glmAiPartialSchema = glmAiSchema.partial().required({ provider: true });
 var azureOpenAIPartialSchema = azureOpenAISchema.partial().required({ provider: true });
 var dashscopeAiPartialSchema = dashscopeAiSchema.partial().required({ provider: true });
 var siliconflowAiPartialSchema = siliconflowAiSchema.partial().required({ provider: true });
-var aiPartialSchema = external_exports.discriminatedUnion("provider", [anthropicAiPartialSchema, glmAiPartialSchema, azureOpenAIPartialSchema, dashscopeAiPartialSchema, siliconflowAiPartialSchema]);
+var aiPartialSchema = external_exports.discriminatedUnion("provider", [
+  glmAiPartialSchema,
+  azureOpenAIPartialSchema,
+  dashscopeAiPartialSchema,
+  siliconflowAiPartialSchema
+]);
 var cachingSchema = external_exports.object({
   enabled: external_exports.boolean().default(true)
 }).strict();
@@ -4926,7 +4917,6 @@ var configSchema = external_exports.object({
   baseUrl: external_exports.string().url("must be a valid URL"),
   browser: browserSchema.strict().partial().default(browserSchema.parse({})),
   testPattern: testPatternSchema,
-  anthropicKey: external_exports.string().optional(),
   ai: aiSchema,
   mailosaur: mailosaurSchema.optional(),
   caching: cachingSchema.optional().default(cachingSchema.parse({}))
@@ -4942,8 +4932,7 @@ var userConfigSchema = configSchema.extend({
 var parseConfig = (userConfig, cliOptions) => {
   const log = getLogger();
   try {
-    let config;
-    config = handleDeprecatedConfigOptions(userConfig);
+    let config = userConfig;
     if (cliOptions) {
       config = handleCliOptions(config, cliOptions);
     }
@@ -4958,35 +4947,6 @@ var parseConfig = (userConfig, cliOptions) => {
     }
     throw error;
   }
-};
-var handleDeprecatedConfigOptions = (userConfig) => {
-  const log = getLogger();
-  const deprecatedAnthropicKey = userConfig.anthropicKey;
-  if (deprecatedAnthropicKey) {
-    if (!userConfig.ai) {
-      log.warn(
-        "'config.anthropicKey' option is deprecated. Use 'config.ai' structure instead."
-      );
-      userConfig.ai = {
-        provider: "anthropic",
-        apiKey: deprecatedAnthropicKey
-      };
-    } else if (userConfig.ai.provider === "anthropic") {
-      if (userConfig.ai.apiKey) {
-        throw new ConfigError(
-          "invalid-config",
-          "'config.anthropicKey' conflicts with 'config.ai.apiKey'. Please remove 'config.anthropicKey'."
-        );
-      } else {
-        log.warn(
-          "'config.anthropicKey' option is deprecated. Please move it to 'config.ai.apiKey'."
-        );
-        userConfig.ai.apiKey = deprecatedAnthropicKey;
-      }
-    }
-    delete userConfig.anthropicKey;
-  }
-  return userConfig;
 };
 var handleCliOptions = (userConfig, cliOptions) => {
   if (cliOptions.headless) {

@@ -4,15 +4,19 @@ const username = process.env.TEST_USERNAME || "admin@example.com";
 const password = process.env.TEST_PASSWORD || "changethis";
 
 // 登录后通过 URL 和页面内容验证是否真正进入系统
-shortest("输入用户名和密码，然后点击登录按钮", {
-  username,
-  password,
-}).after(async ({ page }) => {
-  await page.waitForURL((url) => !url.pathname.includes("/login"), {
-    timeout: 15_000,
-  });
-  // SPA 登录后需等待侧边栏渲染出当前用户邮箱
-  await page.getByText(username, { exact: false }).first().waitFor({
+shortest(
+  "Type the username into the Email Address field, type the password into the Password field, then click the Sign In button",
+  {
+    username,
+    password,
+  },
+).after(async ({ page }) => {
+  // Hash-router SPA: pathname stays "/" — wait for hash to leave #login
+  await page.waitForFunction(
+    () => !window.location.hash.includes("login"),
+    { timeout: 30_000 },
+  );
+  await page.getByText("Dashboard", { exact: false }).first().waitFor({
     timeout: 15_000,
   });
 
@@ -23,9 +27,9 @@ shortest("输入用户名和密码，然后点击登录按钮", {
   }));
 
   const isLoggedIn =
-    !url.includes("/login") &&
-    bodyText.includes(username) &&
-    bodyText.includes("Agent Hub");
+    url.includes("#dashboard") &&
+    bodyText.includes("Dashboard") &&
+    !url.includes("#login");
 
   console.log("登录验证结果:", { isLoggedIn, url, title });
 

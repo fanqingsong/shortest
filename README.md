@@ -15,7 +15,7 @@ Your browser does not support the video tag.
 - Natural language E2E testing framework
 - AI-powered test execution using multiple AI providers
 - **Support for GLM models (Zhipu AI) - glm-5.1, glm-4.x, glm-3.x**
-- Support for Anthropic Claude, Azure OpenAI, DashScope, and SiliconFlow
+- Support for Azure OpenAI, DashScope, and SiliconFlow
 - Built on Playwright
 - GitHub integration with 2FA support
 - Email validation with Mailosaur
@@ -65,9 +65,6 @@ yarn add -D github:fanqingsong/shortest
    ```bash
    # For GLM models
    ZHIPU_API_KEY=your_glm_api_key
-
-   # For Anthropic models (optional)
-   # ANTHROPIC_API_KEY=your_anthropic_api_key
    ```
 
 3. **Create test files**
@@ -104,9 +101,6 @@ yarn add -D github:fanqingsong/shortest
    ```bash
    # For GLM models
    ZHIPU_API_KEY=your_glm_api_key
-
-   # For Anthropic models (optional)
-   # ANTHROPIC_API_KEY=your_anthropic_api_key
    ```
 
 4. **Update .gitignore**
@@ -118,7 +112,7 @@ yarn add -D github:fanqingsong/shortest
 
 ### Quick start
 
-1. Determine your test entry and add your Anthropic API key in config file: `shortest.config.ts`
+1. Determine your test entry and add your GLM API key in config file: `shortest.config.ts`
 
 ```typescript
 import type { ShortestConfig } from "@antiwork/shortest";
@@ -133,11 +127,12 @@ export default {
   },
   testPattern: "**/*.test.ts",
   ai: {
-    provider: "anthropic",
+    provider: "glm",
+    model: "glm-4",
   },
 } satisfies ShortestConfig;
 ```
-The Anthropic API key defaults to `SHORTEST_ANTHROPIC_API_KEY` / `ANTHROPIC_API_KEY` environment variables. Can be overwritten via `ai.config.apiKey`.
+The GLM API key defaults to `ZHIPU_API_KEY` / `GLM_API_KEY` environment variables. Can be overwritten via `ai.apiKey`.
 
 ### Using GLM Models
 
@@ -400,9 +395,6 @@ You can run Shortest in your CI/CD pipeline by running tests in headless mode. M
 ```bash
 # For GLM models
 ZHIPU_API_KEY=your_glm_api_key
-
-# For Anthropic models
-ANTHROPIC_API_KEY=your_anthropic_api_key
 ```
 
 [See example here](https://github.com/antiwork/shortest/blob/main/.github/workflows/shortest.yml)
@@ -428,10 +420,7 @@ shortest --github-code --secret=<OTP_SECRET>
 Required in `.env.local`:
 
 ```bash
-# For Anthropic models
-ANTHROPIC_API_KEY=your_api_key
-
-# For GLM models (optional)
+# For GLM models
 ZHIPU_API_KEY=your_glm_api_key
 
 # For Azure OpenAI models (optional)
@@ -529,11 +518,10 @@ You'll need to set up the following services for local development. If you're no
 </details>
 
 <details>
-<summary>Anthropic</summary>
+<summary>GLM (Zhipu AI)</summary>
 
-1. Go to your dashboard at [anthropic.com](https://anthropic.com) and grab your API Key.
-   - Note: If you've never done this before, you will need to answer some questions and likely load your account with a balance. Not much is needed to test the app.
-     ![Anthropic API Key](https://github.com/user-attachments/assets/0905ed4b-5815-4d50-bf43-8713a4397674)
+1. Go to [open.bigmodel.cn](https://open.bigmodel.cn) and create an API key.
+2. Add `ZHIPU_API_KEY` to your `.env.local` file.
 
 </details>
 

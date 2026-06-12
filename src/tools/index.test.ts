@@ -1,7 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
 import { createToolRegistry } from "./index";
-import { createAnthropicBash20241022 } from "@/ai/tools/anthropic/bash_20241022";
-import { createAnthropicComputer20241022 } from "@/ai/tools/anthropic/computer_20241022";
 import { createCheckEmailTool } from "@/ai/tools/custom/check_email";
 import { createGithubLoginTool } from "@/ai/tools/custom/github_login";
 import { createNavigateTool } from "@/ai/tools/custom/navigate";
@@ -11,7 +9,7 @@ import { BrowserTool } from "@/browser/core/browser-tool";
 
 describe("tools/index", () => {
   describe("createToolRegistry", () => {
-    it("creates a registry with all expected tools", () => {
+    it("creates a registry with all expected custom tools", () => {
       const registry = createToolRegistry();
 
       const mockBrowserTool = {
@@ -19,13 +17,24 @@ describe("tools/index", () => {
         resultToToolResultContent: vi.fn(),
       } as unknown as BrowserTool;
 
+      const mockSession = {
+        snapshotOnly: vi.fn(),
+        click: vi.fn(),
+        fill: vi.fn(),
+        press: vi.fn(),
+        invalidate: vi.fn(),
+        captureFormatted: vi.fn(),
+      };
+
       const tools = registry.getTools(
-        "anthropic",
-        "claude-3-5-sonnet-latest",
+        "glm",
+        "glm-4",
         mockBrowserTool,
+        mockSession as any,
       );
 
-      expect(tools).toHaveProperty("computer");
+      expect(tools).toHaveProperty("browser_snapshot");
+      expect(tools).toHaveProperty("browser_click");
       expect(tools).toHaveProperty("bash");
       expect(tools).toHaveProperty("check_email");
       expect(tools).toHaveProperty("github_login");
@@ -33,24 +42,10 @@ describe("tools/index", () => {
       expect(tools).toHaveProperty("run_callback");
       expect(tools).toHaveProperty("sleep");
 
-      const expectedToolCount = 7; // 2 provider tools + 5 custom tools
+      const expectedToolCount = 10;
       expect(Object.keys(tools).length).toBe(expectedToolCount);
 
       const toolsMap = (registry as any).tools as Map<string, any>;
-
-      const computerTool = toolsMap.get("anthropic_computer_20241022");
-      expect(computerTool).toEqual({
-        name: "computer",
-        category: "provider",
-        factory: createAnthropicComputer20241022,
-      });
-
-      const bashTool = toolsMap.get("anthropic_bash_20241022");
-      expect(bashTool).toEqual({
-        name: "bash",
-        category: "provider",
-        factory: createAnthropicBash20241022,
-      });
 
       const checkEmailTool = toolsMap.get("check_email");
       expect(checkEmailTool).toEqual({
@@ -96,15 +91,24 @@ describe("tools/index", () => {
         resultToToolResultContent: vi.fn(),
       } as unknown as BrowserTool;
 
+      const mockSession = {
+        snapshotOnly: vi.fn(),
+        click: vi.fn(),
+        fill: vi.fn(),
+        press: vi.fn(),
+        invalidate: vi.fn(),
+        captureFormatted: vi.fn(),
+      };
+
       const tools = registry.getTools(
-        "anthropic",
-        "claude-3-5-sonnet-latest",
+        "glm",
+        "glm-4",
         mockBrowserTool,
+        mockSession as any,
       );
 
       Object.values(tools).forEach((tool) => {
         expect(tool).toHaveProperty("execute");
-
         expect(typeof tool.execute).toBe("function");
       });
     });
@@ -114,17 +118,13 @@ describe("tools/index", () => {
 
       const toolsMap = (registry as any).tools as Map<string, any>;
 
-      expect(toolsMap.has("anthropic_computer_20241022")).toBe(true);
-      expect(toolsMap.has("anthropic_computer_20250124")).toBe(true);
-      expect(toolsMap.has("anthropic_bash_20241022")).toBe(true);
-      expect(toolsMap.has("anthropic_bash_20250124")).toBe(true);
       expect(toolsMap.has("check_email")).toBe(true);
       expect(toolsMap.has("github_login")).toBe(true);
       expect(toolsMap.has("navigate")).toBe(true);
       expect(toolsMap.has("run_callback")).toBe(true);
       expect(toolsMap.has("sleep")).toBe(true);
 
-      expect(toolsMap.size).toBe(9);
+      expect(toolsMap.size).toBe(5);
     });
   });
 });
