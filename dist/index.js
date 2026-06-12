@@ -4812,6 +4812,9 @@ var GLM_MODELS = [
   "glm-4",
   "glm-4-air",
   "glm-4-flash",
+  "glm-4.7",
+  "glm-4.7-plus",
+  "glm-4.7-air",
   "glm-4.7-flash",
   "glm-4.6v-flash",
   // GLM 3.x Series

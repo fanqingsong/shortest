@@ -980,7 +980,7 @@
       "format": "esm"
     },
     "src/types/config.ts": {
-      "bytes": 7960,
+      "bytes": 8008,
       "imports": [
         {
           "path": "playwright",
@@ -2180,7 +2180,7 @@
       "format": "esm"
     },
     "package.json": {
-      "bytes": 3437,
+      "bytes": 3404,
       "imports": []
     },
     "src/cli/commands/shortest.ts": {
@@ -3516,7 +3516,7 @@
           "bytesInOutput": 810
         },
         "package.json": {
-          "bytesInOutput": 3856
+          "bytesInOutput": 3821
         },
         "src/cli/bin.ts": {
           "bytesInOutput": 1590
@@ -3612,7 +3612,7 @@
           "bytesInOutput": 229
         },
         "src/types/config.ts": {
-          "bytesInOutput": 6010
+          "bytesInOutput": 6058
         },
         "src/tools/index.ts": {
           "bytesInOutput": 1712
@@ -3720,7 +3720,7 @@
           "bytesInOutput": 1013
         }
       },
-      "bytes": 396614
+      "bytes": 396627
     }
   }
 }

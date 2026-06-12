@@ -5071,8 +5071,7 @@ var require_package = __commonJS({
         "test:unit": "npx vitest run",
         "test:unit:watch": "npx vitest --watch",
         "test:e2e": "node --import tsx --test tests/e2e/index.ts",
-        "cache:clear": "pnpm build && shortest cache clear --force-purge",
-        postinstall: "pnpm build"
+        "cache:clear": "pnpm build && shortest cache clear --force-purge"
       },
       dependencies: {
         "@babel/code-frame": "^7.26.2",
@@ -7359,6 +7358,9 @@ var GLM_MODELS = [
   "glm-4",
   "glm-4-air",
   "glm-4-flash",
+  "glm-4.7",
+  "glm-4.7-plus",
+  "glm-4.7-air",
   "glm-4.7-flash",
   "glm-4.6v-flash",
   // GLM 3.x Series

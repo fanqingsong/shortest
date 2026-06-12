@@ -541,17 +541,17 @@ declare const configSchema: z.ZodObject<{
     }>, z.ZodObject<{
         provider: z.ZodLiteral<"glm">;
         apiKey: z.ZodDefault<z.ZodString>;
-        model: z.ZodDefault<z.ZodEnum<["glm-5.1", "glm-5.1-plus", "glm-5.1-air", "glm-5.1-flash", "glm-4-plus", "glm-4-0520", "glm-4", "glm-4-air", "glm-4-flash", "glm-4.7-flash", "glm-4.6v-flash", "glm-3-turbo"]>>;
+        model: z.ZodDefault<z.ZodEnum<["glm-5.1", "glm-5.1-plus", "glm-5.1-air", "glm-5.1-flash", "glm-4-plus", "glm-4-0520", "glm-4", "glm-4-air", "glm-4-flash", "glm-4.7", "glm-4.7-plus", "glm-4.7-air", "glm-4.7-flash", "glm-4.6v-flash", "glm-3-turbo"]>>;
         baseURL: z.ZodDefault<z.ZodString>;
     }, "strict", z.ZodTypeAny, {
         provider: "glm";
         apiKey: string;
-        model: "glm-5.1" | "glm-5.1-plus" | "glm-5.1-air" | "glm-5.1-flash" | "glm-4-plus" | "glm-4-0520" | "glm-4" | "glm-4-air" | "glm-4-flash" | "glm-4.7-flash" | "glm-4.6v-flash" | "glm-3-turbo";
+        model: "glm-5.1" | "glm-5.1-plus" | "glm-5.1-air" | "glm-5.1-flash" | "glm-4-plus" | "glm-4-0520" | "glm-4" | "glm-4-air" | "glm-4-flash" | "glm-4.7" | "glm-4.7-plus" | "glm-4.7-air" | "glm-4.7-flash" | "glm-4.6v-flash" | "glm-3-turbo";
         baseURL: string;
     }, {
         provider: "glm";
         apiKey?: string | undefined;
-        model?: "glm-5.1" | "glm-5.1-plus" | "glm-5.1-air" | "glm-5.1-flash" | "glm-4-plus" | "glm-4-0520" | "glm-4" | "glm-4-air" | "glm-4-flash" | "glm-4.7-flash" | "glm-4.6v-flash" | "glm-3-turbo" | undefined;
+        model?: "glm-5.1" | "glm-5.1-plus" | "glm-5.1-air" | "glm-5.1-flash" | "glm-4-plus" | "glm-4-0520" | "glm-4" | "glm-4-air" | "glm-4-flash" | "glm-4.7" | "glm-4.7-plus" | "glm-4.7-air" | "glm-4.7-flash" | "glm-4.6v-flash" | "glm-3-turbo" | undefined;
         baseURL?: string | undefined;
     }>, z.ZodObject<{
         provider: z.ZodLiteral<"azure">;
@@ -630,7 +630,7 @@ declare const configSchema: z.ZodObject<{
     } | {
         provider: "glm";
         apiKey: string;
-        model: "glm-5.1" | "glm-5.1-plus" | "glm-5.1-air" | "glm-5.1-flash" | "glm-4-plus" | "glm-4-0520" | "glm-4" | "glm-4-air" | "glm-4-flash" | "glm-4.7-flash" | "glm-4.6v-flash" | "glm-3-turbo";
+        model: "glm-5.1" | "glm-5.1-plus" | "glm-5.1-air" | "glm-5.1-flash" | "glm-4-plus" | "glm-4-0520" | "glm-4" | "glm-4-air" | "glm-4-flash" | "glm-4.7" | "glm-4.7-plus" | "glm-4.7-air" | "glm-4.7-flash" | "glm-4.6v-flash" | "glm-3-turbo";
         baseURL: string;
     } | {
         provider: "azure";
@@ -665,7 +665,7 @@ declare const configSchema: z.ZodObject<{
     } | {
         provider: "glm";
         apiKey?: string | undefined;
-        model?: "glm-5.1" | "glm-5.1-plus" | "glm-5.1-air" | "glm-5.1-flash" | "glm-4-plus" | "glm-4-0520" | "glm-4" | "glm-4-air" | "glm-4-flash" | "glm-4.7-flash" | "glm-4.6v-flash" | "glm-3-turbo" | undefined;
+        model?: "glm-5.1" | "glm-5.1-plus" | "glm-5.1-air" | "glm-5.1-flash" | "glm-4-plus" | "glm-4-0520" | "glm-4" | "glm-4-air" | "glm-4-flash" | "glm-4.7" | "glm-4.7-plus" | "glm-4.7-air" | "glm-4.7-flash" | "glm-4.6v-flash" | "glm-3-turbo" | undefined;
         baseURL?: string | undefined;
     } | {
         provider: "azure";
@@ -738,17 +738,17 @@ declare const userConfigSchema: z.ZodObject<{
     }>, z.ZodObject<{
         provider: z.ZodLiteral<"glm">;
         apiKey: z.ZodOptional<z.ZodDefault<z.ZodString>>;
-        model: z.ZodOptional<z.ZodDefault<z.ZodEnum<["glm-5.1", "glm-5.1-plus", "glm-5.1-air", "glm-5.1-flash", "glm-4-plus", "glm-4-0520", "glm-4", "glm-4-air", "glm-4-flash", "glm-4.7-flash", "glm-4.6v-flash", "glm-3-turbo"]>>>;
+        model: z.ZodOptional<z.ZodDefault<z.ZodEnum<["glm-5.1", "glm-5.1-plus", "glm-5.1-air", "glm-5.1-flash", "glm-4-plus", "glm-4-0520", "glm-4", "glm-4-air", "glm-4-flash", "glm-4.7", "glm-4.7-plus", "glm-4.7-air", "glm-4.7-flash", "glm-4.6v-flash", "glm-3-turbo"]>>>;
         baseURL: z.ZodOptional<z.ZodDefault<z.ZodString>>;
     }, "strict", z.ZodTypeAny, {
         provider: "glm";
         apiKey?: string | undefined;
-        model?: "glm-5.1" | "glm-5.1-plus" | "glm-5.1-air" | "glm-5.1-flash" | "glm-4-plus" | "glm-4-0520" | "glm-4" | "glm-4-air" | "glm-4-flash" | "glm-4.7-flash" | "glm-4.6v-flash" | "glm-3-turbo" | undefined;
+        model?: "glm-5.1" | "glm-5.1-plus" | "glm-5.1-air" | "glm-5.1-flash" | "glm-4-plus" | "glm-4-0520" | "glm-4" | "glm-4-air" | "glm-4-flash" | "glm-4.7" | "glm-4.7-plus" | "glm-4.7-air" | "glm-4.7-flash" | "glm-4.6v-flash" | "glm-3-turbo" | undefined;
         baseURL?: string | undefined;
     }, {
         provider: "glm";
         apiKey?: string | undefined;
-        model?: "glm-5.1" | "glm-5.1-plus" | "glm-5.1-air" | "glm-5.1-flash" | "glm-4-plus" | "glm-4-0520" | "glm-4" | "glm-4-air" | "glm-4-flash" | "glm-4.7-flash" | "glm-4.6v-flash" | "glm-3-turbo" | undefined;
+        model?: "glm-5.1" | "glm-5.1-plus" | "glm-5.1-air" | "glm-5.1-flash" | "glm-4-plus" | "glm-4-0520" | "glm-4" | "glm-4-air" | "glm-4-flash" | "glm-4.7" | "glm-4.7-plus" | "glm-4.7-air" | "glm-4.7-flash" | "glm-4.6v-flash" | "glm-3-turbo" | undefined;
         baseURL?: string | undefined;
     }>, z.ZodObject<{
         provider: z.ZodLiteral<"azure">;
@@ -818,7 +818,7 @@ declare const userConfigSchema: z.ZodObject<{
     } | {
         provider: "glm";
         apiKey?: string | undefined;
-        model?: "glm-5.1" | "glm-5.1-plus" | "glm-5.1-air" | "glm-5.1-flash" | "glm-4-plus" | "glm-4-0520" | "glm-4" | "glm-4-air" | "glm-4-flash" | "glm-4.7-flash" | "glm-4.6v-flash" | "glm-3-turbo" | undefined;
+        model?: "glm-5.1" | "glm-5.1-plus" | "glm-5.1-air" | "glm-5.1-flash" | "glm-4-plus" | "glm-4-0520" | "glm-4" | "glm-4-air" | "glm-4-flash" | "glm-4.7" | "glm-4.7-plus" | "glm-4.7-air" | "glm-4.7-flash" | "glm-4.6v-flash" | "glm-3-turbo" | undefined;
         baseURL?: string | undefined;
     } | {
         provider: "azure";
@@ -858,7 +858,7 @@ declare const userConfigSchema: z.ZodObject<{
     } | {
         provider: "glm";
         apiKey?: string | undefined;
-        model?: "glm-5.1" | "glm-5.1-plus" | "glm-5.1-air" | "glm-5.1-flash" | "glm-4-plus" | "glm-4-0520" | "glm-4" | "glm-4-air" | "glm-4-flash" | "glm-4.7-flash" | "glm-4.6v-flash" | "glm-3-turbo" | undefined;
+        model?: "glm-5.1" | "glm-5.1-plus" | "glm-5.1-air" | "glm-5.1-flash" | "glm-4-plus" | "glm-4-0520" | "glm-4" | "glm-4-air" | "glm-4-flash" | "glm-4.7" | "glm-4.7-plus" | "glm-4.7-air" | "glm-4.7-flash" | "glm-4.6v-flash" | "glm-3-turbo" | undefined;
         baseURL?: string | undefined;
     } | {
         provider: "azure";
@@ -908,7 +908,7 @@ declare const initializeConfig: ({ cliOptions, configDir, }: {
     } | {
         provider: "glm";
         apiKey: string;
-        model: "glm-5.1" | "glm-5.1-plus" | "glm-5.1-air" | "glm-5.1-flash" | "glm-4-plus" | "glm-4-0520" | "glm-4" | "glm-4-air" | "glm-4-flash" | "glm-4.7-flash" | "glm-4.6v-flash" | "glm-3-turbo";
+        model: "glm-5.1" | "glm-5.1-plus" | "glm-5.1-air" | "glm-5.1-flash" | "glm-4-plus" | "glm-4-0520" | "glm-4" | "glm-4-air" | "glm-4-flash" | "glm-4.7" | "glm-4.7-plus" | "glm-4.7-air" | "glm-4.7-flash" | "glm-4.6v-flash" | "glm-3-turbo";
         baseURL: string;
     } | {
         provider: "azure";
