@@ -1,0 +1,7 @@
+allowBuilds:
+  '@antiwork/shortest@https://codeload.github.com/fanqingsong/shortest/tar.gz/74fedd22c881261a738fd7c1e569b47c2316e245': true
+  '@antiwork/shortest@https://codeload.github.com/fanqingsong/shortest/tar.gz/76c7fd4fb52c2916450f56208c09f4e1a557a759': true
+  '@clerk/shared': false
+  bufferutil: false
+  esbuild: false
+  sharp: false
