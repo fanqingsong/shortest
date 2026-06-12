@@ -7,6 +7,6 @@ export default {
   ai: {
     provider: "glm",
     model: "glm-5.1",
-    baseURL: "https://open.bigmodel.cn/api/paas/v4/",
+    baseURL: "https://open.bigmodel.cn/api/coding/paas/v4",
   },
 } satisfies ShortestConfig;
