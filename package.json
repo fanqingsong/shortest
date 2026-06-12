@@ -34,7 +34,8 @@
     "test:unit": "npx vitest run",
     "test:unit:watch": "npx vitest --watch",
     "test:e2e": "node --import tsx --test tests/e2e/index.ts",
-    "cache:clear": "pnpm build && shortest cache clear --force-purge"
+    "cache:clear": "pnpm build && shortest cache clear --force-purge",
+    "postinstall": "pnpm build"
   },
   "dependencies": {
     "@babel/code-frame": "^7.26.2",
