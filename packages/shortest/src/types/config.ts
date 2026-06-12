@@ -34,6 +34,12 @@ export type AnthropicModel = z.infer<typeof anthropicModelSchema>;
  * @see https://open.bigmodel.cn/dev/api
  */
 export const GLM_MODELS = [
+  // GLM 5.x Series
+  "glm-5.1",
+  "glm-5.1-plus",
+  "glm-5.1-air",
+  "glm-5.1-flash",
+  // GLM 4.x Series
   "glm-4-plus",
   "glm-4-0520",
   "glm-4",
@@ -41,6 +47,7 @@ export const GLM_MODELS = [
   "glm-4-flash",
   "glm-4.7-flash",
   "glm-4.6v-flash",
+  // GLM 3.x Series
   "glm-3-turbo",
 ] as const;
 export const glmModelSchema = z.enum(GLM_MODELS);

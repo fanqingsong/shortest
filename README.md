@@ -13,31 +13,92 @@ Your browser does not support the video tag.
 ## Features
 
 - Natural language E2E testing framework
-- AI-powered test execution using Anthropic Claude API
+- AI-powered test execution using multiple AI providers
+- **Support for GLM models (Zhipu AI) - glm-5.1, glm-4.x, glm-3.x**
+- Support for Anthropic Claude, Azure OpenAI, DashScope, and SiliconFlow
 - Built on Playwright
 - GitHub integration with 2FA support
 - Email validation with Mailosaur
 
-## Using Shortest in your project
+## ℹ️ About This Fork
+
+This is a fork of the official [antiwork/shortest](https://github.com/antiwork/shortest) repository with enhanced support for multiple AI providers, particularly **Zhipu AI's GLM models**.
+
+### Installation from GitHub
+
+Since this is a fork version, install it directly from GitHub:
+
+```bash
+# Install from GitHub
+npm install -D github:fanqingsong/shortest#main --packages=packages/shortest
+
+# Or using pnpm
+pnpm add -D github:fanqingsong/shortest#main --packages=packages/shortest
+
+# Or using yarn
+yarn add -D github:fanqingsong/shortest#main --packages=packages/shortest
+```
+
+**Note:** Replace `fanqingsong` with your GitHub username. If you're using the original fork, use the actual repository owner.
+
+### Using Shortest in your project
 
 If helpful, [here's a short video](https://github.com/antiwork/shortest/issues/143#issuecomment-2564488173)!
 
 ### Installation
 
-Use the `shortest init` command to streamline the setup process in a new or existing project.
+#### Option 1: Install from GitHub (Recommended)
 
-The `shortest init` command will:
+```bash
+# Install from your fork
+npm install -D github:fanqingsong/shortest#main --packages=packages/shortest
 
-```sh
-npx @antiwork/shortest init
+# Or specify a specific version/branch
+npm install -D github:fanqingsong/shortest#v0.4.9 --packages=packages/shortest
 ```
 
-This will:
+#### Option 2: Manual Setup
 
-- Automatically install the `@antiwork/shortest` package as a dev dependency if it is not already installed
-- Create a default `shortest.config.ts` file with boilerplate configuration
-- Generate a `.env.local` file (unless present) with placeholders for required environment variables, such as `ANTHROPIC_API_KEY`
-- Add `.env.local` and `.shortest/` to `.gitignore`
+1. **Install the package from GitHub**
+   ```bash
+   npm install -D github:fanqingsong/shortest#main --packages=packages/shortest
+   ```
+
+2. **Create configuration file**
+   Create `shortest.config.ts` in your project root:
+
+   ```typescript
+   import type { ShortestConfig } from "@antiwork/shortest";
+
+   export default {
+     headless: false,
+     baseUrl: "http://localhost:3000",
+     testPattern: "**/*.test.ts",
+     ai: {
+       provider: "glm",  // Use GLM models
+       model: "glm-5.1",
+       baseURL: "https://open.bigmodel.cn/api/paas/v4/",
+     },
+   } satisfies ShortestConfig;
+   ```
+
+3. **Set up environment variables**
+   Create `.env.local` file:
+
+   ```bash
+   # For GLM models
+   ZHIPU_API_KEY=your_glm_api_key
+
+   # For Anthropic models (optional)
+   # ANTHROPIC_API_KEY=your_anthropic_api_key
+   ```
+
+4. **Update .gitignore**
+   Add these lines to your `.gitignore`:
+   ```
+   .env.local
+   .shortest/
+   ```
 
 ### Quick start
 
@@ -75,13 +136,25 @@ export default {
   ai: {
     provider: "glm",
     model: "glm-4-plus",
+    baseURL: "https://open.bigmodel.cn/api/paas/v4/",
   },
 } satisfies ShortestConfig;
 ```
 
-The GLM API key defaults to `ZHIPU_API_KEY` / `SHORTEST_GLM_API_KEY` environment variables. Can be overwritten via `ai.config.apiKey`.
+**Configuration:**
+- **provider**: Set to `"glm"` for Zhipu AI models
+- **model**: Choose from available GLM models (see list below)
+- **baseURL**: GLM API endpoint URL
+  - Default: `https://open.bigmodel.cn/api/paas/v4/`
+  - Required for GLM provider (no automatic fallback)
+- **apiKey**: Your Zhipu AI API key
+  - Defaults to `ZHIPU_API_KEY` or `SHORTEST_GLM_API_KEY` environment variables
+  - Can be overridden via `ai.config.apiKey`
 
-Available GLM models: `glm-4-plus`, `glm-4-0520`, `glm-4`, `glm-4-air`, `glm-4-flash`, `glm-3-turbo`.
+**Available GLM models:**
+- **GLM 5.x Series** (Latest): `glm-5.1`, `glm-5.1-plus`, `glm-5.1-air`, `glm-5.1-flash`
+- **GLM 4.x Series**: `glm-4-plus`, `glm-4-0520`, `glm-4`, `glm-4-air`, `glm-4-flash`, `glm-4.7-flash`, `glm-4.6v-flash`
+- **GLM 3.x Series**: `glm-3-turbo`
 
 ### Using Azure OpenAI Models
 
@@ -242,18 +315,57 @@ shortest(`
 
 ### Running tests
 
+#### Method 1: Using npx (Recommended)
+
 ```bash
-pnpm shortest                   # Run all tests
-pnpm shortest login.test.ts     # Run specific tests from a file
-pnpm shortest login.test.ts:23  # Run specific test from a file using a line number
-pnpm shortest --headless        # Run in headless mode using
+# Run all tests
+npx shortest
+
+# Run specific tests from a file
+npx shortest login.test.ts
+
+# Run specific test from a file using a line number
+npx shortest login.test.ts:23
+
+# Run in headless mode
+npx shortest --headless
+```
+
+#### Method 2: Using npm scripts
+
+Add these scripts to your `package.json`:
+
+```json
+{
+  "scripts": {
+    "test": "shortest",
+    "test:file": "shortest",
+    "test:headless": "shortest --headless"
+  }
+}
+```
+
+Then run:
+
+```bash
+npm test              # Run all tests
+npm test:file login.test.ts    # Run specific file
+npm test:headless    # Run in headless mode
 ```
 
 You can find example tests in the [`examples`](./examples) directory.
 
 ### CI setup
 
-You can run Shortest in your CI/CD pipeline by running tests in headless mode. Make sure to add your Anthropic API key to your CI/CD pipeline secrets.
+You can run Shortest in your CI/CD pipeline by running tests in headless mode. Make sure to add your API keys to your CI/CD pipeline secrets:
+
+```bash
+# For GLM models
+ZHIPU_API_KEY=your_glm_api_key
+
+# For Anthropic models
+ANTHROPIC_API_KEY=your_anthropic_api_key
+```
 
 [See example here](https://github.com/antiwork/shortest/blob/main/.github/workflows/shortest.yml)
 
