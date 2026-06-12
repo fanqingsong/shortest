@@ -24,87 +24,24 @@ Your browser does not support the video tag.
 
 This is a fork of the official [antiwork/shortest](https://github.com/antiwork/shortest) repository with enhanced support for multiple AI providers, particularly **Zhipu AI's GLM models**.
 
-### ⚠️ Installation Note
-
-Since this is a fork version with monorepo structure, direct GitHub installation is not supported. Please use the installation methods below in the Installation section.
-
-### Using Shortest in your project
-
-If helpful, [here's a short video](https://github.com/antiwork/shortest/issues/143#issuecomment-2564488173)!
-
 ### Installation
 
-#### ⚠️ Important: Use pnpm & Manual Installation
-
-This project uses pnpm workspace features. **pnpm is strongly recommended** for installation to avoid dependency resolution issues.
-
-**Step 1: Install pnpm (if not already installed)**
+Install the package directly from GitHub:
 
 ```bash
-# Install pnpm globally using npm
-npm install -g pnpm
+# Using pnpm (recommended)
+pnpm add -D github:fanqingsong/shortest
 
-# Or using curl (alternative method)
-curl -fsSL https://get.pnpm.io/install.sh | sh -
+# Using npm
+npm install -D github:fanqingsong/shortest
 
-# Verify installation
-pnpm --version
+# Using yarn
+yarn add -D github:fanqingsong/shortest
 ```
 
-#### ⚠️ GitHub Installation Limitation
+### Quick Start
 
-**Direct GitHub installation (`pnpm add -D github:fanqingsong/shortest#main`) will install the root `shortest-monorepo` package, not the `@antiwork/shortest` package.**
-
-This is because this is a monorepo project with multiple packages. Please use one of the methods below.
-
-#### Option 1: Clone and Use Local Path (Recommended)
-
-```bash
-# 1. Clone the repository
-git clone https://github.com/fanqingsong/shortest.git ~/shortest-lib
-cd ~/shortest-lib
-
-# 2. Install dependencies and build
-pnpm install
-pnpm cli:build
-
-# 3. In your project, use local path
-cd /path/to/your/project
-pnpm add -D ~/shortest-lib/packages/shortest
-```
-
-#### Option 2: Create and Install Tarball
-
-```bash
-# 1. Clone and build the package
-git clone https://github.com/fanqingsong/shortest.git ~/shortest-lib
-cd ~/shortest-lib
-pnpm install
-pnpm cli:build
-
-# 2. Create tarball
-cd packages/shortest
-pnpm pack
-
-# 3. In your project, install the tarball
-cd /path/to/your/project
-pnpm add -D ~/shortest-lib/packages/shortest/antiwork-shortest-0.4.9.tgz
-```
-
-#### Option 3: Manual Setup
-
-1. **Clone and prepare the library**
-   ```bash
-   # Clone the repository
-   git clone https://github.com/fanqingsong/shortest.git ~/shortest-lib
-   cd ~/shortest-lib
-
-   # Install dependencies and build
-   pnpm install
-   pnpm cli:build
-   ```
-
-2. **Create configuration file**
+1. **Create configuration file**
    Create `shortest.config.ts` in your project root:
 
    ```typescript
@@ -122,7 +59,7 @@ pnpm add -D ~/shortest-lib/packages/shortest/antiwork-shortest-0.4.9.tgz
    } satisfies ShortestConfig;
    ```
 
-3. **Set up environment variables**
+2. **Set up environment variables**
    Create `.env.local` file:
 
    ```bash
@@ -133,8 +70,29 @@ pnpm add -D ~/shortest-lib/packages/shortest/antiwork-shortest-0.4.9.tgz
    # ANTHROPIC_API_KEY=your_anthropic_api_key
    ```
 
-4. **Update .gitignore**
-   Add these lines to your `.gitignore`:
+3. **Create test files**
+   Create test files using the pattern specified in the config:
+
+   ```typescript
+   import { shortest } from "@antiwork/shortest";
+
+   shortest("Login to the app using email and password", {
+     username: process.env.USERNAME,
+     password: process.env.PASSWORD,
+   });
+   ```
+
+4. **Run tests**
+   ```bash
+   # Run all tests
+   pnpm exec shortest
+
+   # Run specific test file
+   pnpm exec shortest login.test.ts
+
+   # Run in headless mode
+   pnpm exec shortest --headless
+   ```
 
    ```
    .env.local
