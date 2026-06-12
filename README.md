@@ -29,17 +29,17 @@ This is a fork of the official [antiwork/shortest](https://github.com/antiwork/s
 Since this is a fork version, install it directly from GitHub:
 
 ```bash
-# Install from GitHub
-npm install -D github:fanqingsong/shortest#main --packages=packages/shortest
-
-# Or using pnpm
+# Install from GitHub using pnpm (Recommended - see note below)
 pnpm add -D github:fanqingsong/shortest#main --packages=packages/shortest
+
+# Or using npm (may have compatibility issues)
+npm install -D github:fanqingsong/shortest#main --packages=packages/shortest
 
 # Or using yarn
 yarn add -D github:fanqingsong/shortest#main --packages=packages/shortest
 ```
 
-**Note:** Replace `fanqingsong` with your GitHub username. If you're using the original fork, use the actual repository owner.
+**⚠️ Important:** This project uses pnpm workspace features. **pnpm is recommended** for installation to avoid dependency resolution issues. If you must use npm or yarn, consider using alternative installation methods below.
 
 ### Using Shortest in your project
 
@@ -47,21 +47,30 @@ If helpful, [here's a short video](https://github.com/antiwork/shortest/issues/1
 
 ### Installation
 
-#### Option 1: Install from GitHub (Recommended)
+#### ⚠️ Important: Use pnpm
+
+This project uses pnpm workspace features. **pnpm is strongly recommended** for installation to avoid dependency resolution issues.
+
+If you don't have pnpm installed:
+```bash
+npm install -g pnpm
+```
+
+#### Option 1: Install from GitHub using pnpm (Recommended)
 
 ```bash
 # Install from your fork
-npm install -D github:fanqingsong/shortest#main --packages=packages/shortest
+pnpm add -D github:fanqingsong/shortest#main --packages=packages/shortest
 
 # Or specify a specific version/branch
-npm install -D github:fanqingsong/shortest#v0.4.9 --packages=packages/shortest
+pnpm add -D github:fanqingsong/shortest#v0.4.9 --packages=packages/shortest
 ```
 
-#### Option 2: Manual Setup
+#### Option 2: Manual Setup (Recommended for npm/yarn users)
 
-1. **Install the package from GitHub**
+1. **Install the package from GitHub using pnpm**
    ```bash
-   npm install -D github:fanqingsong/shortest#main --packages=packages/shortest
+   pnpm add -D github:fanqingsong/shortest#main --packages=packages/shortest
    ```
 
 2. **Create configuration file**
@@ -315,7 +324,23 @@ shortest(`
 
 ### Running tests
 
-#### Method 1: Using npx (Recommended)
+#### Method 1: Using pnpm exec (Recommended)
+
+```bash
+# Run all tests
+pnpm exec shortest
+
+# Run specific tests from a file
+pnpm exec shortest login.test.ts
+
+# Run specific test from a file using a line number
+pnpm exec shortest login.test.ts:23
+
+# Run in headless mode
+pnpm exec shortest --headless
+```
+
+#### Method 2: Using npx (Alternative)
 
 ```bash
 # Run all tests
@@ -331,7 +356,7 @@ npx shortest login.test.ts:23
 npx shortest --headless
 ```
 
-#### Method 2: Using npm scripts
+#### Method 3: Using package manager scripts
 
 Add these scripts to your `package.json`:
 
@@ -348,6 +373,12 @@ Add these scripts to your `package.json`:
 Then run:
 
 ```bash
+# Using pnpm (recommended)
+pnpm test              # Run all tests
+pnpm test:file login.test.ts    # Run specific file
+pnpm test:headless    # Run in headless mode
+
+# Or using npm
 npm test              # Run all tests
 npm test:file login.test.ts    # Run specific file
 npm test:headless    # Run in headless mode
