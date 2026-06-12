@@ -24,9 +24,7 @@
   "scripts": {
     "build": "rimraf dist && pnpm build:types && pnpm build:js && pnpm build:cli",
     "build:pack": "pnpm build && pnpm pack",
-    "prepare": "pnpm build",
     "prepublishOnly": "pnpm build",
-    "postinstall": "node -e \"if (process.platform !== 'win32') { try { require('child_process').execSync('chmod +x dist/cli/bin.js') } catch (_) {} }\"",
     "build:types": "tsup src/index.ts --dts-only --format esm --outDir dist",
     "build:js": "esbuild src/index.ts --bundle --platform=node --format=esm --outfile=dist/index.js --external:esbuild --external:punycode --external:playwright --external:expect --external:dotenv --external:ai --external:@ai-sdk/* --external:@babel/* --external:tty",
     "build:cjs": "esbuild src/index.ts --bundle --platform=node --format=cjs --outfile=dist/index.cjs --external:esbuild --external:punycode --external:playwright --external:expect --external:dotenv --external:ai --external:@ai-sdk/* --external:@babel/* --external:tty",
