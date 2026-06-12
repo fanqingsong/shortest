@@ -51,9 +51,17 @@ If helpful, [here's a short video](https://github.com/antiwork/shortest/issues/1
 
 This project uses pnpm workspace features. **pnpm is strongly recommended** for installation to avoid dependency resolution issues.
 
-If you don't have pnpm installed:
+**Step 1: Install pnpm (if not already installed)**
+
 ```bash
+# Install pnpm globally using npm
 npm install -g pnpm
+
+# Or using curl (alternative method)
+curl -fsSL https://get.pnpm.io/install.sh | sh -
+
+# Verify installation
+pnpm --version
 ```
 
 #### Option 1: Install from GitHub using pnpm (Recommended)
