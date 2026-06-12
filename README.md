@@ -30,13 +30,13 @@ Since this is a fork version, install it directly from GitHub:
 
 ```bash
 # Install from GitHub using pnpm (Recommended - see note below)
-pnpm add -D github:fanqingsong/shortest#main --packages=packages/shortest
+pnpm add -D github:fanqingsong/shortest#main
 
 # Or using npm (may have compatibility issues)
-npm install -D github:fanqingsong/shortest#main --packages=packages/shortest
+npm install -D github:fanqingsong/shortest#main
 
 # Or using yarn
-yarn add -D github:fanqingsong/shortest#main --packages=packages/shortest
+yarn add -D github:fanqingsong/shortest#main
 ```
 
 **⚠️ Important:** This project uses pnpm workspace features. **pnpm is recommended** for installation to avoid dependency resolution issues. If you must use npm or yarn, consider using alternative installation methods below.
@@ -68,17 +68,19 @@ pnpm --version
 
 ```bash
 # Install from your fork
-pnpm add -D github:fanqingsong/shortest#main --packages=packages/shortest
+pnpm add -D github:fanqingsong/shortest#main
 
 # Or specify a specific version/branch
-pnpm add -D github:fanqingsong/shortest#v0.4.9 --packages=packages/shortest
+pnpm add -D github:fanqingsong/shortest#v0.4.9
 ```
+
+**Note:** When installing from GitHub, pnpm will automatically detect and install the package from the `packages/shortest` directory.
 
 #### Option 2: Manual Setup (Recommended for npm/yarn users)
 
 1. **Install the package from GitHub using pnpm**
    ```bash
-   pnpm add -D github:fanqingsong/shortest#main --packages=packages/shortest
+   pnpm add -D github:fanqingsong/shortest#main
    ```
 
 2. **Create configuration file**
