@@ -24,22 +24,9 @@ Your browser does not support the video tag.
 
 This is a fork of the official [antiwork/shortest](https://github.com/antiwork/shortest) repository with enhanced support for multiple AI providers, particularly **Zhipu AI's GLM models**.
 
-### Installation from GitHub
+### ⚠️ Installation Note
 
-Since this is a fork version, install it directly from GitHub:
-
-```bash
-# Install from GitHub using pnpm (Recommended - see note below)
-pnpm add -D github:fanqingsong/shortest#main
-
-# Or using npm (may have compatibility issues)
-npm install -D github:fanqingsong/shortest#main
-
-# Or using yarn
-yarn add -D github:fanqingsong/shortest#main
-```
-
-**⚠️ Important:** This project uses pnpm workspace features. **pnpm is recommended** for installation to avoid dependency resolution issues. If you must use npm or yarn, consider using alternative installation methods below.
+Since this is a fork version with monorepo structure, direct GitHub installation is not supported. Please use the installation methods below in the Installation section.
 
 ### Using Shortest in your project
 
@@ -47,7 +34,7 @@ If helpful, [here's a short video](https://github.com/antiwork/shortest/issues/1
 
 ### Installation
 
-#### ⚠️ Important: Use pnpm
+#### ⚠️ Important: Use pnpm & Manual Installation
 
 This project uses pnpm workspace features. **pnpm is strongly recommended** for installation to avoid dependency resolution issues.
 
@@ -64,23 +51,57 @@ curl -fsSL https://get.pnpm.io/install.sh | sh -
 pnpm --version
 ```
 
-#### Option 1: Install from GitHub using pnpm (Recommended)
+#### ⚠️ GitHub Installation Limitation
+
+**Direct GitHub installation (`pnpm add -D github:fanqingsong/shortest#main`) will install the root `shortest-monorepo` package, not the `@antiwork/shortest` package.**
+
+This is because this is a monorepo project with multiple packages. Please use one of the methods below.
+
+#### Option 1: Clone and Use Local Path (Recommended)
 
 ```bash
-# Install from your fork
-pnpm add -D github:fanqingsong/shortest#main
+# 1. Clone the repository
+git clone https://github.com/fanqingsong/shortest.git ~/shortest-lib
+cd ~/shortest-lib
 
-# Or specify a specific version/branch
-pnpm add -D github:fanqingsong/shortest#v0.4.9
+# 2. Install dependencies and build
+pnpm install
+pnpm cli:build
+
+# 3. In your project, use local path
+cd /path/to/your/project
+pnpm add -D ~/shortest-lib/packages/shortest
 ```
 
-**Note:** When installing from GitHub, pnpm will automatically detect and install the package from the `packages/shortest` directory.
+#### Option 2: Create and Install Tarball
 
-#### Option 2: Manual Setup (Recommended for npm/yarn users)
+```bash
+# 1. Clone and build the package
+git clone https://github.com/fanqingsong/shortest.git ~/shortest-lib
+cd ~/shortest-lib
+pnpm install
+pnpm cli:build
 
-1. **Install the package from GitHub using pnpm**
+# 2. Create tarball
+cd packages/shortest
+pnpm pack
+
+# 3. In your project, install the tarball
+cd /path/to/your/project
+pnpm add -D ~/shortest-lib/packages/shortest/antiwork-shortest-0.4.9.tgz
+```
+
+#### Option 3: Manual Setup
+
+1. **Clone and prepare the library**
    ```bash
-   pnpm add -D github:fanqingsong/shortest#main
+   # Clone the repository
+   git clone https://github.com/fanqingsong/shortest.git ~/shortest-lib
+   cd ~/shortest-lib
+
+   # Install dependencies and build
+   pnpm install
+   pnpm cli:build
    ```
 
 2. **Create configuration file**
@@ -103,6 +124,24 @@ pnpm add -D github:fanqingsong/shortest#v0.4.9
 
 3. **Set up environment variables**
    Create `.env.local` file:
+
+   ```bash
+   # For GLM models
+   ZHIPU_API_KEY=your_glm_api_key
+
+   # For Anthropic models (optional)
+   # ANTHROPIC_API_KEY=your_anthropic_api_key
+   ```
+
+4. **Update .gitignore**
+   Add these lines to your `.gitignore`:
+
+   ```
+   .env.local
+   .shortest/
+   ```
+
+### Quick Start
 
    ```bash
    # For GLM models
