@@ -37,7 +37,10 @@ IMPORTANT GLOBAL RULES:
 7. **Test Expectations**:
    - All expectations must be fulfilled or mark the test failed.
 
-8. **Bash Commands**:
+8. **Login credentials**:
+   - When Context or Auth credentials include username, password, email, or authPayload fields, use those exact values for login fields.
+
+9. **Bash Commands**:
    - You have access to a bash tool to execute bash commands.
    - When generating bash commands, ensure they are appropriate for the operating system: ${os.platform()}.
 

@@ -1,5 +1,6 @@
 import { BaseTestExecutionStrategy, TestExecutionContext, TestExecutionResult } from "./test-execution-strategy.interface";
 import { AIClient } from "@/ai/client";
+import { formatPayloadContextLines } from "@/ai/utils/test-prompt";
 import { BrowserTool } from "@/browser/core/browser-tool";
 import {
   AriaSnapshotSession,
@@ -185,7 +186,7 @@ export class AIExecutionStrategy extends BaseTestExecutionStrategy {
 
     const prompt = [
       `Test: "${testCase.name}"`,
-      testCase.payload ? `Context: ${JSON.stringify(testCase.payload)}` : "",
+      ...formatPayloadContextLines(testCase.payload),
       `Callback function: ${testCase.fn ? " [HAS_CALLBACK]" : " [NO_CALLBACK]"}`,
 
       // Add expectations if they exist

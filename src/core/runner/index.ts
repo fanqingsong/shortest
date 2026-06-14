@@ -9,6 +9,7 @@ import {
 import * as playwright from "playwright";
 import { z } from "zod";
 import { AIClient, AIClientResponse } from "@/ai/client";
+import { formatPayloadContextLines } from "@/ai/utils/test-prompt";
 import { BrowserTool } from "@/browser/core/browser-tool";
 import { AriaSnapshotSession, getAriaSnapshotSessionOptions } from "@/browser/snapshot/aria-snapshot-session";
 import { BrowserManager } from "@/browser/manager";
@@ -167,7 +168,7 @@ export class TestRunner {
 
       const prompt = [
         `Test: "${testCase.name}"`,
-        testCase.payload ? `Context: ${JSON.stringify(testCase.payload)}` : "",
+        ...formatPayloadContextLines(testCase.payload),
         `Callback function: ${testCase.fn ? " [HAS_CALLBACK]" : " [NO_CALLBACK]"}`,
 
         // Add expectations if they exist

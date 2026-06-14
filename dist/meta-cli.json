@@ -804,7 +804,7 @@
       "format": "esm"
     },
     "src/ai/prompts/index.ts": {
-      "bytes": 2605,
+      "bytes": 2769,
       "imports": [
         {
           "path": "os",
@@ -1001,6 +1001,17 @@
     "src/browser/snapshot/format-page-state.ts": {
       "bytes": 1943,
       "imports": [],
+      "format": "esm"
+    },
+    "src/ai/utils/conversation-pruning.ts": {
+      "bytes": 6124,
+      "imports": [
+        {
+          "path": "src/browser/snapshot/format-page-state.ts",
+          "kind": "import-statement",
+          "original": "@/browser/snapshot/format-page-state"
+        }
+      ],
       "format": "esm"
     },
     "src/browser/core/api-request.ts": {
@@ -1547,7 +1558,7 @@
       "format": "esm"
     },
     "src/ai/client.ts": {
-      "bytes": 19675,
+      "bytes": 13161,
       "imports": [
         {
           "path": "@ai-sdk/provider",
@@ -1575,9 +1586,9 @@
           "original": "@/ai/utils/json"
         },
         {
-          "path": "src/browser/snapshot/format-page-state.ts",
+          "path": "src/ai/utils/conversation-pruning.ts",
           "kind": "import-statement",
-          "original": "@/browser/snapshot/format-page-state"
+          "original": "@/ai/utils/conversation-pruning"
         },
         {
           "path": "src/browser/snapshot/aria-snapshot-session.ts",
@@ -1630,6 +1641,11 @@
           "original": "@/utils/sleep"
         }
       ],
+      "format": "esm"
+    },
+    "src/ai/utils/test-prompt.ts": {
+      "bytes": 614,
+      "imports": [],
       "format": "esm"
     },
     "src/browser/actions/index.ts": {
@@ -2014,7 +2030,7 @@
       "format": "esm"
     },
     "src/core/runner/index.ts": {
-      "bytes": 15939,
+      "bytes": 15983,
       "imports": [
         {
           "path": "url",
@@ -2045,6 +2061,11 @@
           "path": "src/ai/client.ts",
           "kind": "import-statement",
           "original": "@/ai/client"
+        },
+        {
+          "path": "src/ai/utils/test-prompt.ts",
+          "kind": "import-statement",
+          "original": "@/ai/utils/test-prompt"
         },
         {
           "path": "src/browser/core/browser-tool.ts",
@@ -3429,13 +3450,13 @@
           "bytesInOutput": 83
         },
         "src/core/runner/index.ts": {
-          "bytesInOutput": 13070
+          "bytesInOutput": 13046
         },
         "src/ai/client.ts": {
-          "bytesInOutput": 15440
+          "bytesInOutput": 9562
         },
         "src/ai/prompts/index.ts": {
-          "bytesInOutput": 2572
+          "bytesInOutput": 2736
         },
         "src/ai/providers/ai-provider.interface.ts": {
           "bytesInOutput": 768
@@ -3466,6 +3487,9 @@
         },
         "src/browser/snapshot/format-page-state.ts": {
           "bytesInOutput": 1467
+        },
+        "src/ai/utils/conversation-pruning.ts": {
+          "bytesInOutput": 5264
         },
         "src/index.ts": {
           "bytesInOutput": 5923
@@ -3526,6 +3550,9 @@
         },
         "src/utils/sleep.ts": {
           "bytesInOutput": 73
+        },
+        "src/ai/utils/test-prompt.ts": {
+          "bytesInOutput": 406
         },
         "src/browser/core/browser-tool.ts": {
           "bytesInOutput": 27426
@@ -3597,7 +3624,7 @@
           "bytesInOutput": 985
         }
       },
-      "bytes": 369680
+      "bytes": 369685
     }
   }
 }

@@ -6509,7 +6509,10 @@ IMPORTANT GLOBAL RULES:
 7. **Test Expectations**:
    - All expectations must be fulfilled or mark the test failed.
 
-8. **Bash Commands**:
+8. **Login credentials**:
+   - When Context or Auth credentials include username, password, email, or authPayload fields, use those exact values for login fields.
+
+9. **Bash Commands**:
    - You have access to a bash tool to execute bash commands.
    - When generating bash commands, ensure they are appropriate for the operating system: ${os.platform()}.
 
@@ -6930,6 +6933,204 @@ var omitPageSnapshotText = (text) => {
 
 ${STALE_SNAPSHOT_PLACEHOLDER}`;
 };
+
+// src/ai/utils/conversation-pruning.ts
+var MAX_RECENT_TOOL_RESULTS = 4;
+var MAX_ASSISTANT_TEXT_CHARS = 160;
+function messageHasToolResult(message) {
+  if (message.role === "tool") {
+    return true;
+  }
+  const content = message.content;
+  if (!Array.isArray(content)) {
+    return false;
+  }
+  return content.some(
+    (part) => typeof part === "object" && part !== null && "type" in part && part.type === "tool-result"
+  );
+}
+function omitToolResultMessage(message) {
+  if (message.role === "tool") {
+    const content2 = message.content;
+    if (!Array.isArray(content2)) {
+      return message;
+    }
+    return {
+      ...message,
+      content: content2.map((part) => ({
+        ...part,
+        result: STALE_TOOL_RESULT_PLACEHOLDER
+      }))
+    };
+  }
+  const content = message.content;
+  if (!Array.isArray(content)) {
+    return message;
+  }
+  return {
+    ...message,
+    content: content.map((part) => {
+      if (typeof part === "object" && part !== null && "type" in part && part.type === "tool-result") {
+        return { ...part, result: STALE_TOOL_RESULT_PLACEHOLDER };
+      }
+      return part;
+    })
+  };
+}
+function truncateAssistantMessage(message) {
+  const content = message.content;
+  if (typeof content === "string") {
+    return {
+      ...message,
+      content: truncateForContext(content, MAX_ASSISTANT_TEXT_CHARS)
+    };
+  }
+  if (!Array.isArray(content)) {
+    return message;
+  }
+  return {
+    ...message,
+    content: content.map((part) => {
+      if (typeof part === "string") {
+        return truncateForContext(part, MAX_ASSISTANT_TEXT_CHARS);
+      }
+      if (part.type === "text") {
+        return {
+          ...part,
+          text: truncateForContext(part.text, MAX_ASSISTANT_TEXT_CHARS)
+        };
+      }
+      return part;
+    })
+  };
+}
+function extractMessageText(message) {
+  const content = message.content;
+  if (typeof content === "string") {
+    return content;
+  }
+  if (!Array.isArray(content)) {
+    return "";
+  }
+  return content.map((part) => {
+    if (typeof part === "string") {
+      return part;
+    }
+    if (part.type === "text") {
+      return part.text;
+    }
+    if (part.type === "tool-result") {
+      const result = part.result;
+      if (typeof result === "string") {
+        return result;
+      }
+      if (result && typeof result === "object" && "output" in result) {
+        return String(result.output);
+      }
+      return JSON.stringify(result);
+    }
+    return "";
+  }).join("\n");
+}
+function messageContainsPageSnapshot(message) {
+  return extractMessageText(message).includes(PAGE_SECTION_HEADER);
+}
+function omitPageSnapshotInMessage(message) {
+  const content = message.content;
+  if (typeof content === "string") {
+    return { ...message, content: omitPageSnapshotText(content) };
+  }
+  if (!Array.isArray(content)) {
+    return message;
+  }
+  return {
+    ...message,
+    content: content.map((part) => {
+      if (typeof part === "string") {
+        return omitPageSnapshotText(part);
+      }
+      if (part.type === "text") {
+        return { ...part, text: omitPageSnapshotText(part.text) };
+      }
+      if (part.type === "tool-result") {
+        const result = part.result;
+        if (typeof result === "string") {
+          return { ...part, result: omitPageSnapshotText(result) };
+        }
+        if (result && typeof result === "object" && "output" in result) {
+          return {
+            ...part,
+            result: {
+              ...result,
+              output: omitPageSnapshotText(
+                String(result.output)
+              )
+            }
+          };
+        }
+      }
+      return part;
+    })
+  };
+}
+function pruneConversationHistory(history) {
+  const pruned = [...history];
+  pruneStaleSnapshotsFromHistory(pruned);
+  pruneStaleToolResultsFromHistory(pruned);
+  pruneStaleAssistantTextFromHistory(pruned);
+  return pruned;
+}
+function pruneStaleToolResultsFromHistory(history) {
+  const toolResultIndices = [];
+  for (let i = 0; i < history.length; i++) {
+    if (messageHasToolResult(history[i])) {
+      toolResultIndices.push(i);
+    }
+  }
+  if (toolResultIndices.length <= MAX_RECENT_TOOL_RESULTS) {
+    return;
+  }
+  const keepFrom = toolResultIndices.length - MAX_RECENT_TOOL_RESULTS;
+  for (let j = 0; j < keepFrom; j++) {
+    history[toolResultIndices[j]] = omitToolResultMessage(
+      history[toolResultIndices[j]]
+    );
+  }
+}
+function pruneStaleAssistantTextFromHistory(history) {
+  const assistantIndices = [];
+  for (let i = 0; i < history.length; i++) {
+    if (history[i].role === "assistant") {
+      assistantIndices.push(i);
+    }
+  }
+  if (assistantIndices.length <= 1) {
+    return;
+  }
+  for (let j = 0; j < assistantIndices.length - 1; j++) {
+    history[assistantIndices[j]] = truncateAssistantMessage(
+      history[assistantIndices[j]]
+    );
+  }
+}
+function pruneStaleSnapshotsFromHistory(history) {
+  const snapshotIndices = [];
+  for (let i = 0; i < history.length; i++) {
+    if (messageContainsPageSnapshot(history[i])) {
+      snapshotIndices.push(i);
+    }
+  }
+  if (snapshotIndices.length <= 1) {
+    return;
+  }
+  const keepIndex = snapshotIndices[snapshotIndices.length - 1];
+  for (const index of snapshotIndices) {
+    if (index === keepIndex) {
+      continue;
+    }
+    history[index] = omitPageSnapshotInMessage(history[index]);
+  }
+}
 
 // src/index.ts
 import { join as join2 } from "path";
@@ -7908,7 +8109,7 @@ var createToolRegistry = () => {
 var sleep = (ms) => new Promise((resolve2) => setTimeout(resolve2, ms));
 
 // src/ai/client.ts
-var AIClient = class _AIClient {
+var AIClient = class {
   client;
   browserTool;
   conversationHistory = [];
@@ -8091,7 +8292,9 @@ var AIClient = class _AIClient {
           });
           this.conversationHistory.push(message);
         });
-        this.pruneConversationHistory();
+        this.conversationHistory = pruneConversationHistory(
+          this.conversationHistory
+        );
         this.log.trace("\u{1F4AC}", "Conversation history updated", {
           newMessageCount: resp.response.messages.length,
           totalMessageCount: this.conversationHistory.length
@@ -8162,7 +8365,7 @@ var AIClient = class _AIClient {
     const status = error.status;
     const provider = this.configAi.provider;
     if (provider === "glm") {
-      return [401, 403, 429, 500].includes(status);
+      return [400, 401, 403, 429, 500].includes(status);
     }
     if (provider === "azure") {
       return [400, 401, 403, 429, 500].includes(status);
@@ -8188,205 +8391,22 @@ var AIClient = class _AIClient {
     this.usage.promptTokens += usage.promptTokens;
     this.usage.totalTokens += usage.totalTokens;
   }
-  /**
-   * Reduces prompt size by pruning stale snapshots, tool results, and assistant reasoning.
-   */
-  pruneConversationHistory() {
-    this.pruneStaleSnapshotsFromHistory();
-    this.pruneStaleToolResultsFromHistory();
-    this.pruneStaleAssistantTextFromHistory();
-  }
-  static MAX_RECENT_TOOL_RESULTS = 4;
-  static MAX_ASSISTANT_TEXT_CHARS = 160;
-  pruneStaleToolResultsFromHistory() {
-    const toolResultIndices = [];
-    for (let i = 0; i < this.conversationHistory.length; i++) {
-      if (this.messageHasToolResult(this.conversationHistory[i])) {
-        toolResultIndices.push(i);
-      }
-    }
-    if (toolResultIndices.length <= _AIClient.MAX_RECENT_TOOL_RESULTS) {
-      return;
-    }
-    const keepFrom = toolResultIndices.length - _AIClient.MAX_RECENT_TOOL_RESULTS;
-    for (let j = 0; j < keepFrom; j++) {
-      this.conversationHistory[toolResultIndices[j]] = this.omitToolResultMessage(this.conversationHistory[toolResultIndices[j]]);
-    }
-  }
-  pruneStaleAssistantTextFromHistory() {
-    const assistantIndices = [];
-    for (let i = 0; i < this.conversationHistory.length; i++) {
-      if (this.conversationHistory[i].role === "assistant") {
-        assistantIndices.push(i);
-      }
-    }
-    if (assistantIndices.length <= 1) {
-      return;
-    }
-    for (let j = 0; j < assistantIndices.length - 1; j++) {
-      this.conversationHistory[assistantIndices[j]] = this.truncateAssistantMessage(this.conversationHistory[assistantIndices[j]]);
-    }
-  }
-  messageHasToolResult(message) {
-    if (message.role === "tool") {
-      return true;
-    }
-    const content = message.content;
-    if (!Array.isArray(content)) {
-      return false;
-    }
-    return content.some(
-      (part) => typeof part === "object" && part !== null && "type" in part && part.type === "tool-result"
-    );
-  }
-  omitToolResultMessage(message) {
-    if (message.role === "tool") {
-      return {
-        ...message,
-        content: STALE_TOOL_RESULT_PLACEHOLDER
-      };
-    }
-    const content = message.content;
-    if (!Array.isArray(content)) {
-      return message;
-    }
-    return {
-      ...message,
-      content: content.map((part) => {
-        if (typeof part === "object" && part !== null && "type" in part && part.type === "tool-result") {
-          return { ...part, result: STALE_TOOL_RESULT_PLACEHOLDER };
-        }
-        return part;
-      })
-    };
-  }
-  truncateAssistantMessage(message) {
-    const content = message.content;
-    if (typeof content === "string") {
-      return {
-        ...message,
-        content: truncateForContext(
-          content,
-          _AIClient.MAX_ASSISTANT_TEXT_CHARS
-        )
-      };
-    }
-    if (!Array.isArray(content)) {
-      return message;
-    }
-    return {
-      ...message,
-      content: content.map((part) => {
-        if (typeof part === "string") {
-          return truncateForContext(part, _AIClient.MAX_ASSISTANT_TEXT_CHARS);
-        }
-        if (part.type === "text") {
-          return {
-            ...part,
-            text: truncateForContext(
-              part.text,
-              _AIClient.MAX_ASSISTANT_TEXT_CHARS
-            )
-          };
-        }
-        return part;
-      })
-    };
-  }
-  /**
-   * Replaces older page snapshots in conversation history with a short placeholder.
-   * Only the most recent snapshot block is kept to reduce prompt tokens on multi-step tests.
-   */
-  pruneStaleSnapshotsFromHistory() {
-    const snapshotIndices = [];
-    for (let i = 0; i < this.conversationHistory.length; i++) {
-      if (this.messageContainsPageSnapshot(this.conversationHistory[i])) {
-        snapshotIndices.push(i);
-      }
-    }
-    if (snapshotIndices.length <= 1) {
-      return;
-    }
-    const keepIndex = snapshotIndices[snapshotIndices.length - 1];
-    for (const index of snapshotIndices) {
-      if (index === keepIndex) {
-        continue;
-      }
-      this.conversationHistory[index] = this.omitPageSnapshotInMessage(
-        this.conversationHistory[index]
-      );
-    }
-  }
-  messageContainsPageSnapshot(message) {
-    return this.extractMessageText(message).includes(PAGE_SECTION_HEADER);
-  }
-  extractMessageText(message) {
-    const content = message.content;
-    if (typeof content === "string") {
-      return content;
-    }
-    if (!Array.isArray(content)) {
-      return "";
-    }
-    return content.map((part) => {
-      if (typeof part === "string") {
-        return part;
-      }
-      if (part.type === "text") {
-        return part.text;
-      }
-      if (part.type === "tool-result") {
-        const result = part.result;
-        if (typeof result === "string") {
-          return result;
-        }
-        if (result && typeof result === "object" && "output" in result) {
-          return String(result.output);
-        }
-        return JSON.stringify(result);
-      }
-      return "";
-    }).join("\n");
-  }
-  omitPageSnapshotInMessage(message) {
-    const content = message.content;
-    if (typeof content === "string") {
-      return { ...message, content: omitPageSnapshotText(content) };
-    }
-    if (!Array.isArray(content)) {
-      return message;
-    }
-    return {
-      ...message,
-      content: content.map((part) => {
-        if (typeof part === "string") {
-          return omitPageSnapshotText(part);
-        }
-        if (part.type === "text") {
-          return { ...part, text: omitPageSnapshotText(part.text) };
-        }
-        if (part.type === "tool-result") {
-          const result = part.result;
-          if (typeof result === "string") {
-            return { ...part, result: omitPageSnapshotText(result) };
-          }
-          if (result && typeof result === "object" && "output" in result) {
-            return {
-              ...part,
-              result: {
-                ...result,
-                output: omitPageSnapshotText(
-                  String(result.output)
-                )
-              }
-            };
-          }
-        }
-        return part;
-      })
-    };
-  }
 };
+
+// src/ai/utils/test-prompt.ts
+function formatPayloadContextLines(payload) {
+  if (payload == null) {
+    return [];
+  }
+  const lines = [`Context: ${JSON.stringify(payload)}`];
+  if (typeof payload === "object" && payload !== null && "authPayload" in payload) {
+    const authPayload = payload.authPayload;
+    if (authPayload != null) {
+      lines.push(`Auth credentials: ${JSON.stringify(authPayload)}`);
+    }
+  }
+  return lines;
+}
 
 // src/browser/core/browser-tool.ts
 import * as fs7 from "fs/promises";
@@ -10141,7 +10161,7 @@ var TestRunner = class {
       const pageStateSection = await ariaSnapshotSession.captureFormatted();
       const prompt = [
         `Test: "${testCase.name}"`,
-        testCase.payload ? `Context: ${JSON.stringify(testCase.payload)}` : "",
+        ...formatPayloadContextLines(testCase.payload),
         `Callback function: ${testCase.fn ? " [HAS_CALLBACK]" : " [NO_CALLBACK]"}`,
         // Add expectations if they exist
         ...testCase.expectations?.length ? [

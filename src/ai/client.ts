@@ -9,12 +9,7 @@ import {
 import { getSystemPrompt } from "@/ai/prompts";
 import { createProvider } from "@/ai/provider";
 import { AIJSONResponse, extractJsonPayload } from "@/ai/utils/json";
-import {
-  omitPageSnapshotText,
-  PAGE_SECTION_HEADER,
-  STALE_TOOL_RESULT_PLACEHOLDER,
-  truncateForContext,
-} from "@/browser/snapshot/format-page-state";
+import { pruneConversationHistory } from "@/ai/utils/conversation-pruning";
 import {
   AriaSnapshotSession,
   getAriaSnapshotSessionOptions,
@@ -291,7 +286,9 @@ export class AIClient {
           });
           this.conversationHistory.push(message);
         });
-        this.pruneConversationHistory();
+        this.conversationHistory = pruneConversationHistory(
+          this.conversationHistory,
+        );
         this.log.trace("💬", "Conversation history updated", {
           newMessageCount: resp.response.messages.length,
           totalMessageCount: this.conversationHistory.length,
@@ -380,8 +377,8 @@ export class AIClient {
     const provider = this.configAi.provider;
 
     if (provider === "glm") {
-      // Zhipu API error codes - 429 for rate limiting
-      return [401, 403, 429, 500].includes(status);
+      // 400: invalid message format (e.g. broken tool-result shape after pruning)
+      return [400, 401, 403, 429, 500].includes(status);
     }
 
     if (provider === "azure") {
@@ -417,260 +414,5 @@ export class AIClient {
     this.usage.completionTokens += usage.completionTokens;
     this.usage.promptTokens += usage.promptTokens;
     this.usage.totalTokens += usage.totalTokens;
-  }
-
-  /**
-   * Reduces prompt size by pruning stale snapshots, tool results, and assistant reasoning.
-   */
-  private pruneConversationHistory(): void {
-    this.pruneStaleSnapshotsFromHistory();
-    this.pruneStaleToolResultsFromHistory();
-    this.pruneStaleAssistantTextFromHistory();
-  }
-
-  private static readonly MAX_RECENT_TOOL_RESULTS = 4;
-  private static readonly MAX_ASSISTANT_TEXT_CHARS = 160;
-
-  private pruneStaleToolResultsFromHistory(): void {
-    const toolResultIndices: number[] = [];
-
-    for (let i = 0; i < this.conversationHistory.length; i++) {
-      if (this.messageHasToolResult(this.conversationHistory[i])) {
-        toolResultIndices.push(i);
-      }
-    }
-
-    if (toolResultIndices.length <= AIClient.MAX_RECENT_TOOL_RESULTS) {
-      return;
-    }
-
-    const keepFrom =
-      toolResultIndices.length - AIClient.MAX_RECENT_TOOL_RESULTS;
-
-    for (let j = 0; j < keepFrom; j++) {
-      this.conversationHistory[toolResultIndices[j]] =
-        this.omitToolResultMessage(this.conversationHistory[toolResultIndices[j]]);
-    }
-  }
-
-  private pruneStaleAssistantTextFromHistory(): void {
-    const assistantIndices: number[] = [];
-
-    for (let i = 0; i < this.conversationHistory.length; i++) {
-      if (this.conversationHistory[i].role === "assistant") {
-        assistantIndices.push(i);
-      }
-    }
-
-    if (assistantIndices.length <= 1) {
-      return;
-    }
-
-    for (let j = 0; j < assistantIndices.length - 1; j++) {
-      this.conversationHistory[assistantIndices[j]] =
-        this.truncateAssistantMessage(this.conversationHistory[assistantIndices[j]]);
-    }
-  }
-
-  private messageHasToolResult(message: CoreMessage): boolean {
-    if (message.role === "tool") {
-      return true;
-    }
-
-    const content = message.content;
-    if (!Array.isArray(content)) {
-      return false;
-    }
-
-    return content.some(
-      (part) =>
-        typeof part === "object" &&
-        part !== null &&
-        "type" in part &&
-        part.type === "tool-result",
-    );
-  }
-
-  private omitToolResultMessage(message: CoreMessage): CoreMessage {
-    if (message.role === "tool") {
-      return {
-        ...message,
-        content: STALE_TOOL_RESULT_PLACEHOLDER,
-      };
-    }
-
-    const content = message.content;
-    if (!Array.isArray(content)) {
-      return message;
-    }
-
-    return {
-      ...message,
-      content: content.map((part) => {
-        if (
-          typeof part === "object" &&
-          part !== null &&
-          "type" in part &&
-          part.type === "tool-result"
-        ) {
-          return { ...part, result: STALE_TOOL_RESULT_PLACEHOLDER };
-        }
-        return part;
-      }),
-    };
-  }
-
-  private truncateAssistantMessage(message: CoreMessage): CoreMessage {
-    const content = message.content;
-
-    if (typeof content === "string") {
-      return {
-        ...message,
-        content: truncateForContext(
-          content,
-          AIClient.MAX_ASSISTANT_TEXT_CHARS,
-        ),
-      };
-    }
-
-    if (!Array.isArray(content)) {
-      return message;
-    }
-
-    return {
-      ...message,
-      content: content.map((part) => {
-        if (typeof part === "string") {
-          return truncateForContext(part, AIClient.MAX_ASSISTANT_TEXT_CHARS);
-        }
-
-        if (part.type === "text") {
-          return {
-            ...part,
-            text: truncateForContext(
-              part.text,
-              AIClient.MAX_ASSISTANT_TEXT_CHARS,
-            ),
-          };
-        }
-
-        return part;
-      }),
-    };
-  }
-
-  /**
-   * Replaces older page snapshots in conversation history with a short placeholder.
-   * Only the most recent snapshot block is kept to reduce prompt tokens on multi-step tests.
-   */
-  private pruneStaleSnapshotsFromHistory(): void {
-    const snapshotIndices: number[] = [];
-
-    for (let i = 0; i < this.conversationHistory.length; i++) {
-      if (this.messageContainsPageSnapshot(this.conversationHistory[i])) {
-        snapshotIndices.push(i);
-      }
-    }
-
-    if (snapshotIndices.length <= 1) {
-      return;
-    }
-
-    const keepIndex = snapshotIndices[snapshotIndices.length - 1];
-
-    for (const index of snapshotIndices) {
-      if (index === keepIndex) {
-        continue;
-      }
-      this.conversationHistory[index] = this.omitPageSnapshotInMessage(
-        this.conversationHistory[index],
-      );
-    }
-  }
-
-  private messageContainsPageSnapshot(message: CoreMessage): boolean {
-    return this.extractMessageText(message).includes(PAGE_SECTION_HEADER);
-  }
-
-  private extractMessageText(message: CoreMessage): string {
-    const content = message.content;
-
-    if (typeof content === "string") {
-      return content;
-    }
-
-    if (!Array.isArray(content)) {
-      return "";
-    }
-
-    return content
-      .map((part) => {
-        if (typeof part === "string") {
-          return part;
-        }
-
-        if (part.type === "text") {
-          return part.text;
-        }
-
-        if (part.type === "tool-result") {
-          const result = part.result;
-          if (typeof result === "string") {
-            return result;
-          }
-          if (result && typeof result === "object" && "output" in result) {
-            return String((result as { output: string }).output);
-          }
-          return JSON.stringify(result);
-        }
-
-        return "";
-      })
-      .join("\n");
-  }
-
-  private omitPageSnapshotInMessage(message: CoreMessage): CoreMessage {
-    const content = message.content;
-
-    if (typeof content === "string") {
-      return { ...message, content: omitPageSnapshotText(content) };
-    }
-
-    if (!Array.isArray(content)) {
-      return message;
-    }
-
-    return {
-      ...message,
-      content: content.map((part) => {
-        if (typeof part === "string") {
-          return omitPageSnapshotText(part);
-        }
-
-        if (part.type === "text") {
-          return { ...part, text: omitPageSnapshotText(part.text) };
-        }
-
-        if (part.type === "tool-result") {
-          const result = part.result;
-          if (typeof result === "string") {
-            return { ...part, result: omitPageSnapshotText(result) };
-          }
-          if (result && typeof result === "object" && "output" in result) {
-            return {
-              ...part,
-              result: {
-                ...(result as Record<string, unknown>),
-                output: omitPageSnapshotText(
-                  String((result as { output: string }).output),
-                ),
-              },
-            };
-          }
-        }
-
-        return part;
-      }),
-    };
   }
 }
