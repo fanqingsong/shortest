@@ -127,27 +127,75 @@ const createTestChain = (
   const registry = global.__shortest__.registry;
 
   const normalizeName = (name: string) => name.replace(/\s+/g, " ").trim();
-  // Handle array of test names
+
+  const registerTestCase = (testCase: TestCase) => {
+    const existingTests = registry.tests.get(testCase.name) || [];
+    registry.tests.set(testCase.name, [...existingTests, testCase]);
+    registry.currentFileTests.push(testCase);
+  };
+
+  const buildTestChain = (testCase: TestCase): TestChain => {
+    const chain: TestChain = {
+      expect(
+        descriptionOrFn: string | ((context: TestContext) => Promise<void>),
+        payloadOrFn?: any,
+        fn?: (context: TestContext) => Promise<void>,
+      ) {
+        if (typeof descriptionOrFn === "function") {
+          testCase.expectations.push({
+            directExecution: true,
+            fn: descriptionOrFn,
+          });
+          return chain;
+        }
+
+        testCase.expectations ||= [];
+        testCase.expectations.push({
+          description: descriptionOrFn,
+          payload: typeof payloadOrFn === "function" ? undefined : payloadOrFn,
+          fn: typeof payloadOrFn === "function" ? payloadOrFn : fn,
+          directExecution: false,
+        });
+        return chain;
+      },
+      before(fn: (context: TestContext) => void | Promise<void>) {
+        testCase.beforeFn = (context) => Promise.resolve(fn(context));
+        return chain;
+      },
+      after(fn: (context: TestContext) => void | Promise<void>) {
+        testCase.afterFn = (context) => Promise.resolve(fn(context));
+        return chain;
+      },
+    };
+
+    return chain;
+  };
+
+  // Shared payload applies to every step when using array syntax
   if (Array.isArray(nameOrFn)) {
-    const tests = nameOrFn.map((name) => {
+    const payload = typeof payloadOrFn === "function" ? undefined : payloadOrFn;
+    const testFn = typeof payloadOrFn === "function" ? payloadOrFn : fn;
+
+    const tests = nameOrFn.map((name, index) => {
+      const isLast = index === nameOrFn.length - 1;
       const testCase = createTestCase({
         name: normalizeName(name),
         filePath: registry.currentFilePath,
+        payload,
+        fn: isLast ? testFn : undefined,
         expectations: [],
       });
 
-      const existingTests = registry.tests.get(name) || [];
-      registry.tests.set(name, [...existingTests, testCase]);
-      registry.currentFileTests.push(testCase);
+      registerTestCase(testCase);
       return testCase;
     });
 
-    // Return chain for the last test
     const lastTest = tests[tests.length - 1];
     if (!lastTest.name) {
       throw new ShortestError("Test name is required");
     }
-    return createTestChain(lastTest.name, payloadOrFn, fn);
+
+    return buildTestChain(lastTest);
   }
 
   // Handle direct execution
@@ -179,7 +227,6 @@ const createTestChain = (
     };
   }
 
-  // Rest of existing createTestChain implementation...
   const name = normalizeName(nameOrFn as string);
   const testCase = createTestCase({
     name,
@@ -189,46 +236,9 @@ const createTestChain = (
     expectations: [],
   });
 
-  const existingTests = registry.tests.get(name) || [];
-  registry.tests.set(name, [...existingTests, testCase]);
-  registry.currentFileTests.push(testCase);
+  registerTestCase(testCase);
 
-  const chain: TestChain = {
-    expect(
-      descriptionOrFn: string | ((context: TestContext) => Promise<void>),
-      payloadOrFn?: any,
-      fn?: (context: TestContext) => Promise<void>,
-    ) {
-      // Handle direct execution for expect
-      if (typeof descriptionOrFn === "function") {
-        testCase.expectations.push({
-          directExecution: true,
-          fn: descriptionOrFn,
-        });
-        return chain;
-      }
-
-      // Existing expect implementation...
-      testCase.expectations ||= [];
-      testCase.expectations.push({
-        description: descriptionOrFn,
-        payload: typeof payloadOrFn === "function" ? undefined : payloadOrFn,
-        fn: typeof payloadOrFn === "function" ? payloadOrFn : fn,
-        directExecution: false,
-      });
-      return chain;
-    },
-    before(fn: (context: TestContext) => void | Promise<void>) {
-      testCase.beforeFn = (context) => Promise.resolve(fn(context));
-      return chain;
-    },
-    after(fn: (context: TestContext) => void | Promise<void>) {
-      testCase.afterFn = (context) => Promise.resolve(fn(context));
-      return chain;
-    },
-  };
-
-  return chain;
+  return buildTestChain(testCase);
 };
 
 export const test: TestAPI = Object.assign(

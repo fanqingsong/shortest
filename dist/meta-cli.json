@@ -1211,7 +1211,7 @@
       "format": "esm"
     },
     "src/index.ts": {
-      "bytes": 7934,
+      "bytes": 8182,
       "imports": [
         {
           "path": "path",
@@ -3492,7 +3492,7 @@
           "bytesInOutput": 5264
         },
         "src/index.ts": {
-          "bytesInOutput": 5923
+          "bytesInOutput": 6274
         },
         "src/core/compiler/index.ts": {
           "bytesInOutput": 2715
@@ -3624,7 +3624,7 @@
           "bytesInOutput": 985
         }
       },
-      "bytes": 369685
+      "bytes": 370036
     }
   }
 }

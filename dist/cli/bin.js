@@ -7568,23 +7568,61 @@ var getConfig = () => {
 var createTestChain = (nameOrFn, payloadOrFn, fn) => {
   const registry = global.__shortest__.registry;
   const normalizeName = (name2) => name2.replace(/\s+/g, " ").trim();
+  const registerTestCase = (testCase2) => {
+    const existingTests = registry.tests.get(testCase2.name) || [];
+    registry.tests.set(testCase2.name, [...existingTests, testCase2]);
+    registry.currentFileTests.push(testCase2);
+  };
+  const buildTestChain = (testCase2) => {
+    const chain = {
+      expect(descriptionOrFn, payloadOrFn2, fn2) {
+        if (typeof descriptionOrFn === "function") {
+          testCase2.expectations.push({
+            directExecution: true,
+            fn: descriptionOrFn
+          });
+          return chain;
+        }
+        testCase2.expectations ||= [];
+        testCase2.expectations.push({
+          description: descriptionOrFn,
+          payload: typeof payloadOrFn2 === "function" ? void 0 : payloadOrFn2,
+          fn: typeof payloadOrFn2 === "function" ? payloadOrFn2 : fn2,
+          directExecution: false
+        });
+        return chain;
+      },
+      before(fn2) {
+        testCase2.beforeFn = (context) => Promise.resolve(fn2(context));
+        return chain;
+      },
+      after(fn2) {
+        testCase2.afterFn = (context) => Promise.resolve(fn2(context));
+        return chain;
+      }
+    };
+    return chain;
+  };
   if (Array.isArray(nameOrFn)) {
-    const tests = nameOrFn.map((name2) => {
+    const payload = typeof payloadOrFn === "function" ? void 0 : payloadOrFn;
+    const testFn = typeof payloadOrFn === "function" ? payloadOrFn : fn;
+    const tests = nameOrFn.map((name2, index) => {
+      const isLast = index === nameOrFn.length - 1;
       const testCase2 = createTestCase({
         name: normalizeName(name2),
         filePath: registry.currentFilePath,
+        payload,
+        fn: isLast ? testFn : void 0,
         expectations: []
       });
-      const existingTests2 = registry.tests.get(name2) || [];
-      registry.tests.set(name2, [...existingTests2, testCase2]);
-      registry.currentFileTests.push(testCase2);
+      registerTestCase(testCase2);
       return testCase2;
     });
     const lastTest = tests[tests.length - 1];
     if (!lastTest.name) {
       throw new ShortestError("Test name is required");
     }
-    return createTestChain(lastTest.name, payloadOrFn, fn);
+    return buildTestChain(lastTest);
   }
   if (typeof nameOrFn === "function") {
     registry.directTestCount++;
@@ -7621,37 +7659,8 @@ var createTestChain = (nameOrFn, payloadOrFn, fn) => {
     fn: typeof payloadOrFn === "function" ? payloadOrFn : fn,
     expectations: []
   });
-  const existingTests = registry.tests.get(name) || [];
-  registry.tests.set(name, [...existingTests, testCase]);
-  registry.currentFileTests.push(testCase);
-  const chain = {
-    expect(descriptionOrFn, payloadOrFn2, fn2) {
-      if (typeof descriptionOrFn === "function") {
-        testCase.expectations.push({
-          directExecution: true,
-          fn: descriptionOrFn
-        });
-        return chain;
-      }
-      testCase.expectations ||= [];
-      testCase.expectations.push({
-        description: descriptionOrFn,
-        payload: typeof payloadOrFn2 === "function" ? void 0 : payloadOrFn2,
-        fn: typeof payloadOrFn2 === "function" ? payloadOrFn2 : fn2,
-        directExecution: false
-      });
-      return chain;
-    },
-    before(fn2) {
-      testCase.beforeFn = (context) => Promise.resolve(fn2(context));
-      return chain;
-    },
-    after(fn2) {
-      testCase.afterFn = (context) => Promise.resolve(fn2(context));
-      return chain;
-    }
-  };
-  return chain;
+  registerTestCase(testCase);
+  return buildTestChain(testCase);
 };
 var test = Object.assign(
   (nameOrFn, payloadOrFn, fn) => createTestChain(nameOrFn, payloadOrFn, fn),
