@@ -29,6 +29,7 @@ export class ConfigError extends ShortestError {
 }
 
 const AIErrorTypeSchema = z.enum([
+  "invalid-config",
   "invalid-response",
   "max-retries-reached",
   "token-limit-exceeded",

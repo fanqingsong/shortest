@@ -191,7 +191,7 @@
       "format": "esm"
     },
     "src/utils/errors.ts": {
-      "bytes": 3298,
+      "bytes": 3318,
       "imports": [
         {
           "path": "picocolors",
@@ -3372,7 +3372,7 @@
           "bytesInOutput": 3147
         },
         "src/utils/errors.ts": {
-          "bytesInOutput": 2632
+          "bytesInOutput": 2652
         },
         "src/log/index.ts": {
           "bytesInOutput": 146
@@ -3597,7 +3597,7 @@
           "bytesInOutput": 985
         }
       },
-      "bytes": 369660
+      "bytes": 369680
     }
   }
 }

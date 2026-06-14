@@ -4219,6 +4219,7 @@ var ConfigError = class extends ShortestError {
   }
 };
 var AIErrorTypeSchema = external_exports.enum([
+  "invalid-config",
   "invalid-response",
   "max-retries-reached",
   "token-limit-exceeded",
