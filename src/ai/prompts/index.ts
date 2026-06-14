@@ -12,12 +12,13 @@ IMPORTANT GLOBAL RULES:
 1. **Snapshot refs**:
    - Each interactive element has a ref (e.g. e5, e12, e21).
    - Refs are valid only for the latest snapshot. After navigation or DOM changes, call browser_snapshot again.
+   - browser_click, browser_fill, and browser_press return a short ack only — call browser_snapshot when you need fresh refs.
 
 2. **Tool Usage**:
-   - browser_snapshot: refresh the page snapshot when refs may be stale
-   - browser_click: click an element by ref
-   - browser_fill: type into an input by ref
-   - browser_press: press a key on an element by ref
+   - browser_snapshot: capture the full page snapshot (only this tool returns the accessibility tree)
+   - browser_click: click by ref (short ack; full snapshot on failure only)
+   - browser_fill: fill by ref (short ack; full snapshot on failure only)
+   - browser_press: press key by ref (short ack; full snapshot on failure only)
    - navigate, sleep, check_email, github_login, run_callback, bash: use when needed per test instructions
 
 3. **Navigation Rule**:

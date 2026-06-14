@@ -4906,11 +4906,18 @@ var mailosaurSchema = external_exports.object({
   serverId: external_exports.string()
 }).optional();
 var testPatternSchema = external_exports.string().default("**/*.test.ts");
+var snapshotSchema = external_exports.object({
+  /** Limits aria snapshot tree depth — lower values reduce token usage on large pages. */
+  depth: external_exports.number().int().positive().optional(),
+  /** When true, only interactive elements (and headings) with refs are sent to the model. */
+  interactiveOnly: external_exports.boolean().optional()
+}).strict();
 var browserSchema = external_exports.object({
   /**
    * @see https://playwright.dev/docs/api/class-browser#browser-new-context
    */
-  contextOptions: external_exports.custom().optional()
+  contextOptions: external_exports.custom().optional(),
+  snapshot: snapshotSchema.optional()
 });
 var configSchema = external_exports.object({
   headless: external_exports.boolean().default(true),

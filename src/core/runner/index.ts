@@ -10,7 +10,7 @@ import * as playwright from "playwright";
 import { z } from "zod";
 import { AIClient, AIClientResponse } from "@/ai/client";
 import { BrowserTool } from "@/browser/core/browser-tool";
-import { AriaSnapshotSession } from "@/browser/snapshot/aria-snapshot-session";
+import { AriaSnapshotSession, getAriaSnapshotSessionOptions } from "@/browser/snapshot/aria-snapshot-session";
 import { BrowserManager } from "@/browser/manager";
 import { TestCompiler } from "@/core/compiler";
 import { TestCase } from "@/core/runner/test-case";
@@ -136,7 +136,10 @@ export class TestRunner {
       },
     });
 
-    const ariaSnapshotSession = new AriaSnapshotSession(testContext.page);
+    const ariaSnapshotSession = new AriaSnapshotSession(
+      testContext.page,
+      getAriaSnapshotSessionOptions(),
+    );
     browserTool.setAriaSnapshotSession(ariaSnapshotSession);
 
     // Action cache replays coordinate-based steps and is incompatible with snapshot/ref tools.

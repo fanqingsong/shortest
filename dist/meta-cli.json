@@ -804,7 +804,7 @@
       "format": "esm"
     },
     "src/ai/prompts/index.ts": {
-      "bytes": 2359,
+      "bytes": 2605,
       "imports": [
         {
           "path": "os",
@@ -999,24 +999,8 @@
       "format": "esm"
     },
     "src/browser/snapshot/format-page-state.ts": {
-      "bytes": 315,
+      "bytes": 1943,
       "imports": [],
-      "format": "esm"
-    },
-    "src/browser/snapshot/aria-snapshot-session.ts": {
-      "bytes": 3060,
-      "imports": [
-        {
-          "path": "playwright",
-          "kind": "import-statement",
-          "external": true
-        },
-        {
-          "path": "src/browser/snapshot/format-page-state.ts",
-          "kind": "import-statement",
-          "original": "@/browser/snapshot/format-page-state"
-        }
-      ],
       "format": "esm"
     },
     "src/browser/core/api-request.ts": {
@@ -1138,7 +1122,7 @@
       "format": "esm"
     },
     "src/types/config.ts": {
-      "bytes": 6863,
+      "bytes": 7245,
       "imports": [
         {
           "path": "playwright",
@@ -1277,6 +1261,27 @@
           "path": "src/globals.ts",
           "kind": "import-statement",
           "original": "./globals"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/browser/snapshot/aria-snapshot-session.ts": {
+      "bytes": 4577,
+      "imports": [
+        {
+          "path": "playwright",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/index.ts",
+          "kind": "import-statement",
+          "original": "@/index"
+        },
+        {
+          "path": "src/browser/snapshot/format-page-state.ts",
+          "kind": "import-statement",
+          "original": "@/browser/snapshot/format-page-state"
         }
       ],
       "format": "esm"
@@ -1424,7 +1429,7 @@
       "format": "esm"
     },
     "src/ai/tools/openai-compat/browser.ts": {
-      "bytes": 1674,
+      "bytes": 1863,
       "imports": [
         {
           "path": "ai",
@@ -1542,7 +1547,7 @@
       "format": "esm"
     },
     "src/ai/client.ts": {
-      "bytes": 12869,
+      "bytes": 19675,
       "imports": [
         {
           "path": "@ai-sdk/provider",
@@ -1568,6 +1573,11 @@
           "path": "src/ai/utils/json.ts",
           "kind": "import-statement",
           "original": "@/ai/utils/json"
+        },
+        {
+          "path": "src/browser/snapshot/format-page-state.ts",
+          "kind": "import-statement",
+          "original": "@/browser/snapshot/format-page-state"
         },
         {
           "path": "src/browser/snapshot/aria-snapshot-session.ts",
@@ -2004,7 +2014,7 @@
       "format": "esm"
     },
     "src/core/runner/index.ts": {
-      "bytes": 15856,
+      "bytes": 15939,
       "imports": [
         {
           "path": "url",
@@ -3419,13 +3429,13 @@
           "bytesInOutput": 83
         },
         "src/core/runner/index.ts": {
-          "bytesInOutput": 13019
+          "bytesInOutput": 13070
         },
         "src/ai/client.ts": {
-          "bytesInOutput": 9417
+          "bytesInOutput": 15440
         },
         "src/ai/prompts/index.ts": {
-          "bytesInOutput": 2323
+          "bytesInOutput": 2572
         },
         "src/ai/providers/ai-provider.interface.ts": {
           "bytesInOutput": 768
@@ -3455,10 +3465,7 @@
           "bytesInOutput": 956
         },
         "src/browser/snapshot/format-page-state.ts": {
-          "bytesInOutput": 195
-        },
-        "src/browser/snapshot/aria-snapshot-session.ts": {
-          "bytesInOutput": 2542
+          "bytesInOutput": 1467
         },
         "src/index.ts": {
           "bytesInOutput": 5923
@@ -3479,10 +3486,13 @@
           "bytesInOutput": 217
         },
         "src/types/config.ts": {
-          "bytesInOutput": 5228
+          "bytesInOutput": 5635
         },
         "src/utils/config.ts": {
           "bytesInOutput": 1147
+        },
+        "src/browser/snapshot/aria-snapshot-session.ts": {
+          "bytesInOutput": 3731
         },
         "src/ai/tools/custom/check_email.ts": {
           "bytesInOutput": 449
@@ -3500,7 +3510,7 @@
           "bytesInOutput": 422
         },
         "src/ai/tools/openai-compat/browser.ts": {
-          "bytesInOutput": 1507
+          "bytesInOutput": 1699
         },
         "src/ai/tools/glm/bash.ts": {
           "bytesInOutput": 476
@@ -3587,7 +3597,7 @@
           "bytesInOutput": 985
         }
       },
-      "bytes": 360277
+      "bytes": 369660
     }
   }
 }

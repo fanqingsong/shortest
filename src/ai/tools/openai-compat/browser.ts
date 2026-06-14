@@ -15,13 +15,13 @@ export const createBrowserSnapshotTools = (
   return {
     browser_snapshot: tool({
       description:
-        "Capture the current page accessibility snapshot with element refs like [ref=e12]. Use after navigation or when refs may be stale.",
+        "Capture the full page accessibility snapshot with element refs like [ref=e12]. Only this tool returns the snapshot — use after navigation or when refs may be stale.",
       parameters: z.object({}),
       execute: async () => session.snapshotOnly(),
     }),
     browser_click: tool({
       description:
-        "Click an element using its snapshot ref (e.g. e21 for button Sign In).",
+        "Click an element using its snapshot ref (e.g. e21). Returns a short ack; call browser_snapshot if the page changed.",
       parameters: z.object({
         ref: refSchema,
       }),
@@ -29,7 +29,7 @@ export const createBrowserSnapshotTools = (
     }),
     browser_fill: tool({
       description:
-        "Fill text into an input using its snapshot ref (e.g. e12 for email field).",
+        "Fill text into an input using its snapshot ref (e.g. e12). Returns a short ack; call browser_snapshot if the page changed.",
       parameters: z.object({
         ref: refSchema,
         text: z.string().describe("Text to enter into the element"),
@@ -38,7 +38,7 @@ export const createBrowserSnapshotTools = (
     }),
     browser_press: tool({
       description:
-        "Press a key on an element using its snapshot ref (e.g. Enter, Tab).",
+        "Press a key on an element using its snapshot ref (e.g. Enter). Returns a short ack; call browser_snapshot if the page changed.",
       parameters: z.object({
         ref: refSchema,
         key: z.string().describe("Key to press, e.g. Enter or Tab"),

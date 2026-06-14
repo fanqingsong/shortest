@@ -207,11 +207,21 @@ const mailosaurSchema = z
 
 export const testPatternSchema = z.string().default("**/*.test.ts");
 
+const snapshotSchema = z
+  .object({
+    /** Limits aria snapshot tree depth — lower values reduce token usage on large pages. */
+    depth: z.number().int().positive().optional(),
+    /** When true, only interactive elements (and headings) with refs are sent to the model. */
+    interactiveOnly: z.boolean().optional(),
+  })
+  .strict();
+
 const browserSchema = z.object({
   /**
    * @see https://playwright.dev/docs/api/class-browser#browser-new-context
    */
   contextOptions: z.custom<BrowserContextOptions>().optional(),
+  snapshot: snapshotSchema.optional(),
 });
 
 export const configSchema = z

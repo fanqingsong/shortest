@@ -519,10 +519,30 @@ declare const configSchema: z.ZodObject<{
     baseUrl: z.ZodString;
     browser: z.ZodDefault<z.ZodObject<{
         contextOptions: z.ZodOptional<z.ZodOptional<z.ZodType<BrowserContextOptions, z.ZodTypeDef, BrowserContextOptions>>>;
+        snapshot: z.ZodOptional<z.ZodOptional<z.ZodObject<{
+            /** Limits aria snapshot tree depth — lower values reduce token usage on large pages. */
+            depth: z.ZodOptional<z.ZodNumber>;
+            /** When true, only interactive elements (and headings) with refs are sent to the model. */
+            interactiveOnly: z.ZodOptional<z.ZodBoolean>;
+        }, "strict", z.ZodTypeAny, {
+            depth?: number | undefined;
+            interactiveOnly?: boolean | undefined;
+        }, {
+            depth?: number | undefined;
+            interactiveOnly?: boolean | undefined;
+        }>>>;
     }, "strict", z.ZodTypeAny, {
         contextOptions?: BrowserContextOptions | undefined;
+        snapshot?: {
+            depth?: number | undefined;
+            interactiveOnly?: boolean | undefined;
+        } | undefined;
     }, {
         contextOptions?: BrowserContextOptions | undefined;
+        snapshot?: {
+            depth?: number | undefined;
+            interactiveOnly?: boolean | undefined;
+        } | undefined;
     }>>;
     testPattern: z.ZodDefault<z.ZodString>;
     ai: z.ZodDiscriminatedUnion<"provider", [z.ZodObject<{
@@ -608,6 +628,10 @@ declare const configSchema: z.ZodObject<{
     baseUrl: string;
     browser: {
         contextOptions?: BrowserContextOptions | undefined;
+        snapshot?: {
+            depth?: number | undefined;
+            interactiveOnly?: boolean | undefined;
+        } | undefined;
     };
     testPattern: string;
     ai: {
@@ -664,6 +688,10 @@ declare const configSchema: z.ZodObject<{
     headless?: boolean | undefined;
     browser?: {
         contextOptions?: BrowserContextOptions | undefined;
+        snapshot?: {
+            depth?: number | undefined;
+            interactiveOnly?: boolean | undefined;
+        } | undefined;
     } | undefined;
     testPattern?: string | undefined;
     mailosaur?: {
@@ -693,10 +721,30 @@ declare const userConfigSchema: z.ZodObject<{
          * @see https://playwright.dev/docs/api/class-browser#browser-new-context
          */
         contextOptions: z.ZodOptional<z.ZodType<BrowserContextOptions, z.ZodTypeDef, BrowserContextOptions>>;
+        snapshot: z.ZodOptional<z.ZodObject<{
+            /** Limits aria snapshot tree depth — lower values reduce token usage on large pages. */
+            depth: z.ZodOptional<z.ZodNumber>;
+            /** When true, only interactive elements (and headings) with refs are sent to the model. */
+            interactiveOnly: z.ZodOptional<z.ZodBoolean>;
+        }, "strict", z.ZodTypeAny, {
+            depth?: number | undefined;
+            interactiveOnly?: boolean | undefined;
+        }, {
+            depth?: number | undefined;
+            interactiveOnly?: boolean | undefined;
+        }>>;
     }, "strip", z.ZodTypeAny, {
         contextOptions?: BrowserContextOptions | undefined;
+        snapshot?: {
+            depth?: number | undefined;
+            interactiveOnly?: boolean | undefined;
+        } | undefined;
     }, {
         contextOptions?: BrowserContextOptions | undefined;
+        snapshot?: {
+            depth?: number | undefined;
+            interactiveOnly?: boolean | undefined;
+        } | undefined;
     }>>;
     testPattern: z.ZodOptional<z.ZodDefault<z.ZodString>>;
     ai: z.ZodOptional<z.ZodDiscriminatedUnion<"provider", [z.ZodObject<{
@@ -772,6 +820,10 @@ declare const userConfigSchema: z.ZodObject<{
     baseUrl: string;
     browser?: {
         contextOptions?: BrowserContextOptions | undefined;
+        snapshot?: {
+            depth?: number | undefined;
+            interactiveOnly?: boolean | undefined;
+        } | undefined;
     } | undefined;
     testPattern?: string | undefined;
     ai?: {
@@ -807,6 +859,10 @@ declare const userConfigSchema: z.ZodObject<{
     headless?: boolean | undefined;
     browser?: {
         contextOptions?: BrowserContextOptions | undefined;
+        snapshot?: {
+            depth?: number | undefined;
+            interactiveOnly?: boolean | undefined;
+        } | undefined;
     } | undefined;
     testPattern?: string | undefined;
     ai?: {
@@ -853,6 +909,10 @@ declare const initializeConfig: ({ cliOptions, configDir, }: {
     baseUrl: string;
     browser: {
         contextOptions?: playwright.BrowserContextOptions | undefined;
+        snapshot?: {
+            depth?: number | undefined;
+            interactiveOnly?: boolean | undefined;
+        } | undefined;
     };
     testPattern: string;
     ai: {

@@ -6483,12 +6483,13 @@ IMPORTANT GLOBAL RULES:
 1. **Snapshot refs**:
    - Each interactive element has a ref (e.g. e5, e12, e21).
    - Refs are valid only for the latest snapshot. After navigation or DOM changes, call browser_snapshot again.
+   - browser_click, browser_fill, and browser_press return a short ack only \u2014 call browser_snapshot when you need fresh refs.
 
 2. **Tool Usage**:
-   - browser_snapshot: refresh the page snapshot when refs may be stale
-   - browser_click: click an element by ref
-   - browser_fill: type into an input by ref
-   - browser_press: press a key on an element by ref
+   - browser_snapshot: capture the full page snapshot (only this tool returns the accessibility tree)
+   - browser_click: click by ref (short ack; full snapshot on failure only)
+   - browser_fill: fill by ref (short ack; full snapshot on failure only)
+   - browser_press: press key by ref (short ack; full snapshot on failure only)
    - navigate, sleep, check_email, github_login, run_callback, bash: use when needed per test instructions
 
 3. **Navigation Rule**:
@@ -6886,115 +6887,47 @@ var extractJsonPayload = (response, schema = aiJSONResponseSchema) => {
 };
 
 // src/browser/snapshot/format-page-state.ts
+var PAGE_UNCHANGED_LINE = "- Page: (unchanged)";
+var STALE_TOOL_RESULT_PLACEHOLDER = "[Previous tool result omitted to save context.]";
+var truncateForContext = (text, maxChars) => {
+  if (text.length <= maxChars) {
+    return text;
+  }
+  return `${text.slice(0, maxChars).trimEnd()}\u2026`;
+};
+var PAGE_SECTION_HEADER = "### Page";
+var STALE_SNAPSHOT_PLACEHOLDER = "[Previous page snapshot omitted to save context. Call browser_snapshot for current refs.]";
+var ACTION_SUCCESS_HINT = "Refs may be stale. Call browser_snapshot before the next interaction if the page changed.";
+var PAGE_STATE_BLOCK_PATTERN = /\n?### Page[\s\S]*$/;
 var formatPageState = ({
   url,
   title,
-  snapshot
+  snapshot,
+  previousUrl,
+  previousTitle
 }) => {
-  return [
-    "### Page",
-    `- Page URL: ${url}`,
-    `- Page Title: ${title}`,
-    "### Snapshot",
-    snapshot
-  ].join("\n");
+  const pageLines = [PAGE_SECTION_HEADER];
+  const urlChanged = previousUrl === void 0 || url !== previousUrl;
+  const titleChanged = previousTitle === void 0 || title !== previousTitle;
+  if (urlChanged) {
+    pageLines.push(`- Page URL: ${url}`);
+  }
+  if (titleChanged) {
+    pageLines.push(`- Page Title: ${title}`);
+  }
+  if (!urlChanged && !titleChanged && previousUrl !== void 0) {
+    pageLines.push(PAGE_UNCHANGED_LINE);
+  }
+  return [...pageLines, "### Snapshot", snapshot].join("\n");
 };
+var omitPageSnapshotText = (text) => {
+  if (!text.includes(PAGE_SECTION_HEADER)) {
+    return text;
+  }
+  const withoutBlock = text.replace(PAGE_STATE_BLOCK_PATTERN, "").trimEnd();
+  return `${withoutBlock}
 
-// src/browser/snapshot/aria-snapshot-session.ts
-var AriaSnapshotSession = class {
-  page;
-  depth;
-  lastSnapshot = null;
-  constructor(page, options = {}) {
-    this.page = page;
-    this.depth = options.depth;
-  }
-  setPage(page) {
-    this.page = page;
-    this.invalidate();
-  }
-  invalidate() {
-    this.lastSnapshot = null;
-  }
-  normalizeRef(ref) {
-    const trimmed = ref.trim();
-    if (trimmed.startsWith("ref=")) {
-      return trimmed.slice(4);
-    }
-    return trimmed;
-  }
-  locator(ref) {
-    return this.page.locator(`aria-ref=${this.normalizeRef(ref)}`);
-  }
-  async capture() {
-    const snapshot = await this.page.ariaSnapshot({
-      mode: "ai",
-      ...this.depth !== void 0 ? { depth: this.depth } : {}
-    });
-    this.lastSnapshot = snapshot;
-    return snapshot;
-  }
-  async captureFormatted() {
-    const snapshot = await this.capture();
-    const url = this.page.url();
-    const title = await this.page.title();
-    return formatPageState({ url, title, snapshot });
-  }
-  async snapshotOnly() {
-    const output = await this.captureFormatted();
-    return { output };
-  }
-  async click(ref) {
-    try {
-      await this.locator(ref).click();
-      this.invalidate();
-      const output = `Clicked ${this.normalizeRef(ref)}
-
-${await this.captureFormatted()}`;
-      return { output };
-    } catch (error) {
-      this.invalidate();
-      const message = error instanceof Error ? error.message : String(error);
-      const output = `Failed to click ${this.normalizeRef(ref)}: ${message}
-
-${await this.captureFormatted()}`;
-      return { output };
-    }
-  }
-  async fill(ref, text) {
-    try {
-      await this.locator(ref).fill(text);
-      this.invalidate();
-      const output = `Filled ${this.normalizeRef(ref)}
-
-${await this.captureFormatted()}`;
-      return { output };
-    } catch (error) {
-      this.invalidate();
-      const message = error instanceof Error ? error.message : String(error);
-      const output = `Failed to fill ${this.normalizeRef(ref)}: ${message}
-
-${await this.captureFormatted()}`;
-      return { output };
-    }
-  }
-  async press(ref, key) {
-    try {
-      await this.locator(ref).press(key);
-      this.invalidate();
-      const output = `Pressed ${key} on ${this.normalizeRef(ref)}
-
-${await this.captureFormatted()}`;
-      return { output };
-    } catch (error) {
-      this.invalidate();
-      const message = error instanceof Error ? error.message : String(error);
-      const output = `Failed to press ${key} on ${this.normalizeRef(ref)}: ${message}
-
-${await this.captureFormatted()}`;
-      return { output };
-    }
-  }
+${STALE_SNAPSHOT_PLACEHOLDER}`;
 };
 
 // src/index.ts
@@ -7282,11 +7215,18 @@ var mailosaurSchema = external_exports.object({
   serverId: external_exports.string()
 }).optional();
 var testPatternSchema = external_exports.string().default("**/*.test.ts");
+var snapshotSchema = external_exports.object({
+  /** Limits aria snapshot tree depth — lower values reduce token usage on large pages. */
+  depth: external_exports.number().int().positive().optional(),
+  /** When true, only interactive elements (and headings) with refs are sent to the model. */
+  interactiveOnly: external_exports.boolean().optional()
+}).strict();
 var browserSchema = external_exports.object({
   /**
    * @see https://playwright.dev/docs/api/class-browser#browser-new-context
    */
-  contextOptions: external_exports.custom().optional()
+  contextOptions: external_exports.custom().optional(),
+  snapshot: snapshotSchema.optional()
 });
 var configSchema = external_exports.object({
   headless: external_exports.boolean().default(true),
@@ -7537,6 +7477,138 @@ var test = Object.assign(
   }
 );
 
+// src/browser/snapshot/aria-snapshot-session.ts
+var DEFAULT_SNAPSHOT_DEPTH = 12;
+var REF_PATTERN = /\[ref=e\d+\]/;
+var INTERACTIVE_ROLE_PATTERN = /^\s*-\s+(button|link|textbox|searchbox|combobox|checkbox|radio|switch|menuitem|tab|option|slider|spinbutton|heading|img)\b/i;
+var filterInteractiveSnapshot = (snapshot) => {
+  const trimmed = snapshot.trim();
+  if (!trimmed) {
+    return snapshot;
+  }
+  const filtered = trimmed.split("\n").filter(
+    (line) => REF_PATTERN.test(line) && INTERACTIVE_ROLE_PATTERN.test(line)
+  );
+  return filtered.length > 0 ? filtered.join("\n") : snapshot;
+};
+var getAriaSnapshotSessionOptions = () => {
+  const snapshot = getConfig().browser?.snapshot;
+  return {
+    depth: snapshot?.depth ?? DEFAULT_SNAPSHOT_DEPTH,
+    interactiveOnly: snapshot?.interactiveOnly ?? true
+  };
+};
+var AriaSnapshotSession = class {
+  page;
+  depth;
+  interactiveOnly;
+  lastSnapshot = null;
+  lastPageUrl;
+  lastPageTitle;
+  constructor(page, options = {}) {
+    this.page = page;
+    this.depth = options.depth;
+    this.interactiveOnly = options.interactiveOnly ?? true;
+  }
+  setPage(page) {
+    this.page = page;
+    this.invalidate();
+  }
+  invalidate() {
+    this.lastSnapshot = null;
+    this.lastPageUrl = void 0;
+    this.lastPageTitle = void 0;
+  }
+  normalizeRef(ref) {
+    const trimmed = ref.trim();
+    if (trimmed.startsWith("ref=")) {
+      return trimmed.slice(4);
+    }
+    return trimmed;
+  }
+  locator(ref) {
+    return this.page.locator(`aria-ref=${this.normalizeRef(ref)}`);
+  }
+  async capture() {
+    const snapshot = await this.page.ariaSnapshot({
+      mode: "ai",
+      ...this.depth !== void 0 ? { depth: this.depth } : {}
+    });
+    const processed = this.interactiveOnly ? filterInteractiveSnapshot(snapshot) : snapshot;
+    this.lastSnapshot = processed;
+    return processed;
+  }
+  async captureFormatted() {
+    const snapshot = await this.capture();
+    const url = this.page.url();
+    const title = await this.page.title();
+    const formatted = formatPageState({
+      url,
+      title,
+      snapshot,
+      previousUrl: this.lastPageUrl,
+      previousTitle: this.lastPageTitle
+    });
+    this.lastPageUrl = url;
+    this.lastPageTitle = title;
+    return formatted;
+  }
+  async snapshotOnly() {
+    const output = await this.captureFormatted();
+    return { output };
+  }
+  async actionResult(successLine, error) {
+    if (error !== void 0) {
+      const message = error instanceof Error ? error.message : String(error);
+      const output = `Failed: ${successLine}. ${message}
+
+${await this.captureFormatted()}`;
+      return { output };
+    }
+    return {
+      output: `${successLine} ${ACTION_SUCCESS_HINT}`
+    };
+  }
+  async click(ref) {
+    const normalizedRef = this.normalizeRef(ref);
+    try {
+      await this.locator(ref).click();
+      this.invalidate();
+      return await this.actionResult(`Clicked ${normalizedRef}.`);
+    } catch (error) {
+      this.invalidate();
+      return await this.actionResult(`click ${normalizedRef}`, error);
+    }
+  }
+  async fill(ref, text) {
+    const normalizedRef = this.normalizeRef(ref);
+    try {
+      await this.locator(ref).fill(text);
+      this.invalidate();
+      return await this.actionResult(`Filled ${normalizedRef}.`);
+    } catch (error) {
+      this.invalidate();
+      return await this.actionResult(`fill ${normalizedRef}`, error);
+    }
+  }
+  async press(ref, key) {
+    const normalizedRef = this.normalizeRef(ref);
+    try {
+      await this.locator(ref).press(key);
+      this.invalidate();
+      return await this.actionResult(
+        `Pressed ${key} on ${normalizedRef}.`
+      );
+    } catch (error) {
+      this.invalidate();
+      return await this.actionResult(
+        `press ${key} on ${normalizedRef}`,
+        error
+      );
+    }
+  }
+};
+
 // src/ai/tools/custom/check_email.ts
 import { tool } from "ai";
 var createCheckEmailTool = (browserTool) => tool({
@@ -7684,19 +7756,19 @@ var createBrowserSnapshotTools = (session) => {
   const bashTool = createGLMBash();
   return {
     browser_snapshot: tool7({
-      description: "Capture the current page accessibility snapshot with element refs like [ref=e12]. Use after navigation or when refs may be stale.",
+      description: "Capture the full page accessibility snapshot with element refs like [ref=e12]. Only this tool returns the snapshot \u2014 use after navigation or when refs may be stale.",
       parameters: external_exports.object({}),
       execute: async () => session.snapshotOnly()
     }),
     browser_click: tool7({
-      description: "Click an element using its snapshot ref (e.g. e21 for button Sign In).",
+      description: "Click an element using its snapshot ref (e.g. e21). Returns a short ack; call browser_snapshot if the page changed.",
       parameters: external_exports.object({
         ref: refSchema
       }),
       execute: async ({ ref }) => session.click(ref)
     }),
     browser_fill: tool7({
-      description: "Fill text into an input using its snapshot ref (e.g. e12 for email field).",
+      description: "Fill text into an input using its snapshot ref (e.g. e12). Returns a short ack; call browser_snapshot if the page changed.",
       parameters: external_exports.object({
         ref: refSchema,
         text: external_exports.string().describe("Text to enter into the element")
@@ -7704,7 +7776,7 @@ var createBrowserSnapshotTools = (session) => {
       execute: async ({ ref, text }) => session.fill(ref, text)
     }),
     browser_press: tool7({
-      description: "Press a key on an element using its snapshot ref (e.g. Enter, Tab).",
+      description: "Press a key on an element using its snapshot ref (e.g. Enter). Returns a short ack; call browser_snapshot if the page changed.",
       parameters: external_exports.object({
         ref: refSchema,
         key: external_exports.string().describe("Key to press, e.g. Enter or Tab")
@@ -7835,7 +7907,7 @@ var createToolRegistry = () => {
 var sleep = (ms) => new Promise((resolve2) => setTimeout(resolve2, ms));
 
 // src/ai/client.ts
-var AIClient = class {
+var AIClient = class _AIClient {
   client;
   browserTool;
   conversationHistory = [];
@@ -7860,7 +7932,7 @@ var AIClient = class {
     this.testRun = testRun;
     this.usage = TokenUsageSchema.parse({});
     this.toolRegistry = createToolRegistry();
-    this.ariaSnapshotSession = ariaSnapshotSession ?? new AriaSnapshotSession(browserTool.getPage());
+    this.ariaSnapshotSession = ariaSnapshotSession ?? new AriaSnapshotSession(browserTool.getPage(), getAriaSnapshotSessionOptions());
     browserTool.setAriaSnapshotSession(this.ariaSnapshotSession);
     this.log.trace(
       "Available tools",
@@ -8018,6 +8090,7 @@ var AIClient = class {
           });
           this.conversationHistory.push(message);
         });
+        this.pruneConversationHistory();
         this.log.trace("\u{1F4AC}", "Conversation history updated", {
           newMessageCount: resp.response.messages.length,
           totalMessageCount: this.conversationHistory.length
@@ -8113,6 +8186,204 @@ var AIClient = class {
     this.usage.completionTokens += usage.completionTokens;
     this.usage.promptTokens += usage.promptTokens;
     this.usage.totalTokens += usage.totalTokens;
+  }
+  /**
+   * Reduces prompt size by pruning stale snapshots, tool results, and assistant reasoning.
+   */
+  pruneConversationHistory() {
+    this.pruneStaleSnapshotsFromHistory();
+    this.pruneStaleToolResultsFromHistory();
+    this.pruneStaleAssistantTextFromHistory();
+  }
+  static MAX_RECENT_TOOL_RESULTS = 4;
+  static MAX_ASSISTANT_TEXT_CHARS = 160;
+  pruneStaleToolResultsFromHistory() {
+    const toolResultIndices = [];
+    for (let i = 0; i < this.conversationHistory.length; i++) {
+      if (this.messageHasToolResult(this.conversationHistory[i])) {
+        toolResultIndices.push(i);
+      }
+    }
+    if (toolResultIndices.length <= _AIClient.MAX_RECENT_TOOL_RESULTS) {
+      return;
+    }
+    const keepFrom = toolResultIndices.length - _AIClient.MAX_RECENT_TOOL_RESULTS;
+    for (let j = 0; j < keepFrom; j++) {
+      this.conversationHistory[toolResultIndices[j]] = this.omitToolResultMessage(this.conversationHistory[toolResultIndices[j]]);
+    }
+  }
+  pruneStaleAssistantTextFromHistory() {
+    const assistantIndices = [];
+    for (let i = 0; i < this.conversationHistory.length; i++) {
+      if (this.conversationHistory[i].role === "assistant") {
+        assistantIndices.push(i);
+      }
+    }
+    if (assistantIndices.length <= 1) {
+      return;
+    }
+    for (let j = 0; j < assistantIndices.length - 1; j++) {
+      this.conversationHistory[assistantIndices[j]] = this.truncateAssistantMessage(this.conversationHistory[assistantIndices[j]]);
+    }
+  }
+  messageHasToolResult(message) {
+    if (message.role === "tool") {
+      return true;
+    }
+    const content = message.content;
+    if (!Array.isArray(content)) {
+      return false;
+    }
+    return content.some(
+      (part) => typeof part === "object" && part !== null && "type" in part && part.type === "tool-result"
+    );
+  }
+  omitToolResultMessage(message) {
+    if (message.role === "tool") {
+      return {
+        ...message,
+        content: STALE_TOOL_RESULT_PLACEHOLDER
+      };
+    }
+    const content = message.content;
+    if (!Array.isArray(content)) {
+      return message;
+    }
+    return {
+      ...message,
+      content: content.map((part) => {
+        if (typeof part === "object" && part !== null && "type" in part && part.type === "tool-result") {
+          return { ...part, result: STALE_TOOL_RESULT_PLACEHOLDER };
+        }
+        return part;
+      })
+    };
+  }
+  truncateAssistantMessage(message) {
+    const content = message.content;
+    if (typeof content === "string") {
+      return {
+        ...message,
+        content: truncateForContext(
+          content,
+          _AIClient.MAX_ASSISTANT_TEXT_CHARS
+        )
+      };
+    }
+    if (!Array.isArray(content)) {
+      return message;
+    }
+    return {
+      ...message,
+      content: content.map((part) => {
+        if (typeof part === "string") {
+          return truncateForContext(part, _AIClient.MAX_ASSISTANT_TEXT_CHARS);
+        }
+        if (part.type === "text") {
+          return {
+            ...part,
+            text: truncateForContext(
+              part.text,
+              _AIClient.MAX_ASSISTANT_TEXT_CHARS
+            )
+          };
+        }
+        return part;
+      })
+    };
+  }
+  /**
+   * Replaces older page snapshots in conversation history with a short placeholder.
+   * Only the most recent snapshot block is kept to reduce prompt tokens on multi-step tests.
+   */
+  pruneStaleSnapshotsFromHistory() {
+    const snapshotIndices = [];
+    for (let i = 0; i < this.conversationHistory.length; i++) {
+      if (this.messageContainsPageSnapshot(this.conversationHistory[i])) {
+        snapshotIndices.push(i);
+      }
+    }
+    if (snapshotIndices.length <= 1) {
+      return;
+    }
+    const keepIndex = snapshotIndices[snapshotIndices.length - 1];
+    for (const index of snapshotIndices) {
+      if (index === keepIndex) {
+        continue;
+      }
+      this.conversationHistory[index] = this.omitPageSnapshotInMessage(
+        this.conversationHistory[index]
+      );
+    }
+  }
+  messageContainsPageSnapshot(message) {
+    return this.extractMessageText(message).includes(PAGE_SECTION_HEADER);
+  }
+  extractMessageText(message) {
+    const content = message.content;
+    if (typeof content === "string") {
+      return content;
+    }
+    if (!Array.isArray(content)) {
+      return "";
+    }
+    return content.map((part) => {
+      if (typeof part === "string") {
+        return part;
+      }
+      if (part.type === "text") {
+        return part.text;
+      }
+      if (part.type === "tool-result") {
+        const result = part.result;
+        if (typeof result === "string") {
+          return result;
+        }
+        if (result && typeof result === "object" && "output" in result) {
+          return String(result.output);
+        }
+        return JSON.stringify(result);
+      }
+      return "";
+    }).join("\n");
+  }
+  omitPageSnapshotInMessage(message) {
+    const content = message.content;
+    if (typeof content === "string") {
+      return { ...message, content: omitPageSnapshotText(content) };
+    }
+    if (!Array.isArray(content)) {
+      return message;
+    }
+    return {
+      ...message,
+      content: content.map((part) => {
+        if (typeof part === "string") {
+          return omitPageSnapshotText(part);
+        }
+        if (part.type === "text") {
+          return { ...part, text: omitPageSnapshotText(part.text) };
+        }
+        if (part.type === "tool-result") {
+          const result = part.result;
+          if (typeof result === "string") {
+            return { ...part, result: omitPageSnapshotText(result) };
+          }
+          if (result && typeof result === "object" && "output" in result) {
+            return {
+              ...part,
+              result: {
+                ...result,
+                output: omitPageSnapshotText(
+                  String(result.output)
+                )
+              }
+            };
+          }
+        }
+        return part;
+      })
+    };
   }
 };
 
@@ -9844,7 +10115,10 @@ var TestRunner = class {
         currentStepIndex: 0
       }
     });
-    const ariaSnapshotSession = new AriaSnapshotSession(testContext.page);
+    const ariaSnapshotSession = new AriaSnapshotSession(
+      testContext.page,
+      getAriaSnapshotSessionOptions()
+    );
     browserTool.setAriaSnapshotSession(ariaSnapshotSession);
     this.log.trace("Skipping cache", {
       cachingEnabled: this.config.caching.enabled,

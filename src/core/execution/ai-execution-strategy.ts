@@ -1,8 +1,10 @@
 import { BaseTestExecutionStrategy, TestExecutionContext, TestExecutionResult } from "./test-execution-strategy.interface";
 import { AIClient } from "@/ai/client";
 import { BrowserTool } from "@/browser/core/browser-tool";
-import { AriaSnapshotSession } from "@/browser/snapshot/aria-snapshot-session";
-import { getConfig } from "@/index";
+import {
+  AriaSnapshotSession,
+  getAriaSnapshotSessionOptions,
+} from "@/browser/snapshot/aria-snapshot-session";
 import { Logger } from "@/log";
 
 /**
@@ -59,7 +61,10 @@ export class AIExecutionStrategy extends BaseTestExecutionStrategy {
     const browserTool = this.createBrowserTool(testContext, testRun);
 
     // Create aria snapshot session
-    const ariaSnapshotSession = new AriaSnapshotSession(testContext.page);
+    const ariaSnapshotSession = new AriaSnapshotSession(
+      testContext.page,
+      getAriaSnapshotSessionOptions(),
+    );
     browserTool.setAriaSnapshotSession(ariaSnapshotSession);
 
     // Execute before hook if present
