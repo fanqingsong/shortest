@@ -9715,8 +9715,10 @@ var BrowserManager = class {
     this.log.trace("Initializing browser context", { options: contextOptions });
     this.context = await this.browser.newContext(contextOptions);
     const page = await this.context.newPage();
-    await page.goto(this.normalizeUrl(this.config.baseUrl));
-    await page.waitForLoadState("networkidle");
+    await page.goto(this.normalizeUrl(this.config.baseUrl), {
+      waitUntil: "domcontentloaded"
+    });
+    await page.waitForLoadState("load", { timeout: 1e4 }).catch(() => void 0);
     return this.context;
   }
   async clearContext() {
@@ -9744,8 +9746,8 @@ var BrowserManager = class {
       await Promise.all(pages.slice(1).map((page) => page.close()));
     }
     const baseUrl = this.config.baseUrl;
-    await pages[0].goto(baseUrl);
-    await pages[0].waitForLoadState("networkidle");
+    await pages[0].goto(baseUrl, { waitUntil: "domcontentloaded" });
+    await pages[0].waitForLoadState("load", { timeout: 1e4 }).catch(() => void 0);
     return this.context;
   }
   recreateContext() {

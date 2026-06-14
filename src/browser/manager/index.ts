@@ -54,8 +54,12 @@ export class BrowserManager {
     this.context = await this.browser.newContext(contextOptions);
 
     const page = await this.context.newPage();
-    await page.goto(this.normalizeUrl(this.config.baseUrl));
-    await page.waitForLoadState("networkidle");
+    await page.goto(this.normalizeUrl(this.config.baseUrl), {
+      waitUntil: "domcontentloaded",
+    });
+    await page
+      .waitForLoadState("load", { timeout: 10_000 })
+      .catch(() => undefined);
 
     return this.context;
   }
@@ -93,8 +97,10 @@ export class BrowserManager {
 
     // Navigate first page to baseUrl
     const baseUrl = this.config.baseUrl;
-    await pages[0].goto(baseUrl);
-    await pages[0].waitForLoadState("networkidle");
+    await pages[0].goto(baseUrl, { waitUntil: "domcontentloaded" });
+    await pages[0]
+      .waitForLoadState("load", { timeout: 10_000 })
+      .catch(() => undefined);
 
     return this.context;
   }
