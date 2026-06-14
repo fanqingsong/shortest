@@ -4698,10 +4698,10 @@ var Log = class {
    * Resets to parent group or removes grouping if at root
    */
   resetGroup() {
-    const callerMatch = new Error().stack?.split("\n")[2]?.match(/at\s+(\S+)\s+/);
     if (this.currentGroup) {
       this.currentGroup = this.currentGroup?.parent;
     } else {
+      const callerMatch = new Error().stack?.split("\n")[2]?.match(/at\s+(\S+)\s+/);
       this.log("trace", "No group to reset", {
         calledBy: callerMatch?.[1] || "unknown"
       });

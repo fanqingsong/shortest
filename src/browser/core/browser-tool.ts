@@ -38,8 +38,6 @@ export class BrowserTool extends BaseBrowserTool {
   private githubTool?: GitHubTool;
   private viewport: { width: number; height: number };
   private testContext: TestContext;
-  private readonly MAX_SCREENSHOTS = 10;
-  private readonly MAX_AGE_HOURS = 5;
   private mailosaurTool?: MailosaurTool;
   private ariaSnapshotSession?: AriaSnapshotSession;
   private config!: ShortestConfig;

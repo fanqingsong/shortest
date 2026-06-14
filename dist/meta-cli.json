@@ -243,7 +243,7 @@
       "format": "esm"
     },
     "src/log/log.ts": {
-      "bytes": 4422,
+      "bytes": 3956,
       "imports": [
         {
           "path": "node:stream",
@@ -814,21 +814,101 @@
       ],
       "format": "esm"
     },
-    "src/ai/provider.ts": {
-      "bytes": 1643,
+    "src/ai/providers/ai-provider.interface.ts": {
+      "bytes": 2518,
       "imports": [
-        {
-          "path": "@ai-sdk/openai",
-          "kind": "import-statement",
-          "external": true
-        },
         {
           "path": "ai",
           "kind": "import-statement",
           "external": true
         },
         {
-          "path": "@/types",
+          "path": "@ai-sdk/openai",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/ai/providers/glm.provider.ts": {
+      "bytes": 1759,
+      "imports": [
+        {
+          "path": "src/ai/providers/ai-provider.interface.ts",
+          "kind": "import-statement",
+          "original": "./ai-provider.interface"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/ai/providers/azure.provider.ts": {
+      "bytes": 2519,
+      "imports": [
+        {
+          "path": "src/ai/providers/ai-provider.interface.ts",
+          "kind": "import-statement",
+          "original": "./ai-provider.interface"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/ai/providers/dashscope.provider.ts": {
+      "bytes": 1759,
+      "imports": [
+        {
+          "path": "src/ai/providers/ai-provider.interface.ts",
+          "kind": "import-statement",
+          "original": "./ai-provider.interface"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/ai/providers/siliconflow.provider.ts": {
+      "bytes": 1851,
+      "imports": [
+        {
+          "path": "src/ai/providers/ai-provider.interface.ts",
+          "kind": "import-statement",
+          "original": "./ai-provider.interface"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/ai/providers/ai-provider.factory.ts": {
+      "bytes": 4818,
+      "imports": [
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "./ai-provider.interface",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/ai/providers/glm.provider.ts",
+          "kind": "import-statement",
+          "original": "./glm.provider"
+        },
+        {
+          "path": "src/ai/providers/azure.provider.ts",
+          "kind": "import-statement",
+          "original": "./azure.provider"
+        },
+        {
+          "path": "src/ai/providers/dashscope.provider.ts",
+          "kind": "import-statement",
+          "original": "./dashscope.provider"
+        },
+        {
+          "path": "src/ai/providers/siliconflow.provider.ts",
+          "kind": "import-statement",
+          "original": "./siliconflow.provider"
+        },
+        {
+          "path": "@/types/config",
           "kind": "import-statement",
           "external": true
         },
@@ -836,6 +916,68 @@
           "path": "src/utils/errors.ts",
           "kind": "import-statement",
           "original": "@/utils/errors"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/ai/providers/index.ts": {
+      "bytes": 952,
+      "imports": [
+        {
+          "path": "src/ai/providers/ai-provider.interface.ts",
+          "kind": "import-statement",
+          "original": "./ai-provider.interface"
+        },
+        {
+          "path": "src/ai/providers/glm.provider.ts",
+          "kind": "import-statement",
+          "original": "./glm.provider"
+        },
+        {
+          "path": "src/ai/providers/azure.provider.ts",
+          "kind": "import-statement",
+          "original": "./azure.provider"
+        },
+        {
+          "path": "src/ai/providers/dashscope.provider.ts",
+          "kind": "import-statement",
+          "original": "./dashscope.provider"
+        },
+        {
+          "path": "src/ai/providers/siliconflow.provider.ts",
+          "kind": "import-statement",
+          "original": "./siliconflow.provider"
+        },
+        {
+          "path": "src/ai/providers/ai-provider.factory.ts",
+          "kind": "import-statement",
+          "original": "./ai-provider.factory"
+        }
+      ],
+      "format": "esm"
+    },
+    "src/ai/provider.ts": {
+      "bytes": 3444,
+      "imports": [
+        {
+          "path": "ai",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@/types/config",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "@/utils/errors",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/ai/providers/index.ts",
+          "kind": "import-statement",
+          "original": "./providers"
         }
       ],
       "format": "esm"
@@ -1245,7 +1387,7 @@
       "format": "esm"
     },
     "src/browser/core/bash-tool.ts": {
-      "bytes": 2160,
+      "bytes": 2074,
       "imports": [
         {
           "path": "child_process",
@@ -1256,11 +1398,6 @@
           "path": "src/log/index.ts",
           "kind": "import-statement",
           "original": "@/log"
-        },
-        {
-          "path": "src/utils/errors.ts",
-          "kind": "import-statement",
-          "original": "@/utils/errors"
         }
       ],
       "format": "esm"
@@ -1405,7 +1542,7 @@
       "format": "esm"
     },
     "src/ai/client.ts": {
-      "bytes": 12884,
+      "bytes": 12869,
       "imports": [
         {
           "path": "@ai-sdk/provider",
@@ -1565,7 +1702,7 @@
       "format": "esm"
     },
     "src/browser/core/browser-tool.ts": {
-      "bytes": 31836,
+      "bytes": 31757,
       "imports": [
         {
           "path": "fs/promises",
@@ -3183,7 +3320,7 @@
           "bytesInOutput": 1089
         },
         "src/log/log.ts": {
-          "bytesInOutput": 2645
+          "bytesInOutput": 2647
         },
         "node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/external.js": {
           "bytesInOutput": 3282
@@ -3290,8 +3427,29 @@
         "src/ai/prompts/index.ts": {
           "bytesInOutput": 2323
         },
+        "src/ai/providers/ai-provider.interface.ts": {
+          "bytesInOutput": 768
+        },
+        "src/ai/providers/index.ts": {
+          "bytesInOutput": 0
+        },
+        "src/ai/providers/glm.provider.ts": {
+          "bytesInOutput": 1059
+        },
+        "src/ai/providers/azure.provider.ts": {
+          "bytesInOutput": 1742
+        },
+        "src/ai/providers/dashscope.provider.ts": {
+          "bytesInOutput": 1036
+        },
+        "src/ai/providers/siliconflow.provider.ts": {
+          "bytesInOutput": 1065
+        },
+        "src/ai/providers/ai-provider.factory.ts": {
+          "bytesInOutput": 3326
+        },
         "src/ai/provider.ts": {
-          "bytesInOutput": 1257
+          "bytesInOutput": 279
         },
         "src/ai/utils/json.ts": {
           "bytesInOutput": 956
@@ -3348,7 +3506,7 @@
           "bytesInOutput": 476
         },
         "src/browser/core/bash-tool.ts": {
-          "bytesInOutput": 1717
+          "bytesInOutput": 1681
         },
         "src/tools/tool-registry.ts": {
           "bytesInOutput": 2438
@@ -3360,7 +3518,7 @@
           "bytesInOutput": 73
         },
         "src/browser/core/browser-tool.ts": {
-          "bytesInOutput": 27471
+          "bytesInOutput": 27426
         },
         "src/browser/actions/index.ts": {
           "bytesInOutput": 3090
@@ -3429,7 +3587,7 @@
           "bytesInOutput": 985
         }
       },
-      "bytes": 352084
+      "bytes": 360277
     }
   }
 }

@@ -4575,10 +4575,10 @@ var Log = class {
    * Resets to parent group or removes grouping if at root
    */
   resetGroup() {
-    const callerMatch = new Error().stack?.split("\n")[2]?.match(/at\s+(\S+)\s+/);
     if (this.currentGroup) {
       this.currentGroup = this.currentGroup?.parent;
     } else {
+      const callerMatch = new Error().stack?.split("\n")[2]?.match(/at\s+(\S+)\s+/);
       this.log("trace", "No group to reset", {
         calledBy: callerMatch?.[1] || "unknown"
       });
@@ -6520,44 +6520,334 @@ Your task is to:
    - DO NOT include any other JSON-like object in your response except the required structure.`;
 var getSystemPrompt = (_provider) => SYSTEM_PROMPT;
 
-// src/ai/provider.ts
+// src/ai/providers/ai-provider.interface.ts
 import { createOpenAI } from "@ai-sdk/openai";
-var createProvider = (aiConfig) => {
-  switch (aiConfig.provider) {
-    case "glm":
-      const glm = createOpenAI({
-        apiKey: aiConfig.apiKey,
-        baseURL: aiConfig.baseURL
-      });
-      return glm(aiConfig.model);
-    case "azure":
-      const azureBaseURL = aiConfig.baseURL;
-      const baseHostName = azureBaseURL.replace(/\/openai\/deployments\/.*$/, "");
-      const deploymentName = azureBaseURL.match(/\/openai\/deployments\/([^\/]+)$/)?.[1] || aiConfig.model;
-      const azure = createOpenAI({
-        apiKey: aiConfig.apiKey,
-        baseURL: `${baseHostName}/openai/deployments/${deploymentName}`
-      });
-      return azure(aiConfig.model);
-    case "dashscope":
-      const dashscope = createOpenAI({
-        apiKey: aiConfig.apiKey,
-        baseURL: aiConfig.baseURL
-      });
-      return dashscope(aiConfig.model);
-    case "siliconflow":
-      const siliconflow = createOpenAI({
-        apiKey: aiConfig.apiKey,
-        baseURL: aiConfig.baseURL
-      });
-      return siliconflow(aiConfig.model);
-    default:
-      const _exhaustiveCheck = aiConfig;
+var OpenAICompatibleProvider = class {
+  apiKey;
+  baseURL;
+  model;
+  constructor(config) {
+    this.apiKey = config.apiKey;
+    this.baseURL = config.baseURL;
+    this.model = config.model;
+  }
+  /**
+   * Creates a language model instance using OpenAI-compatible API.
+   *
+   * @returns {LanguageModelV1} The language model instance
+   */
+  createModel() {
+    const client = createOpenAI({
+      apiKey: this.apiKey,
+      baseURL: this.baseURL
+    });
+    return client(this.model);
+  }
+  /**
+   * Validates that required configuration fields are present.
+   *
+   * @returns {boolean} True if all required fields are present
+   */
+  validateConfig() {
+    return !!(this.apiKey && this.baseURL && this.model);
+  }
+};
+
+// src/ai/providers/glm.provider.ts
+var GLMProvider = class extends OpenAICompatibleProvider {
+  /**
+   * Creates a new GLM provider instance.
+   *
+   * @param {Object} config - Provider configuration
+   * @param {string} config.apiKey - GLM API key (ZHIPU_API_KEY or GLM_API_KEY)
+   * @param {string} config.baseURL - Base URL for GLM API
+   * @param {string} config.model - Model name (e.g., "glm-4", "glm-5.1")
+   */
+  constructor(config) {
+    super(config);
+  }
+  /**
+   * Returns the provider name.
+   *
+   * @returns {string} The provider name "glm"
+   */
+  getProviderName() {
+    return "glm";
+  }
+  /**
+   * Validates GLM-specific configuration.
+   * Ensures the baseURL is a valid GLM API endpoint.
+   *
+   * @returns {boolean} True if configuration is valid
+   */
+  validateConfig() {
+    const baseValid = super.validateConfig();
+    if (!baseValid)
+      return false;
+    const validBaseURLs = [
+      "https://open.bigmodel.cn/api/paas/v4/",
+      "https://open.bigmodel.cn/api/coding/paas/v4/"
+    ];
+    return validBaseURLs.some((url) => this.baseURL.startsWith(url));
+  }
+};
+
+// src/ai/providers/azure.provider.ts
+var AzureProvider = class extends OpenAICompatibleProvider {
+  /**
+   * Creates a new Azure OpenAI provider instance.
+   *
+   * @param {Object} config - Provider configuration
+   * @param {string} config.apiKey - Azure OpenAI API key (AZURE_OPENAI_API_KEY)
+   * @param {string} config.baseURL - Base URL for Azure OpenAI API
+   * @param {string} config.model - Deployment/model name (e.g., "gpt-4o")
+   */
+  constructor(config) {
+    super({
+      ...config,
+      // Normalize Azure OpenAI base URL
+      baseURL: this.normalizeAzureBaseURL(config.baseURL, config.model)
+    });
+  }
+  /**
+   * Normalizes Azure OpenAI base URL to ensure correct format.
+   * Extracts base hostname and deployment name from the URL.
+   *
+   * @private
+   * @param {string} baseURL - The original base URL
+   * @param {string} model - The model/deployment name
+   * @returns {string} The normalized base URL
+   */
+  normalizeAzureBaseURL(baseURL, model) {
+    const baseHostName = baseURL.replace(/\/openai\/deployments\/.*$/, "");
+    const deploymentName = baseURL.match(/\/openai\/deployments\/([^\/]+)$/)?.[1] || model;
+    return `${baseHostName}/openai/deployments/${deploymentName}`;
+  }
+  /**
+   * Returns the provider name.
+   *
+   * @returns {string} The provider name "azure"
+   */
+  getProviderName() {
+    return "azure";
+  }
+  /**
+   * Validates Azure-specific configuration.
+   * Ensures the baseURL follows Azure OpenAI format.
+   *
+   * @returns {boolean} True if configuration is valid
+   */
+  validateConfig() {
+    const baseValid = super.validateConfig();
+    if (!baseValid)
+      return false;
+    const azureURLPattern = /https:\/\/.*\.openai\.azure\.com\/openai\/deployments\/.+/;
+    return azureURLPattern.test(this.baseURL);
+  }
+};
+
+// src/ai/providers/dashscope.provider.ts
+var DashScopeProvider = class extends OpenAICompatibleProvider {
+  /**
+   * Creates a new DashScope provider instance.
+   *
+   * @param {Object} config - Provider configuration
+   * @param {string} config.apiKey - DashScope API key (DASHSCOPE_API_KEY)
+   * @param {string} config.baseURL - Base URL for DashScope API
+   * @param {string} config.model - Model name (e.g., "qwen-plus", "qwen-max")
+   */
+  constructor(config) {
+    super(config);
+  }
+  /**
+   * Returns the provider name.
+   *
+   * @returns {string} The provider name "dashscope"
+   */
+  getProviderName() {
+    return "dashscope";
+  }
+  /**
+   * Validates DashScope-specific configuration.
+   * Ensures the baseURL is a valid DashScope API endpoint.
+   *
+   * @returns {boolean} True if configuration is valid
+   */
+  validateConfig() {
+    const baseValid = super.validateConfig();
+    if (!baseValid)
+      return false;
+    const validBaseURLPrefix = "https://dashscope.aliyuncs.com/compatible-mode/v1";
+    return this.baseURL.startsWith(validBaseURLPrefix);
+  }
+};
+
+// src/ai/providers/siliconflow.provider.ts
+var SiliconFlowProvider = class extends OpenAICompatibleProvider {
+  /**
+   * Creates a new SiliconFlow provider instance.
+   *
+   * @param {Object} config - Provider configuration
+   * @param {string} config.apiKey - SiliconFlow API key (SILICONFLOW_API_KEY)
+   * @param {string} config.baseURL - Base URL for SiliconFlow API
+   * @param {string} config.model - Model name (e.g., "deepseek-ai/DeepSeek-V3", "Qwen/Qwen2.5-72B-Instruct")
+   */
+  constructor(config) {
+    super(config);
+  }
+  /**
+   * Returns the provider name.
+   *
+   * @returns {string} The provider name "siliconflow"
+   */
+  getProviderName() {
+    return "siliconflow";
+  }
+  /**
+   * Validates SiliconFlow-specific configuration.
+   * Ensures the baseURL is a valid SiliconFlow API endpoint.
+   *
+   * @returns {boolean} True if configuration is valid
+   */
+  validateConfig() {
+    const baseValid = super.validateConfig();
+    if (!baseValid)
+      return false;
+    const validBaseURLPrefix = "https://api.siliconflow.cn/v1";
+    return this.baseURL.startsWith(validBaseURLPrefix);
+  }
+};
+
+// src/ai/providers/ai-provider.factory.ts
+var AIProviderFactory = class {
+  providerRegistry;
+  /**
+   * Creates a new AI provider factory instance.
+   * Initializes the provider registry with all available providers.
+   */
+  constructor() {
+    this.providerRegistry = /* @__PURE__ */ new Map([
+      ["glm", GLMProvider],
+      ["azure", AzureProvider],
+      ["dashscope", DashScopeProvider],
+      ["siliconflow", SiliconFlowProvider]
+    ]);
+  }
+  /**
+   * Registers a new AI provider.
+   * Allows for dynamic provider registration at runtime.
+   *
+   * @param {string} providerName - The provider name/identifier
+   * @param {new} providerClass - The provider class constructor
+   * @returns {AIProviderFactory} This factory instance for method chaining
+   *
+   * @example
+   * ```typescript
+   * factory.registerProvider("custom", CustomProvider);
+   * ```
+   */
+  registerProvider(providerName, providerClass) {
+    this.providerRegistry.set(providerName, providerClass);
+    return this;
+  }
+  /**
+   * Creates an AI provider instance based on the provided configuration.
+   *
+   * @param {AIConfig} config - The AI configuration
+   * @returns {AIProvider} The provider instance
+   * @throws {AIError} If the provider is not supported
+   *
+   * @example
+   * ```typescript
+   * const provider = factory.createProvider({
+   *   provider: "glm",
+   *   apiKey: "...",
+   *   model: "glm-4",
+   *   baseURL: "https://..."
+   * });
+   * ```
+   */
+  createProvider(config) {
+    const ProviderClass = this.providerRegistry.get(config.provider);
+    if (!ProviderClass) {
       throw new AIError(
         "unsupported-provider",
-        `Unsupported provider: ${aiConfig.provider}`
+        `Unsupported provider: ${config.provider}`
       );
+    }
+    const provider = new ProviderClass({
+      apiKey: config.apiKey,
+      baseURL: config.baseURL,
+      model: config.model
+    });
+    if (!provider.validateConfig()) {
+      throw new AIError(
+        "invalid-config",
+        `Invalid configuration for provider: ${config.provider}`
+      );
+    }
+    return provider;
   }
+  /**
+   * Gets a list of all registered provider names.
+   *
+   * @returns {string[]} Array of provider names
+   *
+   * @example
+   * ```typescript
+   * const providers = factory.getAvailableProviders();
+   * console.log("Available providers:", providers);
+   * ```
+   */
+  getAvailableProviders() {
+    return Array.from(this.providerRegistry.keys());
+  }
+  /**
+   * Checks if a provider is supported.
+   *
+   * @param {string} providerName - The provider name to check
+   * @returns {boolean} True if the provider is supported
+   *
+   * @example
+   * ```typescript
+   * if (factory.isProviderSupported("glm")) {
+   *   // Use GLM provider
+   * }
+   * ```
+   */
+  isProviderSupported(providerName) {
+    return this.providerRegistry.has(providerName);
+  }
+  /**
+   * Creates a language model instance directly from configuration.
+   * Convenience method that combines provider creation and model instantiation.
+   *
+   * @param {AIConfig} config - The AI configuration
+   * @returns {LanguageModelV1} The language model instance
+   * @throws {AIError} If provider creation or model instantiation fails
+   *
+   * @example
+   * ```typescript
+   * const model = factory.createModelFromConfig(config);
+   * ```
+   */
+  createModelFromConfig(config) {
+    const provider = this.createProvider(config);
+    return provider.createModel();
+  }
+};
+
+// src/ai/provider.ts
+var providerFactory = null;
+function getFactory() {
+  if (!providerFactory) {
+    providerFactory = new AIProviderFactory();
+  }
+  return providerFactory;
+}
+var createProvider = (aiConfig) => {
+  const factory = getFactory();
+  return factory.createModelFromConfig(aiConfig);
 };
 
 // src/ai/utils/json.ts
@@ -7345,7 +7635,6 @@ var BashTool = class {
       });
       child.on("error", (err) => {
         reject(new Error(`Error spawning process: ${err.message}`));
-        throw asShortestError(err);
       });
     });
   }
@@ -8107,8 +8396,6 @@ var BrowserTool = class extends BaseBrowserTool {
   githubTool;
   viewport;
   testContext;
-  MAX_SCREENSHOTS = 10;
-  MAX_AGE_HOURS = 5;
   mailosaurTool;
   ariaSnapshotSession;
   config;
@@ -10058,7 +10345,7 @@ import path9 from "path";
 import { generateText as generateText2 } from "ai";
 
 // src/core/test-planner/system-prompt.ts
-var SYSTEM_PROMPT3 = `You are an expert test architect program specializing in writing end-to-end testing plans. You can only respond in JSON format. Your role is to:
+var SYSTEM_PROMPT2 = `You are an expert test architect program specializing in writing end-to-end testing plans. You can only respond in JSON format. Your role is to:
 
 1. Analyze the provided application structure
 2. Create a testing plan that covers the main functional flows, up to 10 plans
@@ -10158,7 +10445,7 @@ var TestPlanner = class _TestPlanner {
     const model = createProvider(getConfig().ai);
     this.log.trace("Making AI request to generate test plans");
     const resp = await generateText2({
-      system: SYSTEM_PROMPT3,
+      system: SYSTEM_PROMPT2,
       model,
       prompt: `Generate a test plan for the attached analysis: ${JSON.stringify(
         analysis
